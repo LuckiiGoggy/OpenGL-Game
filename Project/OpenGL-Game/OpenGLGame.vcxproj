@@ -69,10 +69,14 @@
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MeshObject.cpp" />
+    <ClCompile Include="WorldEngine.cpp" />
+    <ClCompile Include="WorldSquare.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="openGL.h" />
     <ClInclude Include="MeshObject.h" />
+    <ClInclude Include="WorldEngine.h" />
+    <ClInclude Include="WorldSquare.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
