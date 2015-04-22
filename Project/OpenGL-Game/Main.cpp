@@ -3,6 +3,9 @@
 
 //Santo Tallarico COMP4900 World Builder/Editor
 #include "WorldEngine.h"
+#include "InputManager.h"
+
+
 
 WorldEngine engine;
 void renderScene(void);
@@ -26,6 +29,21 @@ int main(int argc, char **argv) {
 
 	glutDisplayFunc(renderScene);
 
+
+
+	glutKeyboardFunc(InputManager::KeyPress);
+	glutKeyboardUpFunc(InputManager::KeyUp);
+	glutSpecialFunc(InputManager::SpecialKeyPress);
+	glutSpecialUpFunc(InputManager::SpecialKeyUp);
+
+	glutMouseFunc(InputManager::MouseInput);
+
+	glutMotionFunc(InputManager::MouseMotion);
+	glutPassiveMotionFunc(InputManager::MouseMotion);
+
+
+
+
 	glutMainLoop();
 
 	return 0;
@@ -34,6 +52,10 @@ int main(int argc, char **argv) {
 void renderScene(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(1.0, 1.0, 1.0, 1.0);
+
+
+
+
 
 	engine.readWorld();
 	engine.writeWorld();
