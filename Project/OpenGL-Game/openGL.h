@@ -8,5 +8,6 @@
 
 #include "Dependencies\glew\glew.h"
 #include "Dependencies\freeglut\freeglut.h"
+#include "Dependencies\glm\glm\glm.hpp";
 
 #endif

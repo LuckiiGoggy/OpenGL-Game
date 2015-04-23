@@ -67,12 +67,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GroupObject.cpp" />
+    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MeshObject.cpp" />
+    <ClCompile Include="WorldEngine.cpp" />
+    <ClCompile Include="WorldSquare.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GroupObject.h" />
+    <ClInclude Include="Position.h" />
+    <ClInclude Include="Movable.h" />
+    <ClInclude Include="Renderable.h" />
+    <ClInclude Include="InputManager.h" />
     <ClInclude Include="openGL.h" />
     <ClInclude Include="MeshObject.h" />
+    <ClInclude Include="WorldEngine.h" />
+    <ClInclude Include="WorldSquare.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
