@@ -15,9 +15,9 @@ void WorldEngine::readWorld() {
 		std::string s;
 
 		std::getline(file, s);
-		w = (float)(s.at(0) - '0');
+		w = stof(s);
 		std::getline(file, s);
-		h = (float)(s.at(0) - '0');
+		h = stof(s);
 
 		glMatrixMode(GL_PROJECTION);		// setup viewing projection
 		glLoadIdentity();					// start with identity matrix
@@ -30,44 +30,6 @@ void WorldEngine::readWorld() {
 				block = (int)(s.at(index) - '0');
 				squares.push_back(WorldSquare((int)i, (int)j, block));
 				index++;
-				switch (block) {
-				case 1:
-				{
-						  glColor3f(0.0, 0.0, 0.0);
-						  glBegin(GL_POLYGON);
-						  glVertex3f(i, j, 0.0);
-						  glVertex3f(i + 1.0f, j, 0.0);
-						  glVertex3f(i + 1.0f, j + 1.0f, 0.0);
-						  glVertex3f(i, j + 1.0f, 0.0);
-						  glEnd();
-						  glFlush();
-						  break;
-				}
-				case 2:
-				{
-						  glColor3f(1.0, 0.0, 0.0);
-						  glBegin(GL_POLYGON);
-						  glVertex3f(i, j, 0.0);
-						  glVertex3f(i + 1.0f, j, 0.0);
-						  glVertex3f(i + 1.0f, j + 1.0f, 0.0);
-						  glVertex3f(i, j + 1.0f, 0.0);
-						  glEnd();
-						  glFlush();
-						  break;
-				}
-				case 3:
-				{
-						  glColor3f(0.0, 1.0, 1.0);
-						  glBegin(GL_POLYGON);
-						  glVertex3f(i, j, 0.0);
-						  glVertex3f(i + 1.0f, j, 0.0);
-						  glVertex3f(i + 1.0f, j + 1.0f, 0.0);
-						  glVertex3f(i, j + 1.0f, 0.0);
-						  glEnd();
-						  glFlush();
-						  break;
-				}
-				}
 			}
 		}
 
@@ -77,18 +39,79 @@ void WorldEngine::readWorld() {
 
 void WorldEngine::writeWorld() {
 	std::ofstream file;
-	file.open("level2.dat");
+	file.open("level2.dat", std::ofstream::out | std::ofstream::trunc);
 
 	if (file.is_open()) {
 		file << w << std::endl;
 		file << h << std::endl;
 		for (std::vector<int>::size_type i = 0; i != squares.size(); i++) {
-			file << squares.at(i).type;
 			if (i % 8 == 0 && i != 0) {
 				file << std::endl;
 			}
+			file << squares.at(i).type;
 		}
 
 		file.close();
+	}
+}
+
+void WorldEngine::renderWorld() {
+	int index = 0;
+	int block;
+	for (float i = 0; i < h; i++) {
+		for (float j = 0; j < w; j++) {
+			block = squares.at(index).type;
+			index++;
+			switch (block) {
+			case 1:
+			{
+				glColor3f(0.0, 0.0, 0.0);
+				glBegin(GL_POLYGON);
+				glVertex3f(i, j, 0.0);
+				glVertex3f(i + 1.0f, j, 0.0);
+				glVertex3f(i + 1.0f, j + 1.0f, 0.0);
+				glVertex3f(i, j + 1.0f, 0.0);
+				glEnd();
+				glFlush();
+				break;
+			}
+			case 2:
+			{
+				glColor3f(1.0, 0.0, 0.0);
+				glBegin(GL_POLYGON);
+				glVertex3f(i, j, 0.0);
+				glVertex3f(i + 1.0f, j, 0.0);
+				glVertex3f(i + 1.0f, j + 1.0f, 0.0);
+				glVertex3f(i, j + 1.0f, 0.0);
+				glEnd();
+				glFlush();
+				break;
+			}
+			case 3:
+			{
+				glColor3f(0.0, 1.0, 1.0);
+				glBegin(GL_POLYGON);
+				glVertex3f(i, j, 0.0);
+				glVertex3f(i + 1.0f, j, 0.0);
+				glVertex3f(i + 1.0f, j + 1.0f, 0.0);
+				glVertex3f(i, j + 1.0f, 0.0);
+				glEnd();
+				glFlush();
+				break;
+			}
+			default:
+			{
+				glColor3f(0.0, 0.0, 0.0);
+				glBegin(GL_POLYGON);
+				glVertex3f(i, j, 0.0);
+				glVertex3f(i + 1.0f, j, 0.0);
+				glVertex3f(i + 1.0f, j + 1.0f, 0.0);
+				glVertex3f(i, j + 1.0f, 0.0);
+				glEnd();
+				glFlush();
+				break;
+			}
+			}
+		}
 	}
 }

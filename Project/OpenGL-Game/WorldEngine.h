@@ -19,6 +19,7 @@ public:
 	WorldEngine();
 	void writeWorld();
 	void readWorld();
+	void renderWorld();
 };
 
 #endif
