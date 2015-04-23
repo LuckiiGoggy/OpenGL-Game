@@ -9,12 +9,18 @@
 #include <string>
 #include <vector>
 
+#include "Dependencies\dirent\dirent.h"
+
 class WorldEngine {
 
 public:
 	std::vector<WorldSquare> squares;
+	std::vector<std::string> levelNames;
+	std::string filetype = ".lvl";
+	std::string path = "../Assets/Levels/";
 	float w;
 	float h;
+	bool loaded;
 
 	WorldEngine();
 	void writeWorld();

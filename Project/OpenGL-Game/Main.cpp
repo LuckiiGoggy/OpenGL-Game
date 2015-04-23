@@ -56,15 +56,16 @@ int main(int argc, char **argv) {
 void updateGame()
 {
 	if (InputManager::isKeyDown(KeyCodes::ESC)) glutLeaveMainLoop();
-	glutPostRedisplay();
-
+		glutPostRedisplay();
 }
 
 void renderScene(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 
-	engine.renderWorld();
+	if (engine.loaded == true) {
+		engine.renderWorld();
+	}
 
 	glutSwapBuffers();
 }
