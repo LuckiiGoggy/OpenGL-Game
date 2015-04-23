@@ -11,22 +11,26 @@ GroupObject::~GroupObject()
 }
 
 
-GroupObject *GroupObject::AddChild(IGameObject *game){
-	children.push_back(game);
+GroupObject *GroupObject::AddChild(std::string name, IGameObject *game){
+	children[name] = game;
 
 	return this;
 }
 
 void GroupObject::Render()
 {
-	for (int i = 0; i < children.size(); i++){
-		if (((IRenderable *)children[i])->IsVisible()) ((IRenderable *)children[i])->Render();
+	std::map<std::string, IGameObject *>::iterator iter;
+
+	for (iter = children.begin(); iter != children.end(); ++iter) {
+		if (((IRenderable *)iter->second)->IsVisible()) ((IRenderable *)iter->second)->Render();
 	}
 }
 
 void GroupObject::Move(int x, int y, int z)
 {
-	for (int i = 0; i < children.size(); i++){
-		if (((IMovable *)children[i])->CanMove()) ((IMovable *)children[i])->Move(x, y, z);
+	std::map<std::string, IGameObject *>::iterator iter;
+
+	for (iter = children.begin(); iter != children.end(); ++iter) {
+		if (((IRenderable *)iter->second)->IsVisible()) ((IRenderable *)iter->second)->Render();
 	}
 }

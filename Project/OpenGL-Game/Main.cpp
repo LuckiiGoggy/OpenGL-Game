@@ -5,10 +5,18 @@
 //Santo Tallarico COMP4900 World Builder/Editor
 #include "WorldEngine.h"
 #include "InputManager.h"
+#include "IGameObject.h"
+#include "GroupObject.h"
+
 
 WorldEngine engine;
 void renderScene(void);
 void updateGame();
+
+
+
+GroupObject test;
+
 
 int main(int argc, char **argv) {
 	glutInit(&argc, argv);

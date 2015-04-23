@@ -1,3 +1,6 @@
+#ifdef POSITION_H
+#define POSITION_H
+
 #pragma once
 
 struct Position2D{
@@ -12,3 +15,5 @@ struct Position3D{
 	int y = 0;
 	int z = 0;
 };
+
+#endif
