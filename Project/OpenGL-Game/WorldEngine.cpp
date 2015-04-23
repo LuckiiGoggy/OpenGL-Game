@@ -2,12 +2,32 @@
 #include "WorldEngine.h"
 
 WorldEngine::WorldEngine() {
-
+	loaded = false;
 }
 
 void WorldEngine::readWorld() {
+	DIR *dir;
+	struct dirent *ent;
+	if ((dir = opendir("../Assets/Levels")) != NULL) {
+		/* print all the files and directories within directory */
+		while ((ent = readdir(dir)) != NULL) {
+			if (ent->d_namlen > filetype.size()) {
+				//if (filetype.compare(ent->d_namlen - filetype.size() - 1, filetype.size(), ent->d_name) == 0) {
+					std::cout << ent->d_name;
+					levelNames.push_back(ent->d_name);
+				//}
+			}
+		}
+		closedir(dir);
+	}
+	else {
+		/* could not open directory */
+		perror("");
+		return;
+	}
+
 	std::ifstream file;
-	file.open("level.dat");
+	file.open(path + levelNames[0]);
 
 	if (file.is_open()) {
 		int index;
@@ -33,13 +53,14 @@ void WorldEngine::readWorld() {
 			}
 		}
 
+		loaded = true;
 		file.close();
 	}
 }
 
 void WorldEngine::writeWorld() {
 	std::ofstream file;
-	file.open("level2.dat", std::ofstream::out | std::ofstream::trunc);
+	file.open(path + "level2.lvl", std::ofstream::out | std::ofstream::trunc);
 
 	if (file.is_open()) {
 		file << w << std::endl;
