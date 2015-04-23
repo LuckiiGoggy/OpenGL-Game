@@ -1,9 +1,10 @@
 #pragma once
 
-class Movable{
+class IMovable{
 protected:
-	bool canMove = false;
+	bool canMove;
 public:
+	IMovable();
 	virtual void Move(int x, int y, int z) = 0;
 	virtual void MoveUp(int delta) = 0;
 	virtual void MoveDown(int delta) = 0;
