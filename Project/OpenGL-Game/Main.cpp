@@ -5,8 +5,6 @@
 #include "WorldEngine.h"
 #include "InputManager.h"
 
-
-
 WorldEngine engine;
 void renderScene(void);
 
@@ -41,9 +39,6 @@ int main(int argc, char **argv) {
 	glutMotionFunc(InputManager::MouseMotion);
 	glutPassiveMotionFunc(InputManager::MouseMotion);
 
-
-
-
 	glutMainLoop();
 
 	return 0;
@@ -62,3 +57,4 @@ void renderScene(void) {
 
 	glutSwapBuffers();
 }
+
