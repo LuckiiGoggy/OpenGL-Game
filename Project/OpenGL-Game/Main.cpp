@@ -1,5 +1,6 @@
 #include <iostream>
 #include "openGL.h"
+#include <gl/GLU.h>
 
 //Santo Tallarico COMP4900 World Builder/Editor
 #include "WorldEngine.h"
@@ -60,7 +61,7 @@ void renderScene(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 
-
+	
 
 
 	engine.readWorld();
