@@ -1,24 +1,32 @@
 #pragma once
 
-
+enum KeyCodes{
+	ESC = 27,
+	F1 = 1,
+	F2 = 2,
+	F3 = 3,
+};
 
 struct Point{
-	int x = 0;
-	int y = 0;
+	Point();
+	int x;
+	int y;
 };
 
 struct KeyInfo
 {
-	bool state = false;
+	KeyInfo();
+	bool state;
 	Point pressedPoint;
 	Point releasedPoint;
 };
 
 struct MouseInfo
 {
-	bool isLeftButtonDown = false;
-	bool isMiddleButtonDown = false;
-	bool isRightButtonDown = false;
+	MouseInfo();
+	bool isLeftButtonDown;
+	bool isMiddleButtonDown;
+	bool isRightButtonDown;
 	Point currPos;
 };
 

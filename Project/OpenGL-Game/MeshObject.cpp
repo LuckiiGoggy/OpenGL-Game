@@ -47,6 +47,8 @@ bool MeshObject::Load(const char* filename)
 			glm::vec3(vertices[ic]) - glm::vec3(vertices[ia])));
 		normals[ia] = normals[ib] = normals[ic] = normal;
 	}
+
+	return true;
 }
 
 MeshObject::~MeshObject()

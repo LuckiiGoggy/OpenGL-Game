@@ -6,7 +6,9 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+
 #include "openGL.h"
+#include "Renderable.h"
 
 #pragma once
 class MeshObject
