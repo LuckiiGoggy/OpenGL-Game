@@ -1,12 +1,28 @@
 #include "openGL.h"
 #include "InputManager.h"
 #include <iostream>
-//#define DEBUG
+#define DEBUG
+
+
+Point::Point(){
+	x = 0;
+	y = 0;
+}
+
+
+KeyInfo::KeyInfo(){
+	state = false;
+}
+
+
+MouseInfo::MouseInfo(){
+	isLeftButtonDown   = false;
+	isMiddleButtonDown = false;
+	isRightButtonDown  = false;
+}
 
 KeyInfo* InputManager::keySpecialStates = new KeyInfo[256];
 KeyInfo* InputManager::keyStates = new KeyInfo[256];
-
-
 MouseInfo InputManager::mouseInfo;
 
 void InputManager::KeyPress(unsigned char key, int x, int y){
@@ -14,6 +30,7 @@ void InputManager::KeyPress(unsigned char key, int x, int y){
 	
 #ifdef DEBUG
 	std::cout << "\nKeyPress: " << key;
+	std::cout << ", KeyCode: " << (int)key;
 	std::cout << ", x: " << x;
 	std::cout << ", y: " << y;
 	std::cout << ", state: " << (keyStates[key].state) ? "true" : "false";
@@ -25,6 +42,7 @@ void InputManager::KeyUp(unsigned char key, int x, int y){
 
 #ifdef DEBUG
 	std::cout << "\nKeyUp: " << key;
+	std::cout << ", KeyCode: " << (int)key;
 	std::cout << ", x: " << x;
 	std::cout << ", y: " << y;
 	std::cout << ", state: " << (keyStates[key].state) ? "true" : "false";
@@ -36,6 +54,7 @@ void InputManager::SpecialKeyPress(int key, int x, int y){
 
 #ifdef DEBUG
 	std::cout << "\nSpecialKeyPress: " << key;
+	std::cout << ", SpecialKeyCode: " << (int)key;
 	std::cout << ", x: " << x;
 	std::cout << ", y: " << y;
 	std::cout << ", state: " << (keySpecialStates[key].state) ? "true" : "false";
@@ -47,6 +66,7 @@ void InputManager::SpecialKeyUp(int key, int x, int y){
 
 #ifdef DEBUG
 	std::cout << "\nSpecialKeyUp: " << key;
+	std::cout << ", SpecialKeyCode: " << (int)key;
 	std::cout << ", x: " << x;
 	std::cout << ", y: " << y;
 	std::cout << ", state: " << (keySpecialStates[key].state) ? "true" : "false";

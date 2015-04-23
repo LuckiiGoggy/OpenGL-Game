@@ -1,5 +1,6 @@
 #include <iostream>
-//#include "openGL.h"
+#include "openGL.h"
+#include <gl/GLU.h>
 
 //Santo Tallarico COMP4900 World Builder/Editor
 #include "WorldEngine.h"
@@ -7,6 +8,7 @@
 
 WorldEngine engine;
 void renderScene(void);
+void updateGame();
 
 int main(int argc, char **argv) {
 	glutInit(&argc, argv);
@@ -39,17 +41,26 @@ int main(int argc, char **argv) {
 	glutMotionFunc(InputManager::MouseMotion);
 	glutPassiveMotionFunc(InputManager::MouseMotion);
 
+
+	glutIdleFunc(updateGame);
+
 	glutMainLoop();
 
 	return 0;
 }
 
+
+void updateGame()
+{
+	if (InputManager::isKeyDown(KeyCodes::ESC)) glutLeaveMainLoop();
+	glutPostRedisplay();
+
+}
+
 void renderScene(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(1.0, 1.0, 1.0, 1.0);
-
-
-
+	
 
 
 	engine.readWorld();
