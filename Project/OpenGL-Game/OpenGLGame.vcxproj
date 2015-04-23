@@ -67,18 +67,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Collisions.cpp" />
     <ClCompile Include="GroupObject.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MeshObject.cpp" />
+    <ClCompile Include="Quadtree.cpp" />
+    <ClCompile Include="Rect.cpp" />
     <ClCompile Include="WorldEngine.cpp" />
     <ClCompile Include="WorldSquare.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Collisions.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GroupObject.h" />
     <ClInclude Include="Position.h" />
     <ClInclude Include="Movable.h" />
+    <ClInclude Include="Quadtree.h" />
+    <ClInclude Include="Rect.h" />
     <ClInclude Include="Renderable.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="openGL.h" />
