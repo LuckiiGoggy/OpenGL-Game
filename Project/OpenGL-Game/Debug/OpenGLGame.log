@@ -1,14 +1,2 @@
-﻿  InputManager.cpp
-c:\users\george\documents\github\opengl-game\project\opengl-game\inputmanager.cpp(128): warning C4129: 'i' : unrecognized character escape sequence
-c:\users\george\documents\github\opengl-game\project\opengl-game\inputmanager.cpp(139): warning C4129: 'G' : unrecognized character escape sequence
-c:\users\george\documents\github\opengl-game\project\opengl-game\inputmanager.cpp(150): warning C4129: 'G' : unrecognized character escape sequence
-c:\users\george\documents\github\opengl-game\project\opengl-game\inputmanager.cpp(161): warning C4129: 'G' : unrecognized character escape sequence
-c:\users\george\documents\github\opengl-game\project\opengl-game\inputmanager.cpp(172): warning C4129: 'G' : unrecognized character escape sequence
-c:\users\george\documents\github\opengl-game\project\opengl-game\inputmanager.cpp(183): warning C4129: 'i' : unrecognized character escape sequence
-c:\users\george\documents\github\opengl-game\project\opengl-game\inputmanager.cpp(192): warning C4129: 'i' : unrecognized character escape sequence
-c:\users\george\documents\github\opengl-game\project\opengl-game\inputmanager.cpp(201): warning C4129: 'i' : unrecognized character escape sequence
-c:\users\george\documents\github\opengl-game\project\opengl-game\inputmanager.cpp(210): warning C4129: 'i' : unrecognized character escape sequence
-c:\users\george\documents\github\opengl-game\project\opengl-game\inputmanager.cpp(219): warning C4129: 'i' : unrecognized character escape sequence
-c:\users\george\documents\github\opengl-game\project\opengl-game\inputmanager.cpp(228): warning C4129: 'i' : unrecognized character escape sequence
-c:\users\george\documents\github\opengl-game\project\opengl-game\inputmanager.cpp(237): warning C4129: 'G' : unrecognized character escape sequence
+﻿  GroupObject.cpp
   OpenGLGame.vcxproj -> C:\Users\George\Documents\GitHub\OpenGL-Game\Project\Debug\OpenGL-Game.exe
