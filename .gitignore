@@ -4,12 +4,7 @@
 *.exe
 *.ilk
 *.pdb
-*.sdf
 *.obj
 *.tlog
 *.log
 *.pdb
-*.suo
-*.sdf
-*.suo
-Project/OpenGL-Game.sdf
