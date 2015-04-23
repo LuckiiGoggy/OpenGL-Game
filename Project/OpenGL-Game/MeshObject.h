@@ -8,7 +8,7 @@
 #include <sstream>
 
 #include "openGL.h"
-#include "Renderable.h"
+#include "IRenderable.h"
 
 #pragma once
 class MeshObject

@@ -1,3 +1,5 @@
+#ifndef IRENDERABLE_H
+#define IRENDERABLE_H
 #pragma once
 
 class IRenderable{
@@ -12,3 +14,5 @@ public:
 
 	virtual void SetVisible(bool visibility){ isVisible = visibility; }
 };
+
+#endif
