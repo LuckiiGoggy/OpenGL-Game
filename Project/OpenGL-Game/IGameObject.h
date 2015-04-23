@@ -2,10 +2,8 @@
 
 
 /**Generic Interface for game objects**/
-class GameObject
+class IGameObject
 {
 public:
-	GameObject(){};
-	~GameObject(){};
 };
 
