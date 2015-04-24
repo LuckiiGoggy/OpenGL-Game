@@ -1,3 +1,6 @@
+#ifndef INPUTMANAGER_H
+#define INPUTMANAGER_H
+
 #pragma once
 
 enum KeyCodes{
@@ -145,3 +148,5 @@ private:
 	static KeyInfo* keyStates;
 	static MouseInfo mouseInfo;
 };
+
+#endif
