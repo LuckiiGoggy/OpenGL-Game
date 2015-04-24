@@ -7,13 +7,15 @@ WorldEngine::WorldEngine() {
 
 void WorldEngine::readWorld() {
 	DIR *dir;
+	int numFiles = 0;
 	struct dirent *ent;
 	if ((dir = opendir("../Assets/Levels")) != NULL) {
 		/* print all the files and directories within directory */
 		while ((ent = readdir(dir)) != NULL) {
 			if (ent->d_namlen > filetype.size()) {
 				//if (filetype.compare(ent->d_namlen - filetype.size() - 1, filetype.size(), ent->d_name) == 0) {
-					std::cout << ent->d_name;
+					numFiles++;
+					std::cout << numFiles << ": "<< ent->d_name << std::endl;
 					levelNames.push_back(ent->d_name);
 				//}
 			}
@@ -26,8 +28,14 @@ void WorldEngine::readWorld() {
 		return;
 	}
 
+	std::cout << "Enter file number to load: ";
+	int fileNum;
+	std::cin >> fileNum;
+
 	std::ifstream file;
-	file.open(path + levelNames[0]);
+	if (fileNum > 0 && fileNum <= levelNames.size()) {
+		file.open(path + levelNames[fileNum - 1]);
+	}
 
 	if (file.is_open()) {
 		int index;
