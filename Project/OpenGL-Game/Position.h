@@ -1,4 +1,4 @@
-#ifdef POSITION_H
+#ifndef POSITION_H
 #define POSITION_H
 
 #pragma once
