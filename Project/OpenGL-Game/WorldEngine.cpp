@@ -3,6 +3,8 @@
 
 WorldEngine::WorldEngine() {
 	loaded = false;
+	filetype = ".lvl";
+	path = "../Assets/Levels/";
 }
 
 void WorldEngine::readWorld() {

@@ -28,12 +28,6 @@ int main(int argc, char **argv) {
 	glutInitWindowPosition(200, 200);//optional
 	glutInitWindowSize(400, 400); //optional
 
-	menu = glutCreateMenu(menuEvents);
-	glutAddMenuEntry("Save", SAVE);
-	glutAddMenuEntry("Load", LOAD);
-	// attach the menu to the right button
-	glutAttachMenu(GLUT_KEY_F1);
-
 	glutCreateWindow("OpenGL First Window");
 
 	glewInit();
@@ -60,6 +54,12 @@ int main(int argc, char **argv) {
 
 	glutIdleFunc(updateGame);
 
+	menu = glutCreateMenu(menuEvents);
+	glutAddMenuEntry("Save", SAVE);
+	glutAddMenuEntry("Load", LOAD);
+	// attach the menu to the right button
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
+
 	glutMainLoop();
 
 	return 0;
@@ -75,11 +75,13 @@ void updateGame()
 void menuEvents(int choice) {
 	switch (choice) {
 	case SAVE: {
-		engine.readWorld();
+		if (engine.loaded = false) {
+			engine.writeWorld();
+		}
 		break;
 	}
 	case LOAD: {
-		engine.writeWorld();
+		engine.readWorld();
 		break;
 	}
 	}
