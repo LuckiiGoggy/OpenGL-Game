@@ -5,6 +5,9 @@
 //Santo Tallarico COMP4900 World Builder/Editor
 #include "WorldEngine.h"
 #include "InputManager.h"
+#include "IGameObject.h"
+#include "GroupObject.h"
+
 
 const int SAVE = 1;
 const int LOAD = 2;
@@ -12,6 +15,11 @@ WorldEngine engine;
 void updateGame();
 void menuEvents(int choice);
 void renderScene(void);
+
+
+
+GroupObject test;
+
 
 int main(int argc, char **argv) {
 	int menu;

@@ -1,30 +1,31 @@
+#ifndef GROUPOBJECT_H
+#define GROUPOBJECT_H
+
 #pragma once
-#include "GameObject.h"
-#include "Movable.h"
-#include "Renderable.h"
+#include "IGameObject.h"
+#include "IMovable.h"
+#include "IRenderable.h"
 #include "Position.h"
 #include <vector>
+#include <map>
+#include <string>
 
 /** A Group Object is a group of Game Objects that move as one entity **/
-class GroupObject: public Movable, public Renderable
+class GroupObject: public IMovable, public IRenderable
 {
 public:
 	GroupObject();
 	~GroupObject();
 
+	GroupObject *AddChild(std::string name, IGameObject *obj);
 
 	void Render();
 	void Move(int x, int y, int z);
-	void MoveUp(int delta);
-	void MoveDown(int delta);
-	void MoveLeft(int delta);
-	void MoveRight(int delta);
-	void MoveForward(int delta);
-	void MoveBackward(int delta);
 
 
 protected:
-	std::vector<GameObject *> children;
+	std::map<std::string, IGameObject *> children;
 	Position3D position;
 };
 
+#endif
