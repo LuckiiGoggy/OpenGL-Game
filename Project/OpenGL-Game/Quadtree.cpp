@@ -9,30 +9,47 @@ Quadtree::Quadtree()
 }
 Quadtree::Quadtree(int pLevel, Rect pBounds)
 {
-	MAX_OBJECTS = 10;
+	MAX_OBJECTS = 2;
 	MAX_LEVELS = 5;
 
 	level = pLevel;
 	objects = deque<Rect>();
 	bounds = pBounds;
-	//nodes = new Quadtree[4];
-	nodes = (Quadtree**)malloc(sizeof(Quadtree) * 4);
+
+	numOfNodes = 4;
+
+	screenW = 400;
+	screenH = 400;
+	black = glm::vec3(0.0f, 0.0f, 0.0f);
+	red = glm::vec3(1.0f, 0.0f, 0.0f);
+
+
+
+	nodes = new Quadtree*[4];
+	nodes = NULL;
+
+	//nodes = (Quadtree**)malloc(sizeof(Quadtree) * 4);
+	
+	//nodes = vector<Quadtree*>();
+	
 }
 void Quadtree::clear()
 {
 
 	objects.clear();
 
-	for (int i = 0; i < numOfNodes; i++)
+	if (nodes != NULL)
 	{
-
-		if (nodes[i] != NULL)
+		for (int i = 0; i < numOfNodes; i++)
 		{
-			nodes[i]->clear();
-			nodes[i] = NULL;
-
+			if (nodes[i] != NULL)
+			{
+				nodes[i]->clear();
+				nodes[i] = NULL;
+			}
 		}
 	}
+
 }
 void Quadtree::split()
 {
@@ -41,12 +58,13 @@ void Quadtree::split()
 	int x = bounds.sx;
 	int y = bounds.sy;
 
-	nodes = (Quadtree**)malloc(sizeof(Quadtree) * 4);
+	//nodes = (Quadtree**)malloc(sizeof(Quadtree) * 4);
+	nodes = new Quadtree*[4];
 	
-	*nodes[0] = Quadtree(level+1, Rect(x + subWidth, y, subWidth, subHeight));
-	*nodes[1] = Quadtree(level+1, Rect(x, y, subWidth, subHeight));
-	*nodes[2] = Quadtree(level+1, Rect(x, y + subHeight, subWidth, subHeight));
-	*nodes[3] = Quadtree(level+1, Rect(x + subWidth, y + subHeight, subWidth, subHeight));
+	nodes[0] = new Quadtree(level+1, Rect(x + subWidth, y, subWidth, subHeight));
+	nodes[1] = new Quadtree(level+1, Rect(x, y, subWidth, subHeight));
+	nodes[2] = new Quadtree(level+1, Rect(x, y + subHeight, subWidth, subHeight));
+	nodes[3] = new Quadtree(level+1, Rect(x + subWidth, y + subHeight, subWidth, subHeight));
 }
 /*
  * Determine which node the object belongs to. -1 means
@@ -106,23 +124,29 @@ int Quadtree::getIndex(Rect pRect)
  */
 void Quadtree::insert(Rect pRect)
 {
-	if (&nodes[0] != NULL) {
-		int index = getIndex(pRect);
+	if (nodes != NULL)
+	{
+		if (nodes[0] != NULL) {
+			int index = getIndex(pRect);
 
-		if (index != -1) {
-			nodes[index]->insert(pRect);
+			if (index != -1) {
+				nodes[index]->insert(pRect);
 
-			return;
+				return;
+			}
 		}
 	}
+	
 
 	//objects.add(pRect);
 	objects.push_back(pRect);
 
 	if (objects.size() > MAX_OBJECTS && level < MAX_LEVELS) {
-		if (&nodes[0] == NULL) { 
+		//if (nodes[0] == NULL) { 
+		if (nodes == NULL) {
 			split(); 
-		}
+		}//*/
+		
 
 		int i = 0;
 		while (i < objects.size()) {
@@ -130,7 +154,9 @@ void Quadtree::insert(Rect pRect)
 			int index = getIndex(objects.at(i));
 			if (index != -1) {
 				//nodes[index]->insert(objects.remove(i));
-				nodes[index]->insert(*(objects.erase(objects.begin() + i)));
+				//nodes[index]->insert(*(objects.erase(objects.begin() + i)));
+				nodes[index]->insert(objects[i]);
+				objects.erase(objects.begin() + i);
 			}
 			else {
 				i++;
@@ -148,17 +174,70 @@ void Quadtree::insert(Rect pRect)
  what helps to reduce the number of pairs
  to check collision against.
  */
-list<Rect> Quadtree::retrieve(list<Rect> returnObjects, Rect pRect)
+list<Rect>* Quadtree::retrieve(list<Rect> *returnObjects, Rect pRect)
 {
 	int index = getIndex(pRect);
-	if (index != -1 && nodes[0] != NULL) {
-		nodes[index]->retrieve(returnObjects, pRect);
+
+	if (nodes != NULL)
+	{
+		if (index != -1 && nodes[0] != NULL) {
+			nodes[index]->retrieve(returnObjects, pRect);
+		}
 	}
+	
 
 	//returnObjects.addAll(objects);
 	for ( deque<Rect>::iterator it = objects.begin(); it != objects.end(); ++it)
 	{
-		returnObjects.push_back(*it);
+		returnObjects->push_back(*it);
+//		int gg = 9;
 	}
 	return returnObjects;
+}
+void Quadtree::draw()
+{
+	drawRectBounds(bounds, red);
+	if (nodes != NULL)
+	{
+		for (int i = 0; i < numOfNodes; i++)
+		{
+			if (nodes[i] != NULL)
+			{
+				nodes[i]->draw();
+			}
+		}
+	}
+}
+void Quadtree::drawRectBounds(Rect r, glm::vec3 color)
+{
+	glColor3f(color.x, color.y, color.z);
+	glBegin(GL_LINE_LOOP);
+
+	//glm::vec3 v1(r.sx, r.sy, 0);
+	glm::vec3 v1 = calcRelativePoints2D(r.sx,r.sy,screenW,screenH);
+	//glm::vec3 v2(r.sx, r.ey, 0);
+	glm::vec3 v2 = calcRelativePoints2D(r.sx,r.ey,screenW,screenH);
+	//glm::vec3 v3(r.ex, r.ey, 0);
+	glm::vec3 v3 = calcRelativePoints2D(r.ex,r.ey,screenW,screenH);
+	//glm::vec3 v4(r.ex, r.sy, 0);
+	glm::vec3 v4 = calcRelativePoints2D(r.ex,r.sy,screenW,screenH);
+
+	glVertex3f(v1.x,v1.y,v1.z);
+	glVertex3f(v2.x,v2.y,v2.z);
+	glVertex3f(v3.x,v3.y,v3.z);
+	glVertex3f(v4.x,v4.y,v4.z);
+
+	glEnd();
+
+}
+glm::vec3 Quadtree::calcRelativePoints2D(int x, int y, int screenWidth, int screenHeight)
+{
+	float w = screenWidth / 2;
+	float h = screenHeight / 2;
+
+	float newX = (x - w) / w;
+	float newY = (y - h) / h;
+
+	glm::vec3 newCord(newX, newY, 0.0f);
+	return newCord;
 }
