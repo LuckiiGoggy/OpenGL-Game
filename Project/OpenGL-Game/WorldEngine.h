@@ -16,8 +16,8 @@ class WorldEngine {
 public:
 	std::vector<WorldSquare> squares;
 	std::vector<std::string> levelNames;
-	std::string filetype = ".lvl";
-	std::string path = "../Assets/Levels/";
+	std::string filetype;
+	std::string path;
 	float w;
 	float h;
 	bool loaded;
