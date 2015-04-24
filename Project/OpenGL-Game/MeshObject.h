@@ -9,24 +9,29 @@
 
 #include "openGL.h"
 #include "IRenderable.h"
+#include "Dependencies/glm/glm/gtc/matrix_transform.hpp"
+#include "Dependencies/glm/glm/gtc/type_ptr.hpp"
 
 #pragma once
 class MeshObject
 {
-public:
-	MeshObject();
-	bool Load(const char* filename);
-	void Render();
-	~MeshObject();
-
-	std::vector<glm::vec4> getVerticies() { return vertices; }
-	std::vector<glm::vec3> getNormals() { return normals; }
-	std::vector<GLushort> getElements() { return elements; }
-
 private:
+	GLuint vbo_vertices, vbo_normals, ibo_elements;
+	GLint attribute_v_coord = -1;
+	GLint attribute_v_normal = -1;
+	GLint uniform_m = -1, uniform_v = -1, uniform_p = -1;
+	GLint uniform_m_3x3_inv_transp = -1, uniform_v_inv = -1;
+public:
+
+	MeshObject();
+	~MeshObject();
 	std::vector<glm::vec4> vertices;
 	std::vector<glm::vec3> normals;
 	std::vector<GLushort> elements;
+	glm::mat4 object2world;
+	void upload();
+	void draw();
+	void draw_bbox();
 };
 
 #endif
