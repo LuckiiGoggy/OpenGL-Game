@@ -25,6 +25,19 @@ KeyInfo* InputManager::keySpecialStates = new KeyInfo[256];
 KeyInfo* InputManager::keyStates = new KeyInfo[256];
 MouseInfo InputManager::mouseInfo;
 
+
+InputManager::InputManager(){
+	glutKeyboardFunc(InputManager::KeyPress);
+	glutKeyboardUpFunc(InputManager::KeyUp);
+	glutSpecialFunc(InputManager::SpecialKeyPress);
+	glutSpecialUpFunc(InputManager::SpecialKeyUp);
+
+	glutMouseFunc(InputManager::MouseInput);
+
+	glutMotionFunc(InputManager::MouseMotion);
+	glutPassiveMotionFunc(InputManager::MouseMotion);
+}
+
 void InputManager::KeyPress(unsigned char key, int x, int y){
 	keyStates[key].state = true;
 	

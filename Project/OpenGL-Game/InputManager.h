@@ -37,6 +37,7 @@ struct MouseInfo
 class InputManager
 {
 public:
+	InputManager();
 	/* Note the x & y parameters are for the position of the mouse when the key was pressed 
 		it might be usefull later, to check if something is "active" based on whether or not
 		the mouse is currently on top of the object/graphic */
