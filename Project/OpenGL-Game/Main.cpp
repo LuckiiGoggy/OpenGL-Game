@@ -2,12 +2,14 @@
 #include "openGL.h"
 #include <gl/GLU.h>
 
+#define DEBUG
+
 //Santo Tallarico COMP4900 World Builder/Editor
 #include "WorldEngine.h"
 #include "InputManager.h"
 #include "IGameObject.h"
 #include "GroupObject.h"
-
+#include "TestObject.h"
 
 const int SAVE = 1;
 const int LOAD = 2;
@@ -18,8 +20,7 @@ void renderScene(void);
 
 
 
-GroupObject test;
-
+GroupObject testGroup;
 
 int main(int argc, char **argv) {
 	int menu;
@@ -40,17 +41,9 @@ int main(int argc, char **argv) {
 
 	glEnable(GL_DEPTH_TEST);
 
+	InputManager::Init();
+
 	glutDisplayFunc(renderScene);
-	
-	glutKeyboardFunc(InputManager::KeyPress);
-	glutKeyboardUpFunc(InputManager::KeyUp);
-	glutSpecialFunc(InputManager::SpecialKeyPress);
-	glutSpecialUpFunc(InputManager::SpecialKeyUp);
-
-	glutMouseFunc(InputManager::MouseInput);
-
-	glutMotionFunc(InputManager::MouseMotion);
-	glutPassiveMotionFunc(InputManager::MouseMotion);
 
 	glutIdleFunc(updateGame);
 
@@ -59,6 +52,10 @@ int main(int argc, char **argv) {
 	glutAddMenuEntry("Load", LOAD);
 	// attach the menu to the right button
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
+
+
+	testGroup.AddMember("TestObject", new TestObject);
+
 
 	glutMainLoop();
 
