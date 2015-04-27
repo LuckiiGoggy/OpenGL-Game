@@ -110,7 +110,7 @@ void InputManager::MouseMotion(int x, int y){
 #endif
 }
 
-bool InputManager::isKeyDown(unsigned char key){
+bool InputManager::isKeyDown(unsigned int key){
 	return keyStates[key].state;
 
 #ifdef DEBUG
@@ -120,7 +120,7 @@ bool InputManager::isKeyDown(unsigned char key){
 #endif
 }
 
-bool InputManager::isKeyUp(unsigned char key){
+bool InputManager::isKeyUp(unsigned int key){
 	return !keyStates[key].state;
 
 #ifdef DEBUG
