@@ -2,33 +2,40 @@
 #include "openGL.h"
 #include <gl/GLU.h>
 
-//Santo Tallarico COMP4900 World Builder/Editor
 #include "WorldEngine.h"
 #include "InputManager.h"
 #include "IGameObject.h"
 #include "GroupObject.h"
 
-
 const int SAVE = 1;
 const int LOAD = 2;
-WorldEngine engine;
+const int WIDTH = 400;
+const int HEIGHT = 400;
+const int GLUI_WIDTH = 166;	//not actually set-able by GLUI
+int main_window;
+int sub_window;
+WorldEngine engine = WorldEngine(WIDTH, HEIGHT);
+GLUI *glui;
+GLUI_EditText *edittext;
+GLUI_RadioGroup *radiogroup;
+GLUI_Panel *panel3;
 void updateGame();
 void menuEvents(int choice);
 void renderScene(void);
-
-
+void reshape(int x, int y);
+void initGLUI();
 
 GroupObject test;
-
 
 int main(int argc, char **argv) {
 	int menu;
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-	glutInitWindowPosition(200, 200);//optional
-	glutInitWindowSize(400, 400); //optional
+	glutInitWindowPosition(100, 100);//optional
+	glutInitWindowSize(WIDTH + GLUI_WIDTH, HEIGHT); //optional
 
-	glutCreateWindow("OpenGL First Window");
+	main_window = glutCreateWindow("OpenGL First Window");
+	//sub_window = glutCreateSubWindow(main_window, 0, 0, WIDTH, HEIGHT);
 
 	glewInit();
 	if (glewIsSupported("GL_VERSION_4_0")) {
@@ -42,46 +49,55 @@ int main(int argc, char **argv) {
 
 	glutDisplayFunc(renderScene);
 	
-	glutKeyboardFunc(InputManager::KeyPress);
+	//glutKeyboardFunc(InputManager::KeyPress);
 	glutKeyboardUpFunc(InputManager::KeyUp);
 	glutSpecialFunc(InputManager::SpecialKeyPress);
 	glutSpecialUpFunc(InputManager::SpecialKeyUp);
 
-	glutMouseFunc(InputManager::MouseInput);
+	//glutMouseFunc(InputManager::MouseInput);
 
 	glutMotionFunc(InputManager::MouseMotion);
 	glutPassiveMotionFunc(InputManager::MouseMotion);
 
-	glutIdleFunc(updateGame);
+	glutReshapeFunc(reshape);
 
-	menu = glutCreateMenu(menuEvents);
-	glutAddMenuEntry("Save", SAVE);
-	glutAddMenuEntry("Load", LOAD);
-	// attach the menu to the right button
-	glutAttachMenu(GLUT_RIGHT_BUTTON);
+	//glutIdleFunc(updateGame);
+
+	initGLUI();
+
+	GLUI_Master.set_glutKeyboardFunc(InputManager::KeyPress);
+	GLUI_Master.set_glutMouseFunc(InputManager::MouseInput);
 
 	glutMainLoop();
 
 	return 0;
 }
 
+void updateGame() {
+	if (glutGetWindow() != main_window) glutSetWindow(main_window);
 
-void updateGame()
-{
 	if (InputManager::isKeyDown(KeyCodes::ESC)) glutLeaveMainLoop();
-		glutPostRedisplay();
+
+	if (InputManager::isLeftButtonDown() && engine.loaded == true) {
+		Point p = InputManager::GetMousePos();
+		engine.updateSquare(p, radiogroup->get_int_val());
+	}
+	
+	glutPostRedisplay();
 }
 
 void menuEvents(int choice) {
 	switch (choice) {
 	case SAVE: {
-		if (engine.loaded = false) {
-			engine.writeWorld();
+		if (engine.loaded = true) {
+			if (!engine.writeWorld(edittext->get_text())) {
+				glui->add_statictext_to_panel(panel3, edittext->get_text());
+			}
 		}
 		break;
 	}
 	case LOAD: {
-		engine.readWorld();
+		engine.readWorld(edittext->get_text());
 		break;
 	}
 	}
@@ -98,3 +114,37 @@ void renderScene(void) {
 	glutSwapBuffers();
 }
 
+void reshape(int x, int y) {
+	GLUI_Master.auto_set_viewport();
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	glutPostRedisplay();
+}
+
+void initGLUI() {
+	glui = GLUI_Master.create_glui_subwindow(main_window, GLUI_SUBWINDOW_RIGHT);
+	glui->set_main_gfx_window(main_window);
+
+	GLUI_Panel *panel = glui->add_panel("File Management", GLUI_PANEL_EMBOSSED);
+	edittext = glui->add_edittext_to_panel(panel, "Filename: ", GLUI_EDITTEXT_TEXT);
+	GLUI_Button *saveButton = glui->add_button_to_panel(panel, "Save", SAVE, menuEvents);
+	GLUI_Button *loadButton = glui->add_button_to_panel(panel, "Load", LOAD, menuEvents);
+
+	GLUI_Panel *panel2 = glui->add_panel("Geometry Select", GLUI_PANEL_EMBOSSED);
+	radiogroup = glui->add_radiogroup_to_panel(panel2);
+	GLUI_RadioButton *wall = glui->add_radiobutton_to_group(radiogroup, "Wall");
+	GLUI_RadioButton *floor = glui->add_radiobutton_to_group(radiogroup, "Floor");
+	GLUI_RadioButton *movewall = glui->add_radiobutton_to_group(radiogroup, "Moveable Wall");
+
+	engine.loadDirectory();
+	panel3 = glui->add_panel("Level Files", GLUI_PANEL_EMBOSSED);
+	for (int i = 0; i < engine.levelNames.size(); i++) {
+		glui->add_statictext_to_panel(panel3, engine.levelNames[i].c_str());
+	}
+
+	/* We register the idle callback with GLUI, *not* with GLUT */
+	GLUI_Master.set_glutIdleFunc(updateGame);
+	GLUI_Master.set_glutReshapeFunc(reshape);
+}

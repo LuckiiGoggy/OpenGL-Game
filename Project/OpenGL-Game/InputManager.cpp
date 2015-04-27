@@ -3,7 +3,6 @@
 #include <iostream>
 #define DEBUG
 
-
 Point::Point(){
 	x = 0;
 	y = 0;

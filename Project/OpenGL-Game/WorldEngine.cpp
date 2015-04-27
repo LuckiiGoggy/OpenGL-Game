@@ -1,25 +1,29 @@
-//Santo Tallarico COMP4900 World Builder/Editor
 #include "WorldEngine.h"
 
-WorldEngine::WorldEngine() {
+const int WALL = 0;
+const int FLOOR = 1;
+const int MOVEWALL = 2;
+
+WorldEngine::WorldEngine(int WIDTH, int HEIGHT) {
 	loaded = false;
 	filetype = ".lvl";
 	path = "../Assets/Levels/";
+	width = WIDTH;
+	height = HEIGHT;
 }
 
-void WorldEngine::readWorld() {
+void WorldEngine::loadDirectory() {
 	DIR *dir;
-	int numFiles = 0;
 	struct dirent *ent;
+	char* temp;
 	if ((dir = opendir("../Assets/Levels")) != NULL) {
 		/* print all the files and directories within directory */
 		while ((ent = readdir(dir)) != NULL) {
 			if (ent->d_namlen > filetype.size()) {
-				//if (filetype.compare(ent->d_namlen - filetype.size() - 1, filetype.size(), ent->d_name) == 0) {
-					numFiles++;
-					std::cout << numFiles << ": "<< ent->d_name << std::endl;
-					levelNames.push_back(ent->d_name);
-				//}
+				if (filetype.compare(0, filetype.size(), ent->d_name, 
+					ent->d_namlen - filetype.size(), filetype.size()) == 0) {
+					levelNames.push_back(strtok_s(ent->d_name, ".", &temp));
+				}
 			}
 		}
 		closedir(dir);
@@ -29,25 +33,22 @@ void WorldEngine::readWorld() {
 		perror("");
 		return;
 	}
+}
 
-	std::cout << "Enter file number to load: ";
-	int fileNum;
-	std::cin >> fileNum;
-
+void WorldEngine::readWorld(std::string filename) {
 	std::ifstream file;
-	if (fileNum > 0 && fileNum <= levelNames.size()) {
-		file.open(path + levelNames[fileNum - 1]);
-	}
+	file.open(path + filename + filetype);
 
 	if (file.is_open()) {
 		int index;
 		int block;
 		std::string s;
+		squares.clear();
 
 		std::getline(file, s);
-		w = stof(s);
+		w = stoi(s);
 		std::getline(file, s);
-		h = stof(s);
+		h = stoi(s);
 
 		glMatrixMode(GL_PROJECTION);		// setup viewing projection
 		glLoadIdentity();					// start with identity matrix
@@ -68,15 +69,15 @@ void WorldEngine::readWorld() {
 	}
 }
 
-void WorldEngine::writeWorld() {
+bool WorldEngine::writeWorld(std::string filename) {
 	std::ofstream file;
-	file.open(path + "level2.lvl", std::ofstream::out | std::ofstream::trunc);
+	file.open(path + filename + filetype, std::ofstream::trunc);
 
 	if (file.is_open()) {
 		file << w << std::endl;
 		file << h << std::endl;
 		for (std::vector<int>::size_type i = 0; i != squares.size(); i++) {
-			if (i % 8 == 0 && i != 0) {
+			if (i % w == 0 && i != 0) {
 				file << std::endl;
 			}
 			file << squares.at(i).type;
@@ -84,6 +85,13 @@ void WorldEngine::writeWorld() {
 
 		file.close();
 	}
+	for (int j = 0; j < levelNames.size(); j++) {
+		if (filename.compare(levelNames[j].substr(0, levelNames[j].find("."))) == 0) {
+			return true;
+		}
+	}
+	levelNames.push_back(filename);
+	return false;
 }
 
 void WorldEngine::renderWorld() {
@@ -94,7 +102,7 @@ void WorldEngine::renderWorld() {
 			block = squares.at(index).type;
 			index++;
 			switch (block) {
-			case 1:
+			case WALL:
 			{
 				glColor3f(0.0, 0.0, 0.0);
 				glBegin(GL_POLYGON);
@@ -106,7 +114,7 @@ void WorldEngine::renderWorld() {
 				glFlush();
 				break;
 			}
-			case 2:
+			case FLOOR:
 			{
 				glColor3f(1.0, 0.0, 0.0);
 				glBegin(GL_POLYGON);
@@ -118,7 +126,7 @@ void WorldEngine::renderWorld() {
 				glFlush();
 				break;
 			}
-			case 3:
+			case MOVEWALL:
 			{
 				glColor3f(0.0, 1.0, 1.0);
 				glBegin(GL_POLYGON);
@@ -145,4 +153,10 @@ void WorldEngine::renderWorld() {
 			}
 		}
 	}
+}
+
+void WorldEngine::updateSquare(Point p, int type) {
+	currentsectionx = p.x / (width / w);
+	currentsectiony = (height - p.y) / (height / h);
+	squares[currentsectionx * h + currentsectiony].type = type;
 }
