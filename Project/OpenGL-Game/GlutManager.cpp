@@ -47,12 +47,6 @@ void GlutManager::RenderScene(void){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 
-	std::map<std::string, IObject *>::iterator iter;
-	
-	for (iter = members[Renderable].begin(); iter != members[Renderable].end(); ++iter) {
-		if (((IRenderable *)iter->second)->IsVisible()) ((IRenderable *)iter->second)->Render();
-	}
-
 	glutSwapBuffers();
 }
 
