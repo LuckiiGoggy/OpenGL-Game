@@ -1,7 +1,6 @@
 #include "openGL.h"
 #include "InputManager.h"
 #include <iostream>
-
 #define DEBUG
 
 Point::Point(){
@@ -22,26 +21,11 @@ MouseInfo::MouseInfo(){
 }
 
 KeyInfo* InputManager::keySpecialStates = new KeyInfo[256];
-KeyInfo* InputManager::keyStates = new KeyInfo[512];
+KeyInfo* InputManager::keyStates = new KeyInfo[256];
 MouseInfo InputManager::mouseInfo;
-
-
-void InputManager::Init(){
-	glutKeyboardFunc(InputManager::KeyPress);
-	glutKeyboardUpFunc(InputManager::KeyUp);
-	glutSpecialFunc(InputManager::SpecialKeyPress);
-	glutSpecialUpFunc(InputManager::SpecialKeyUp);
-
-	glutMouseFunc(InputManager::MouseInput);
-
-	glutMotionFunc(InputManager::MouseMotion);
-	glutPassiveMotionFunc(InputManager::MouseMotion);
-}
 
 void InputManager::KeyPress(unsigned char key, int x, int y){
 	keyStates[key].state = true;
-	keyStates[key].pressedPoint.x = x;
-	keyStates[key].pressedPoint.y = y;
 	
 #ifdef DEBUG
 	std::cout << "\nKeyPress: " << key;
@@ -54,8 +38,6 @@ void InputManager::KeyPress(unsigned char key, int x, int y){
 
 void InputManager::KeyUp(unsigned char key, int x, int y){
 	keyStates[key].state = false;
-	keyStates[key].releasedPoint.x = x;
-	keyStates[key].releasedPoint.y = y;
 
 #ifdef DEBUG
 	std::cout << "\nKeyUp: " << key;
@@ -68,11 +50,6 @@ void InputManager::KeyUp(unsigned char key, int x, int y){
 
 void InputManager::SpecialKeyPress(int key, int x, int y){
 	keySpecialStates[key].state = true;
-	keySpecialStates[key].pressedPoint.x = x;
-	keySpecialStates[key].pressedPoint.y = y;
-	keyStates[key + 256].state = true;
-	keyStates[key + 256].pressedPoint.x = x;
-	keyStates[key + 256].pressedPoint.y = y;
 
 #ifdef DEBUG
 	std::cout << "\nSpecialKeyPress: " << key;
@@ -85,11 +62,6 @@ void InputManager::SpecialKeyPress(int key, int x, int y){
 
 void InputManager::SpecialKeyUp(int key, int x, int y){
 	keySpecialStates[key].state = false;
-	keySpecialStates[key].releasedPoint.x = x;
-	keySpecialStates[key].releasedPoint.y = y;
-	keyStates[key + 256].state = false;
-	keyStates[key + 256].releasedPoint.x = x;
-	keyStates[key + 256].releasedPoint.y = y;
 
 #ifdef DEBUG
 	std::cout << "\nSpecialKeyUp: " << key;
@@ -139,7 +111,6 @@ void InputManager::MouseMotion(int x, int y){
 }
 
 bool InputManager::isKeyDown(unsigned int key){
-	if (key >= 256) key - 256;
 	return keyStates[key].state;
 
 #ifdef DEBUG
@@ -150,7 +121,6 @@ bool InputManager::isKeyDown(unsigned int key){
 }
 
 bool InputManager::isKeyUp(unsigned int key){
-	if (key >= 256) key - 256;
 	return !keyStates[key].state;
 
 #ifdef DEBUG

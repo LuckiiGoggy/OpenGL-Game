@@ -1,4 +1,3 @@
-//Santo Tallarico COMP4900 World Builder/Editor
 #ifndef _WORLDSQUARE_H_
 #define _WORLDSQUARE_H_
 
