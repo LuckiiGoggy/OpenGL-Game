@@ -1,7 +1,7 @@
 #ifndef OPENGL_H
 #define OPENGL_H
 
-#define FREEGLUT_LIB_PRAGMAS 0
+#define NDEBUG /**I'm sorry Chris ):**/
 
 #include "Dependencies\glew\glew.h"
 #include "Dependencies\freeglut\freeglut.h"
