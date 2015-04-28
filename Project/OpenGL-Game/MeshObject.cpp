@@ -4,7 +4,12 @@
 #include "shader_utils.h"
 
 
-MeshObject::MeshObject() : vbo_vertices(0), vbo_normals(0), ibo_elements(0), object2world(glm::mat4(1)) {}
+MeshObject::MeshObject() : vbo_vertices(0), vbo_normals(0), ibo_elements(0), object2world(glm::mat4(1)) 
+{
+	sumRotation = glm::mat4();
+	sumTranslation = glm::mat4();
+	sumScale = glm::mat4();
+}
 
 MeshObject::~MeshObject() {
 	if (vbo_vertices != 0)
@@ -101,9 +106,9 @@ void MeshObject::BindBuffers() {
 * Draw the object
 */
 void MeshObject::Render() {
-	if (this->vbo_vertices != 0) {
+	if (vbo_vertices != 0) {
 		glEnableVertexAttribArray(attribute_v_coord);
-		glBindBuffer(GL_ARRAY_BUFFER, this->vbo_vertices);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
 		glVertexAttribPointer(
 			attribute_v_coord,  // attribute
 			4,                  // number of elements per vertex, here (x,y,z,w)
@@ -114,9 +119,9 @@ void MeshObject::Render() {
 			);
 	}
 
-	if (this->vbo_normals != 0) {
+	if (vbo_normals != 0) {
 		glEnableVertexAttribArray(attribute_v_normal);
-		glBindBuffer(GL_ARRAY_BUFFER, this->vbo_normals);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo_normals);
 		glVertexAttribPointer(
 			attribute_v_normal, // attribute
 			3,                  // number of elements per vertex, here (x,y,z)
@@ -127,28 +132,29 @@ void MeshObject::Render() {
 			);
 	}
 
+
 	/* Apply object's transformation matrix */
-	glUniformMatrix4fv(uniform_m, 1, GL_FALSE, glm::value_ptr(this->object2world));
+	glUniformMatrix4fv(uniform_m, 1, GL_FALSE, glm::value_ptr(object2world));
 	/* Transform normal vectors with transpose of inverse of upper left
 	3x3 model matrix (ex-gl_NormalMatrix): */
-	glm::mat3 m_3x3_inv_transp = glm::transpose(glm::inverse(glm::mat3(this->object2world)));
+	glm::mat3 m_3x3_inv_transp = glm::transpose(glm::inverse(glm::mat3(object2world)));
 	glUniformMatrix3fv(uniform_m_3x3_inv_transp, 1, GL_FALSE, glm::value_ptr(m_3x3_inv_transp));
 
 	/* Push each element in buffer_vertices to the vertex shader */
-	if (this->ibo_elements != 0) {
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->ibo_elements);
+	if (ibo_elements != 0) {
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
 		int size;
 		glGetBufferParameteriv(GL_ELEMENT_ARRAY_BUFFER, GL_BUFFER_SIZE, &size);
 		glDrawElements(GL_TRIANGLES, size / sizeof(GLushort), GL_UNSIGNED_SHORT, 0);
 	}
 	else
 	{
-		glDrawArrays(GL_TRIANGLES, 0, this->vertices.size());
+		glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 	}
 
-	if (this->vbo_normals != 0)
+	if (vbo_normals != 0)
 		glDisableVertexAttribArray(attribute_v_normal);
-	if (this->vbo_vertices != 0)
+	if (vbo_vertices != 0)
 		glDisableVertexAttribArray(attribute_v_coord);
 }
 
@@ -236,11 +242,8 @@ void MeshObject::RenderBoundingBox() {
 
 void MeshObject::Update(float timeDelta){
 
-	glm::mat4 world2camera = glm::lookAt(
-		glm::vec3(0.0, 0.0, 4.0),   // eye
-		glm::vec3(0.0, 0.0, 0.0),   // direction
-		glm::vec3(0.0, 1.0, 0.0));  // up
-
+	object2world = glm::mat4(1.0);
+	object2world *= (sumScale * sumRotation * sumTranslation);
 
 	// Projection
 	glm::mat4 camera2screen = glm::perspective(45.0f, 1.0f*glutGet(GLUT_WINDOW_WIDTH) / glutGet(GLUT_WINDOW_HEIGHT), 0.1f, 100.0f);
@@ -254,12 +257,30 @@ void MeshObject::Update(float timeDelta){
 
 }
 
+void MeshObject::Move(glm::vec3 moveDelta){
+	sumTranslation = glm::translate(sumTranslation, moveDelta);
+	
+}
+
+void MeshObject::Rotate(glm::vec3 rotateAxis, float angle){
+	sumRotation = glm::rotate(sumRotation, angle, rotateAxis); // where x, y, z is axis of rotation (e.g. 0 1 0)
+}
+
+void MeshObject::Scale(glm::vec3 scaleF){
+	sumScale = glm::scale(sumScale, scaleF);
+}
+
 bool MeshObject::Init(char* model_filename, char* vshader_filename, char* fshader_filename)
 {
 	ReadObjFile(model_filename);
 	// mesh position initialized in init_view()
 
 	BindBuffers();
+
+	world2camera = glm::lookAt(
+		glm::vec3(0.0, 0.0, 4.0),   // eye
+		glm::vec3(0.0, 0.0, 0.0),   // direction
+		glm::vec3(0.0, 1.0, 0.0));  // up
 
 	/* Compile and link shaders */
 	GLint link_ok = GL_FALSE;

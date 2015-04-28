@@ -23,6 +23,11 @@ public:
 
 	void Render(void);
 	void RenderBoundingBox(void);
+	
+	void Move(glm::vec3);
+	void Rotate(glm::vec3, float);
+	void Scale(glm::vec3);
+
 
 	bool Init(char* model_filename, char* vshader_filename, char* fshader_filename);
 
@@ -38,6 +43,11 @@ private:
 	std::vector<glm::vec3> normals;
 	std::vector<GLushort> elements;
 	glm::mat4 object2world;
+	glm::mat4 world2camera;
+
+	glm::mat4 sumRotation;
+	glm::mat4 sumTranslation;
+	glm::mat4 sumScale;
 
 
 	GLint attribute_v_coord = -1;
