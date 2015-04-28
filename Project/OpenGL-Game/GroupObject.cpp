@@ -1,32 +1,81 @@
 #include "GroupObject.h"
+#include <iostream>
+#include <typeinfo>
 
 
 GroupObject::GroupObject()
 {
 }
 
-
 GroupObject::~GroupObject()
 {
+	std::map<std::string, IGameObject *>::iterator iter;
+
+	for (iter = members.begin(); iter != members.end(); ++iter) {
+		#ifdef DEBUG
+		std::cout << "\n\tDeleting " << iter->first;
+		#endif
+		delete iter->second;
+	}
+	members.empty();
 }
 
+GroupObject *GroupObject::AddMember(std::string name, IGameObject *game){
+	members[name] = game;
+	return this;
+}
 
-GroupObject *GroupObject::AddChild(IGameObject *game){
-	children.push_back(game);
-
+GroupObject *GroupObject::RemoveMember(std::string name){
+	delete members[name];
+	members.erase(name);
 	return this;
 }
 
 void GroupObject::Render()
 {
-	for (int i = 0; i < children.size(); i++){
-		if (((IRenderable *)children[i])->IsVisible()) ((IRenderable *)children[i])->Render();
+#ifdef DEBUG
+	std::cout << "\nGroup Object Rendering..";
+#endif
+	
+	std::map<std::string, IGameObject *>::iterator iter;
+	IRenderable *renderable;
+
+	for (iter = members.begin(); iter != members.end(); ++iter) {
+		renderable = dynamic_cast<IRenderable*>(iter->second);
+		if (renderable != 0 && renderable->IsVisible()){
+			#ifdef DEBUG
+			std::cout << "\n\tGroup Object Rendering " << iter->first;
+			#endif
+			renderable->Render();
+		}
 	}
 }
 
-void GroupObject::Move(int x, int y, int z)
+void GroupObject::Move(glm::vec3 moveDelta)
 {
-	for (int i = 0; i < children.size(); i++){
-		if (((IMovable *)children[i])->CanMove()) ((IMovable *)children[i])->Move(x, y, z);
+#ifdef DEBUG
+	std::cout << "\nGroup Object Moving..";
+	std::cout << "(x: " << moveDelta.x;
+	std::cout << ", y: ";
+	std::cout << y << ", z: ";
+	std::cout << z << ")";
+#endif
+	position += moveDelta;
+
+	MoveMembers(moveDelta);
+}
+
+void GroupObject::MoveMembers(glm::vec3 moveDelta){
+	std::map<std::string, IGameObject *>::iterator iter;
+	IMovable *moveable;
+
+	for (iter = members.begin(); iter != members.end(); ++iter) {
+		moveable = dynamic_cast<IMovable*>(iter->second);
+		if (moveable != 0 && moveable->CanMove()){
+			#ifdef DEBUG
+			std::cout << "\n\tGroup Object Moving " << iter->first;
+			#endif
+			moveable->Move(moveDelta);
+		}
 	}
 }

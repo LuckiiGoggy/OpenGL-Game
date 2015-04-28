@@ -2,33 +2,50 @@
 #include "openGL.h"
 #include <gl/GLU.h>
 
-//Santo Tallarico COMP4900 World Builder/Editor
 #include "WorldEngine.h"
 #include "InputManager.h"
+#include "IGameObject.h"
+#include "GroupObject.h"
+#include "TestObject.h"
+#include "MeshObject.h"
 
 const int SAVE = 1;
 const int LOAD = 2;
-WorldEngine engine;
+const int WIDTH = 400;
+const int HEIGHT = 400;
+const int GLUI_WIDTH = 166;	//not actually set-able by GLUI
+int main_window;
+int sub_window;
+WorldEngine engine = WorldEngine(WIDTH, HEIGHT);
+GLUI *glui;
+GLUI_EditText *edittext;
+GLUI_RadioGroup *radiogroup;
+GLUI_Panel *panel3;
 void updateGame();
 void menuEvents(int choice);
 void renderScene(void);
+MeshObject myMesh;
+
+void reshape(int x, int y);
+void initGLUI();
+
+GroupObject test;
 
 int main(int argc, char **argv) {
 	int menu;
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-	glutInitWindowPosition(200, 200);//optional
-	glutInitWindowSize(400, 400); //optional
+	glutInitWindowPosition(100, 100);//optional
+	glutInitWindowSize(WIDTH + GLUI_WIDTH, HEIGHT); //optional
 
-	menu = glutCreateMenu(menuEvents);
-	glutAddMenuEntry("Save", SAVE);
-	glutAddMenuEntry("Load", LOAD);
-	// attach the menu to the right button
-	glutAttachMenu(GLUT_KEY_F1);
+	main_window = glutCreateWindow("OpenGL First Window");
+	//sub_window = glutCreateSubWindow(main_window, 0, 0, WIDTH, HEIGHT);
 
-	glutCreateWindow("OpenGL First Window");
-
-	glewInit();
+	GLenum glew_status = glewInit();
+	if (glew_status != GLEW_OK) {
+		fprintf(stderr, "Error: %s\n", glewGetErrorString(glew_status));
+		return 1;
+	}
 	if (glewIsSupported("GL_VERSION_4_0")) {
 		std::cout << "GLEW Version is 4.0\n";
 	}
@@ -36,55 +53,141 @@ int main(int argc, char **argv) {
 		std::cout << "GLEW 4.0 not supported\n";
 	}
 
-	glEnable(GL_DEPTH_TEST);
+	char* obj_filename = (char*) "../Assets/Models/suzanne.obj";
+	char* v_shader_filename = (char*) "../Assets/Shaders/phong-shading.v.glsl";
+	char* f_shader_filename = (char*) "../Assets/Shaders/phong-shading.f.glsl";
+
+	myMesh.Init(obj_filename, v_shader_filename, f_shader_filename);
 
 	glutDisplayFunc(renderScene);
-	
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_DEPTH_TEST);
+	//glDepthFunc(GL_LEQUAL);
+	//glDepthRange(1, 0);
+
 	glutKeyboardFunc(InputManager::KeyPress);
 	glutKeyboardUpFunc(InputManager::KeyUp);
 	glutSpecialFunc(InputManager::SpecialKeyPress);
 	glutSpecialUpFunc(InputManager::SpecialKeyUp);
 
 	glutMouseFunc(InputManager::MouseInput);
+	InputManager::Init();
+
+	glutDisplayFunc(renderScene);
+	
+	//glutKeyboardFunc(InputManager::KeyPress);
+	glutKeyboardUpFunc(InputManager::KeyUp);
+	glutSpecialFunc(InputManager::SpecialKeyPress);
+	glutSpecialUpFunc(InputManager::SpecialKeyUp);
+
+	//glutMouseFunc(InputManager::MouseInput);
 
 	glutMotionFunc(InputManager::MouseMotion);
 	glutPassiveMotionFunc(InputManager::MouseMotion);
 
-	glutIdleFunc(updateGame);
+	glutReshapeFunc(reshape);
+
+	//glutIdleFunc(updateGame);
+
+	glutFullScreen();
+	initGLUI();
+
+	GLUI_Master.set_glutKeyboardFunc(InputManager::KeyPress);
+	GLUI_Master.set_glutMouseFunc(InputManager::MouseInput);
 
 	glutMainLoop();
 
 	return 0;
 }
 
+void updateGame() {
+	if (glutGetWindow() != main_window) glutSetWindow(main_window);
 
-void updateGame()
-{
 	if (InputManager::isKeyDown(KeyCodes::ESC)) glutLeaveMainLoop();
-		glutPostRedisplay();
+
+	if (InputManager::isLeftButtonDown() && engine.loaded == true) {
+		Point p = InputManager::GetMousePos();
+		engine.updateSquare(p, radiogroup->get_int_val());
+	}
+	
+	if (InputManager::isKeyDown(KeyCodes::w)) myMesh.Move(glm::vec3(0.0f, 0.0f, 0.01f));
+	if (InputManager::isKeyDown(KeyCodes::a)) myMesh.Move(glm::vec3(-0.01f, 0.0f, 0.0f));
+	if (InputManager::isKeyDown(KeyCodes::s)) myMesh.Move(glm::vec3(0.0f, 0.0f, -0.01f));
+	if (InputManager::isKeyDown(KeyCodes::d)) myMesh.Move(glm::vec3(0.01f, 0.0f, 0.0f));
+	if (InputManager::isSpecialKeyDown(GLUT_KEY_SHIFT_L)) myMesh.Move(glm::vec3(0.0f, -0.01f, 0.0f));
+	if (InputManager::isKeyDown(KeyCodes::Space)) myMesh.Move(glm::vec3(0.0f, 0.01f, 0.0f));
+
+
+
+	glutPostRedisplay();
 }
 
 void menuEvents(int choice) {
 	switch (choice) {
 	case SAVE: {
-		engine.readWorld();
+		if (engine.loaded = true) {
+			if (!engine.writeWorld(edittext->get_text())) {
+				glui->add_statictext_to_panel(panel3, edittext->get_text());
+			}
+		}
 		break;
 	}
 	case LOAD: {
-		engine.writeWorld();
+		engine.readWorld(edittext->get_text());
 		break;
 	}
 	}
 }
 
+
 void renderScene(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(1.0, 1.0, 1.0, 1.0);
+	glClearColor(0.5, 0.5, 0.5, 1.0);
+
+	myMesh.Update(0.0f);
+	myMesh.Render();
+	myMesh.RenderBoundingBox();
 
 	if (engine.loaded == true) {
 		engine.renderWorld();
 	}
 
+
 	glutSwapBuffers();
 }
 
+void reshape(int x, int y) {
+	GLUI_Master.auto_set_viewport();
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	glutPostRedisplay();
+}
+
+void initGLUI() {
+	glui = GLUI_Master.create_glui_subwindow(main_window, GLUI_SUBWINDOW_RIGHT);
+	glui->set_main_gfx_window(main_window);
+
+	GLUI_Panel *panel = glui->add_panel("File Management", GLUI_PANEL_EMBOSSED);
+	edittext = glui->add_edittext_to_panel(panel, "Filename: ", GLUI_EDITTEXT_TEXT);
+	GLUI_Button *saveButton = glui->add_button_to_panel(panel, "Save", SAVE, menuEvents);
+	GLUI_Button *loadButton = glui->add_button_to_panel(panel, "Load", LOAD, menuEvents);
+
+	GLUI_Panel *panel2 = glui->add_panel("Geometry Select", GLUI_PANEL_EMBOSSED);
+	radiogroup = glui->add_radiogroup_to_panel(panel2);
+	GLUI_RadioButton *wall = glui->add_radiobutton_to_group(radiogroup, "Wall");
+	GLUI_RadioButton *floor = glui->add_radiobutton_to_group(radiogroup, "Floor");
+	GLUI_RadioButton *movewall = glui->add_radiobutton_to_group(radiogroup, "Moveable Wall");
+
+	engine.loadDirectory();
+	panel3 = glui->add_panel("Level Files", GLUI_PANEL_EMBOSSED);
+	for (int i = 0; i < engine.levelNames.size(); i++) {
+		glui->add_statictext_to_panel(panel3, engine.levelNames[i].c_str());
+	}
+
+	/* We register the idle callback with GLUI, *not* with GLUT */
+	GLUI_Master.set_glutIdleFunc(updateGame);
+	GLUI_Master.set_glutReshapeFunc(reshape);
+}
