@@ -66,7 +66,7 @@ void Character::MoveMembers(){
 	std::map<std::string, GroupObject *>::iterator iter;
 
 	for (iter = members.begin(); iter != members.end(); ++iter) {
-		(iter->second)->Move(moveDelta.x, moveDelta.y, moveDelta.z);
+		(iter->second)->Move(moveDelta);
 	}
 }
 

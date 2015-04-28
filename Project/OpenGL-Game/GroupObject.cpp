@@ -51,18 +51,21 @@ void GroupObject::Render()
 	}
 }
 
-void GroupObject::Move(int x, int y, int z)
+void GroupObject::Move(glm::vec3 moveDelta)
 {
 #ifdef DEBUG
 	std::cout << "\nGroup Object Moving..";
-	std::cout << "(x: " << x << ", y: " << y << ", z: " << z << ")";
+	std::cout << "(x: " << moveDelta.x;
+	std::cout << ", y: ";
+	std::cout << y << ", z: ";
+	std::cout << z << ")";
 #endif
-	position.x += x;
-	position.y += y;
-	position.z += z;
+	position += moveDelta;
+
+	MoveMembers(moveDelta);
 }
 
-void GroupObject::MoveMembers(int x, int y, int z){
+void GroupObject::MoveMembers(glm::vec3 moveDelta){
 	std::map<std::string, IGameObject *>::iterator iter;
 	IMovable *moveable;
 
@@ -72,7 +75,7 @@ void GroupObject::MoveMembers(int x, int y, int z){
 			#ifdef DEBUG
 			std::cout << "\n\tGroup Object Moving " << iter->first;
 			#endif
-			moveable->Move(x, y, z);
+			moveable->Move(moveDelta);
 		}
 	}
 }

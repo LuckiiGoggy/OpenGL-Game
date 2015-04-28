@@ -1,14 +1,15 @@
 #ifndef IMOVABLE_H
 #define IMOVABLE_H
 
-#pragma once
+#include "Dependencies\glm\glm\glm.hpp"
+
 
 class IMovable{
 protected:
 	bool canMove;
 public:
 	IMovable();
-	virtual void Move(int x, int y, int z) = 0;
+	virtual void Move(glm::vec3) = 0;
 #ifdef INDECISIVE
 	virtual void MoveUp(int delta) = 0;
 	virtual void MoveDown(int delta) = 0;

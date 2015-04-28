@@ -8,18 +8,23 @@
 #include <sstream>
 
 #include "openGL.h"
-#include "IRenderable.h"
 #include "Dependencies/glm/glm/gtc/matrix_transform.hpp"
 #include "Dependencies/glm/glm/gtc/type_ptr.hpp"
 
+
+#include "IGameObject.h"
+#include "IUpdateable.h"
+
 #pragma once
-class MeshObject
+class MeshObject: public IGameObject, public IUpdateable
 {
 public:
 	MeshObject();
 	~MeshObject();
 
 	void Update(float timeDelta);
+
+	bool Init(char* model_filename, char* vshader_filename, char* fshader_filename);
 
 	void Render(void);
 	void RenderBoundingBox(void);
@@ -28,8 +33,6 @@ public:
 	void Rotate(glm::vec3, float);
 	void Scale(glm::vec3);
 
-
-	bool Init(char* model_filename, char* vshader_filename, char* fshader_filename);
 
 	GLuint program;
 
