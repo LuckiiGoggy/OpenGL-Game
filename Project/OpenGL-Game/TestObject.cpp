@@ -20,13 +20,13 @@ void TestObject::Render(){
 #endif
 }
 
-void TestObject::Move(int x, int y, int z)
+void TestObject::Move(glm::vec3 moveDelta)
 {
 
 #ifdef DEBUG
 	std::cout << "\nTestObject Moving...";
-	std::cout << " x: " << x;
-	std::cout << " y: " << y;
-	std::cout << " z: " << z;
+	std::cout << " x: " << moveDelta.x;
+	std::cout << " y: " << moveDelta.y;
+	std::cout << " z: " << moveDelta.z;
 #endif
 }

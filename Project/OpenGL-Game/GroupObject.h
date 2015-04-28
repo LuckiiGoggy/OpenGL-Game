@@ -1,7 +1,7 @@
 #ifndef GROUPOBJECT_H
 #define GROUPOBJECT_H
 
-#pragma once
+#include "Dependencies\glm\glm\glm.hpp"
 #include "IGameObject.h"
 #include "IMovable.h"
 #include "IUpdateable.h"
@@ -32,14 +32,14 @@ public:
 	/**Render function of the Group Object(renders members)**/
 	void Render();
 	/**Moves the GroupObject and all its members**/
-	void Move(int x, int y, int z);
+	void Move(glm::vec3);
 
 
 protected:
 	/**Moves the members of the GroupObject that can move**/
-	void MoveMembers(int x, int y, int z);
+	void MoveMembers(glm::vec3 moveDelta);
 	std::map<std::string, IGameObject *> members;
-	Position3D position;
+	glm::vec3 position;
 };
 
 #endif

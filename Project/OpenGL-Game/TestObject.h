@@ -11,7 +11,7 @@ public:
 	TestObject();
 	~TestObject();
 	void Render();
-	void Move(int x, int y, int z);
+	void Move(glm::vec3);
 };
 
 #endif 
