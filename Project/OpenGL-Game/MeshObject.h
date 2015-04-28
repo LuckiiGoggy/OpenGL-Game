@@ -17,21 +17,33 @@ class MeshObject
 {
 private:
 	GLuint vbo_vertices, vbo_normals, ibo_elements;
-	GLint attribute_v_coord = -1;
-	GLint attribute_v_normal = -1;
-	GLint uniform_m = -1, uniform_v = -1, uniform_p = -1;
-	GLint uniform_m_3x3_inv_transp = -1, uniform_v_inv = -1;
 public:
-
 	MeshObject();
 	~MeshObject();
+
+	void load_obj(std::string filename);
+	void Update(float timeDelta);
+	int Init(char* model_filename, char* vshader_filename, char* fshader_filename, GLuint program);
+
 	std::vector<glm::vec4> vertices;
 	std::vector<glm::vec3> normals;
 	std::vector<GLushort> elements;
 	glm::mat4 object2world;
-	void upload();
-	void draw();
-	void draw_bbox();
+
+
+	GLint attribute_v_coord = -1;
+	GLint attribute_v_normal = -1;
+	GLint uniform_m = -1, uniform_v = -1, uniform_p = -1;
+	GLint uniform_m_3x3_inv_transp = -1, uniform_v_inv = -1;
+
+	void upload(void);
+	void draw(void);
+	void draw_bbox(void);
+
+	bool Init(char* model_filename, char* vshader_filename, char* fshader_filename);
+
+	GLuint program;
+
 };
 
 #endif

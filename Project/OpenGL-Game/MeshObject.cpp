@@ -1,17 +1,79 @@
 #include "MeshObject.h"
+#include <algorithm>
+#include <iostream>
+#include "shader_utils.h"
+
 
 MeshObject::MeshObject() : vbo_vertices(0), vbo_normals(0), ibo_elements(0), object2world(glm::mat4(1)) {}
 
-MeshObject::~MeshObject()
-{
+MeshObject::~MeshObject() {
 	if (vbo_vertices != 0)
 		glDeleteBuffers(1, &vbo_vertices);
 	if (vbo_normals != 0)
 		glDeleteBuffers(1, &vbo_normals);
 	if (ibo_elements != 0)
 		glDeleteBuffers(1, &ibo_elements);
+
+	glDeleteProgram(program);
 }
 
+
+void MeshObject::load_obj(std::string filename){
+	std::ifstream in(filename, std::ios::in);
+	if (!in) { std::cout << "Cannot open " << filename << std::endl; exit(1); }
+	std::vector<int> nb_seen;
+
+	std::string line;
+	while (std::getline(in, line)) {
+		if (line.substr(0, 2) == "v ") {
+			std::istringstream s(line.substr(2));
+			glm::vec4 v; s >> v.x; s >> v.y; s >> v.z; v.w = 1.0;
+			vertices.push_back(v);
+		}
+		else if (line.substr(0, 2) == "f ") {
+			std::istringstream s(line.substr(2));
+			GLushort a, b, c;
+			s >> a; s >> b; s >> c;
+			a--; b--; c--;
+			elements.push_back(a); elements.push_back(b); elements.push_back(c);
+		}
+		else if (line[0] == '#') { /* ignoring this line */ }
+		else { /* ignoring this line */ }
+	}
+
+	normals.resize(vertices.size(), glm::vec3(0.0, 0.0, 0.0));
+	nb_seen.resize(vertices.size(), 0);
+	for (unsigned int i = 0; i < elements.size(); i += 3) {
+		GLushort ia = elements[i];
+		GLushort ib = elements[i + 1];
+		GLushort ic = elements[i + 2];
+		glm::vec3 normal = glm::normalize(glm::cross(
+			glm::vec3(vertices[ib]) - glm::vec3(vertices[ia]),
+			glm::vec3(vertices[ic]) - glm::vec3(vertices[ia])));
+
+		int v[3];  v[0] = ia;  v[1] = ib;  v[2] = ic;
+		for (int j = 0; j < 3; j++) {
+			GLushort cur_v = v[j];
+			nb_seen[cur_v]++;
+			if (nb_seen[cur_v] == 1) {
+				normals[cur_v] = normal;
+			}
+			else {
+				// average
+				normals[cur_v].x = normals[cur_v].x * (1.0 - 1.0 / nb_seen[cur_v]) + normal.x * 1.0 / nb_seen[cur_v];
+				this->normals[cur_v].y = this->normals[cur_v].y * (1.0 - 1.0 / nb_seen[cur_v]) + normal.y * 1.0 / nb_seen[cur_v];
+				this->normals[cur_v].z = this->normals[cur_v].z * (1.0 - 1.0 / nb_seen[cur_v]) + normal.z * 1.0 / nb_seen[cur_v];
+				this->normals[cur_v] = glm::normalize(this->normals[cur_v]);
+			}
+		}
+	}
+}
+
+
+/**
+* Store object vertices, normals and/or elements in graphic card
+* buffers
+*/
 void MeshObject::upload() {
 	if (this->vertices.size() > 0) {
 		glGenBuffers(1, &this->vbo_vertices);
@@ -56,7 +118,7 @@ void MeshObject::draw() {
 		glEnableVertexAttribArray(attribute_v_normal);
 		glBindBuffer(GL_ARRAY_BUFFER, this->vbo_normals);
 		glVertexAttribPointer(
-			attribute_v_normal, // attribute	
+			attribute_v_normal, // attribute
 			3,                  // number of elements per vertex, here (x,y,z)
 			GL_FLOAT,           // the type of each element
 			GL_FALSE,           // take our values as-is
@@ -75,10 +137,12 @@ void MeshObject::draw() {
 	/* Push each element in buffer_vertices to the vertex shader */
 	if (this->ibo_elements != 0) {
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->ibo_elements);
-		int size;  glGetBufferParameteriv(GL_ELEMENT_ARRAY_BUFFER, GL_BUFFER_SIZE, &size);
+		int size;
+		glGetBufferParameteriv(GL_ELEMENT_ARRAY_BUFFER, GL_BUFFER_SIZE, &size);
 		glDrawElements(GL_TRIANGLES, size / sizeof(GLushort), GL_UNSIGNED_SHORT, 0);
 	}
-	else {
+	else
+	{
 		glDrawArrays(GL_TRIANGLES, 0, this->vertices.size());
 	}
 
@@ -91,8 +155,7 @@ void MeshObject::draw() {
 /**
 * Draw object bounding box
 */
-void MeshObject::draw_bbox()
-{
+void MeshObject::draw_bbox() {
 	if (this->vertices.size() == 0)
 		return;
 
@@ -169,4 +232,102 @@ void MeshObject::draw_bbox()
 
 	glDeleteBuffers(1, &vbo_vertices);
 	glDeleteBuffers(1, &ibo_elements);
+}
+
+void MeshObject::Update(float timeDelta){
+
+	glm::mat4 world2camera = glm::lookAt(
+		glm::vec3(0.0, 0.0, 4.0),   // eye
+		glm::vec3(0.0, 0.0, 0.0),   // direction
+		glm::vec3(0.0, 1.0, 0.0));  // up
+
+
+	// Projection
+	glm::mat4 camera2screen = glm::perspective(45.0f, 1.0f*glutGet(GLUT_WINDOW_WIDTH) / glutGet(GLUT_WINDOW_HEIGHT), 0.1f, 100.0f);
+
+	glUseProgram(program);
+	glUniformMatrix4fv(uniform_v, 1, GL_FALSE, glm::value_ptr(world2camera));
+	glUniformMatrix4fv(uniform_p, 1, GL_FALSE, glm::value_ptr(camera2screen));
+
+	glm::mat4 v_inv = glm::inverse(world2camera);
+	glUniformMatrix4fv(uniform_v_inv, 1, GL_FALSE, glm::value_ptr(v_inv));
+
+}
+
+bool MeshObject::Init(char* model_filename, char* vshader_filename, char* fshader_filename)
+{
+	load_obj(model_filename);
+	// mesh position initialized in init_view()
+
+	upload();
+
+	/* Compile and link shaders */
+	GLint link_ok = GL_FALSE;
+	GLint validate_ok = GL_FALSE;
+
+	GLuint vs, fs;
+	if ((vs = create_shader(vshader_filename, GL_VERTEX_SHADER)) == 0) return 0;
+	if ((fs = create_shader(fshader_filename, GL_FRAGMENT_SHADER)) == 0) return 0;
+
+	program = glCreateProgram();
+	program = program;
+	glAttachShader(program, vs);
+	glAttachShader(program, fs);
+	glLinkProgram(program);
+	glGetProgramiv(program, GL_LINK_STATUS, &link_ok);
+	if (!link_ok) {
+		fprintf(stderr, "glLinkProgram:");
+		return 0;
+	}
+	glValidateProgram(program);
+	glGetProgramiv(program, GL_VALIDATE_STATUS, &validate_ok);
+	if (!validate_ok) {
+		fprintf(stderr, "glValidateProgram:");
+	}
+
+	const char* attribute_name;
+	attribute_name = "v_coord";
+	attribute_v_coord = glGetAttribLocation(program, attribute_name);
+	if (attribute_v_coord == -1) {
+		fprintf(stderr, "Could not bind attribute %s\n", attribute_name);
+		return 0;
+	}
+	attribute_name = "v_normal";
+	attribute_v_normal = glGetAttribLocation(program, attribute_name);
+	if (attribute_v_normal == -1) {
+		fprintf(stderr, "Could not bind attribute %s\n", attribute_name);
+		return 0;
+	}
+	const char* uniform_name;
+	uniform_name = "m";
+	uniform_m = glGetUniformLocation(program, uniform_name);
+	if (uniform_m == -1) {
+		fprintf(stderr, "Could not bind uniform %s\n", uniform_name);
+		return 0;
+	}
+	uniform_name = "v";
+	uniform_v = glGetUniformLocation(program, uniform_name);
+	if (uniform_v == -1) {
+		fprintf(stderr, "Could not bind uniform %s\n", uniform_name);
+		return 0;
+	}
+	uniform_name = "p";
+	uniform_p = glGetUniformLocation(program, uniform_name);
+	if (uniform_p == -1) {
+		fprintf(stderr, "Could not bind uniform %s\n", uniform_name);
+		return 0;
+	}
+	uniform_name = "m_3x3_inv_transp";
+	uniform_m_3x3_inv_transp = glGetUniformLocation(program, uniform_name);
+	if (uniform_m_3x3_inv_transp == -1) {
+		fprintf(stderr, "Could not bind uniform %s\n", uniform_name);
+		return 0;
+	}
+	uniform_name = "v_inv";
+	uniform_v_inv = glGetUniformLocation(program, uniform_name);
+	if (uniform_v_inv == -1) {
+		fprintf(stderr, "Could not bind uniform %s\n", uniform_name);
+		return 0;
+	}
+	return 1;
 }
