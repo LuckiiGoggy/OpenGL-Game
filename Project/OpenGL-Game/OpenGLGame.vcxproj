@@ -81,6 +81,7 @@
     <ClCompile Include="Rect.cpp" />
     <ClCompile Include="Position.cpp" />
     <ClCompile Include="IRenderable.cpp" />
+    <ClCompile Include="shader_utils.cpp" />
     <ClCompile Include="TestObject.cpp" />
     <ClCompile Include="WorldEngine.cpp" />
     <ClCompile Include="WorldSquare.cpp" />
@@ -102,6 +103,7 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="openGL.h" />
     <ClInclude Include="MeshObject.h" />
+    <ClInclude Include="shader_utils.h" />
     <ClInclude Include="TestObject.h" />
     <ClInclude Include="WorldEngine.h" />
     <ClInclude Include="WorldSquare.h" />
