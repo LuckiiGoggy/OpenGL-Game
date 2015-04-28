@@ -140,8 +140,8 @@ void renderScene(void) {
 	glClearColor(0.5, 0.5, 0.5, 1.0);
 
 	myMesh.Update(0.0f);
-	myMesh.draw();
-	myMesh.draw_bbox();
+	myMesh.Render();
+	myMesh.RenderBoundingBox();
 
 	if (engine.loaded == true) {
 		engine.renderWorld();

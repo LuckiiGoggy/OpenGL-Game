@@ -18,7 +18,7 @@ MeshObject::~MeshObject() {
 }
 
 
-void MeshObject::load_obj(std::string filename){
+void MeshObject::ReadObjFile(std::string filename){
 	std::ifstream in(filename, std::ios::in);
 	if (!in) { std::cout << "Cannot open " << filename << std::endl; exit(1); }
 	std::vector<int> nb_seen;
@@ -74,7 +74,7 @@ void MeshObject::load_obj(std::string filename){
 * Store object vertices, normals and/or elements in graphic card
 * buffers
 */
-void MeshObject::upload() {
+void MeshObject::BindBuffers() {
 	if (this->vertices.size() > 0) {
 		glGenBuffers(1, &this->vbo_vertices);
 		glBindBuffer(GL_ARRAY_BUFFER, this->vbo_vertices);
@@ -100,7 +100,7 @@ void MeshObject::upload() {
 /**
 * Draw the object
 */
-void MeshObject::draw() {
+void MeshObject::Render() {
 	if (this->vbo_vertices != 0) {
 		glEnableVertexAttribArray(attribute_v_coord);
 		glBindBuffer(GL_ARRAY_BUFFER, this->vbo_vertices);
@@ -155,7 +155,7 @@ void MeshObject::draw() {
 /**
 * Draw object bounding box
 */
-void MeshObject::draw_bbox() {
+void MeshObject::RenderBoundingBox() {
 	if (this->vertices.size() == 0)
 		return;
 
@@ -256,10 +256,10 @@ void MeshObject::Update(float timeDelta){
 
 bool MeshObject::Init(char* model_filename, char* vshader_filename, char* fshader_filename)
 {
-	load_obj(model_filename);
+	ReadObjFile(model_filename);
 	// mesh position initialized in init_view()
 
-	upload();
+	BindBuffers();
 
 	/* Compile and link shaders */
 	GLint link_ok = GL_FALSE;
