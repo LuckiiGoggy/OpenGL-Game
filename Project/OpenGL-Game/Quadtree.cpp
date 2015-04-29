@@ -4,16 +4,30 @@
 
 Quadtree::Quadtree()
 {
-	MAX_OBJECTS = 10;
-	MAX_LEVELS = 5;
-}
-Quadtree::Quadtree(int pLevel, Rect pBounds)
-{
 	MAX_OBJECTS = 2;
 	MAX_LEVELS = 5;
 
+	level = 1;
+	//objects = deque<Rect*>();
+	rectObjects = deque<RectObject*>();
+
+	numOfNodes = 4;
+
+	screenW = 400;
+	screenH = 400;
+	black = glm::vec3(0.0f, 0.0f, 0.0f);
+	red = glm::vec3(1.0f, 0.0f, 0.0f);
+
+	nodes = nullptr;
+}
+Quadtree::Quadtree(int pLevel, Rect pBounds)
+{
+	MAX_OBJECTS = 1;
+	MAX_LEVELS = 7;
+
 	level = pLevel;
-	objects = deque<Rect>();
+	//objects = deque<Rect*>();
+	rectObjects = deque<RectObject*>();
 	bounds = pBounds;
 
 	numOfNodes = 4;
@@ -23,33 +37,26 @@ Quadtree::Quadtree(int pLevel, Rect pBounds)
 	black = glm::vec3(0.0f, 0.0f, 0.0f);
 	red = glm::vec3(1.0f, 0.0f, 0.0f);
 
-
-
-	nodes = new Quadtree*[4];
-	nodes = NULL;
-
-	//nodes = (Quadtree**)malloc(sizeof(Quadtree) * 4);
-	
-	//nodes = vector<Quadtree*>();
-	
+	nodes = nullptr;
 }
 void Quadtree::clear()
 {
+	//objects.clear();
+	rectObjects.clear();
 
-	objects.clear();
-
-	if (nodes != NULL)
+	if (nodes != nullptr)
 	{
 		for (int i = 0; i < numOfNodes; i++)
 		{
-			if (nodes[i] != NULL)
+			if (nodes[i] != nullptr)
 			{
 				nodes[i]->clear();
-				nodes[i] = NULL;
+				delete(nodes[i]);
 			}
 		}
 	}
-
+	
+	nodes = nullptr;
 }
 void Quadtree::split()
 {
@@ -58,20 +65,62 @@ void Quadtree::split()
 	int x = bounds.sx;
 	int y = bounds.sy;
 
-	//nodes = (Quadtree**)malloc(sizeof(Quadtree) * 4);
+	//int ex = bounds.ex;
+	//int ey = bounds.ey;
+
 	nodes = new Quadtree*[4];
 	
+	/*
 	nodes[0] = new Quadtree(level+1, Rect(x + subWidth, y, subWidth, subHeight));
 	nodes[1] = new Quadtree(level+1, Rect(x, y, subWidth, subHeight));
 	nodes[2] = new Quadtree(level+1, Rect(x, y + subHeight, subWidth, subHeight));
-	nodes[3] = new Quadtree(level+1, Rect(x + subWidth, y + subHeight, subWidth, subHeight));
+	nodes[3] = new Quadtree(level+1, Rect(x + subWidth, y + subHeight, subWidth, subHeight));//*/
+
+	//*
+	nodes[3] = new Quadtree(level+1, Rect(x + subWidth, y + subHeight, x + subWidth + subWidth, y + subHeight + subHeight));
+	nodes[2] = new Quadtree(level+1, Rect(x, y + subHeight, x + subWidth, y));
+	nodes[1] = new Quadtree(level+1, Rect(x, y, x + subWidth, y + subHeight));
+	nodes[0] = new Quadtree(level+1, Rect(x + subWidth, y, x + subWidth + subWidth,y + subHeight));
+	//*/
 }
 /*
  * Determine which node the object belongs to. -1 means
  * object cannot completely fit within a child node and is part
  * of the parent node
  */
-int Quadtree::getIndex(Rect pRect)
+/*int Quadtree::getIndex(Rect pRect)
+{
+	int index = -1;
+	double verticalMidpoint = bounds.sx + (bounds.getWidth() / 2);
+	double horizontalMidpoint = bounds.sy + (bounds.getHeight() / 2);
+
+	// Object can completely fit within the top quadrants
+	bool topQuadrant = (pRect.sy < horizontalMidpoint && pRect.sy + pRect.getHeight() < horizontalMidpoint);
+	// Object can completely fit within the bottom quadrants
+	bool bottomQuadrant = (pRect.sy > horizontalMidpoint);
+
+	// Object can completely fit within the left quadrants
+	if (pRect.sx < verticalMidpoint && pRect.sx + pRect.getWidth() < verticalMidpoint) {
+		if (topQuadrant) {
+			index = 1;
+		}
+		else if (bottomQuadrant) {
+			index = 2;
+		}
+	}
+	// Object can completely fit within the right quadrants
+	else if (pRect.sx > verticalMidpoint) {
+		if (topQuadrant) {
+			index = 0;
+		}
+		else if (bottomQuadrant) {
+			index = 3;
+		}
+	}
+
+	return index;
+}//*/
+int Quadtree::getIndex(RectObject pRect)
 {
 	int index = -1;
 	double verticalMidpoint = bounds.sx + (bounds.getWidth() / 2);
@@ -122,12 +171,12 @@ int Quadtree::getIndex(Rect pRect)
  that can fit in a child node to be added to the child node;
  otherwise the object will stay in the parent node.
  */
-void Quadtree::insert(Rect pRect)
+/*void Quadtree::insert(Rect *pRect)
 {
-	if (nodes != NULL)
+	if (nodes != nullptr)
 	{
-		if (nodes[0] != NULL) {
-			int index = getIndex(pRect);
+		if (nodes[0] != nullptr) {
+			int index = getIndex(*pRect);
 
 			if (index != -1) {
 				nodes[index]->insert(pRect);
@@ -137,26 +186,56 @@ void Quadtree::insert(Rect pRect)
 		}
 	}
 	
-
-	//objects.add(pRect);
 	objects.push_back(pRect);
 
 	if (objects.size() > MAX_OBJECTS && level < MAX_LEVELS) {
-		//if (nodes[0] == NULL) { 
-		if (nodes == NULL) {
+		if (nodes == nullptr) {
+			split(); 
+		}
+		
+
+		int i = 0;
+		while (i < objects.size()) {
+			int index = getIndex(*objects.at(i));
+			if (index != -1) {
+				nodes[index]->insert(objects[i]);
+				objects.erase(objects.begin() + i);
+			}
+			else {
+				i++;
+			}
+		}
+	}
+}//*/
+void Quadtree::insert(RectObject *pRect)
+{
+	if (nodes != nullptr)
+	{
+		if (nodes[0] != nullptr) {
+			int index = getIndex(*pRect);
+
+			if (index != -1) {
+				nodes[index]->insert(pRect);
+
+				return;
+			}
+		}
+	}
+	
+	rectObjects.push_back(pRect);
+
+	if (rectObjects.size() > MAX_OBJECTS && level < MAX_LEVELS) {
+		if (nodes == nullptr) {
 			split(); 
 		}//*/
 		
 
 		int i = 0;
-		while (i < objects.size()) {
-			//int index = getIndex(objects.get(i));
-			int index = getIndex(objects.at(i));
+		while (i < rectObjects.size()) {
+			int index = getIndex(*rectObjects.at(i));
 			if (index != -1) {
-				//nodes[index]->insert(objects.remove(i));
-				//nodes[index]->insert(*(objects.erase(objects.begin() + i)));
-				nodes[index]->insert(objects[i]);
-				objects.erase(objects.begin() + i);
+				nodes[index]->insert(rectObjects[i]);
+				rectObjects.erase(rectObjects.begin() + i);
 			}
 			else {
 				i++;
@@ -174,34 +253,80 @@ void Quadtree::insert(Rect pRect)
  what helps to reduce the number of pairs
  to check collision against.
  */
-list<Rect>* Quadtree::retrieve(list<Rect> *returnObjects, Rect pRect)
+/*list<Rect*>* Quadtree::retrieve(list<Rect*> *returnObjects, Rect* pRect)
 {
-	int index = getIndex(pRect);
+	int index = getIndex(*pRect);
 
-	if (nodes != NULL)
+	if (nodes != nullptr)
 	{
-		if (index != -1 && nodes[0] != NULL) {
+		if (index != -1 && nodes[0] != nullptr) {
 			nodes[index]->retrieve(returnObjects, pRect);
 		}
 	}
 	
 
 	//returnObjects.addAll(objects);
-	for ( deque<Rect>::iterator it = objects.begin(); it != objects.end(); ++it)
+	for ( deque<Rect*>::iterator it = objects.begin(); it != objects.end(); ++it)
 	{
 		returnObjects->push_back(*it);
-//		int gg = 9;
 	}
 	return returnObjects;
+}//*/
+list<RectObject*>* Quadtree::retrieve(list<RectObject*> *returnObjects, RectObject* pRect)
+{
+	int index = getIndex(*pRect);
+
+	if (nodes != nullptr)
+	{
+		if (index != -1 && nodes[0] != nullptr) {
+			nodes[index]->retrieve(returnObjects, pRect);
+		}
+	}
+
+
+	//returnObjects.addAll(objects);
+	for ( deque<RectObject*>::iterator it = rectObjects.begin(); it != rectObjects.end(); ++it)
+	{
+		returnObjects->push_back(*it);
+	}
+	return returnObjects;
+}
+void Quadtree::draw(bool DRAW_CONTAINED_ITEM_ID)
+{
+	drawRectBounds(bounds, red);
+
+	if (rectObjects.size() > 0)//(objects.size() > 0)
+	{
+		glColor3f(red.x, red.y, red.z);
+		for (int i = 0; i < rectObjects.size(); i++)//objects.size();
+		{
+			glm::vec3 v1 = calcRelativePoints2D(bounds.sx,bounds.sy,screenW,screenH);
+			glRasterPos2f(v1.x, v1.y - 0.07f - (i * 0.07f));
+			glutBitmapString(GLUT_BITMAP_HELVETICA_18, rectObjects.at(i)->id_c);//objects.at(i)->id_c
+			
+		}
+		
+	}
+	
+	if (nodes != nullptr)
+	{
+		for (int i = 0; i < numOfNodes; i++)
+		{
+			if (nodes[i] != nullptr)
+			{
+				nodes[i]->draw(true);
+			}
+		}
+	}
 }
 void Quadtree::draw()
 {
 	drawRectBounds(bounds, red);
-	if (nodes != NULL)
+	if (nodes != nullptr)
 	{
 		for (int i = 0; i < numOfNodes; i++)
 		{
-			if (nodes[i] != NULL)
+			if (nodes[i] != nullptr)
 			{
 				nodes[i]->draw();
 			}
@@ -236,7 +361,7 @@ glm::vec3 Quadtree::calcRelativePoints2D(int x, int y, int screenWidth, int scre
 	float h = screenHeight / 2;
 
 	float newX = (x - w) / w;
-	float newY = (y - h) / h;
+	float newY = (h - y) / h;
 
 	glm::vec3 newCord(newX, newY, 0.0f);
 	return newCord;
