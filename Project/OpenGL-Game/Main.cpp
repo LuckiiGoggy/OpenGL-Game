@@ -17,7 +17,7 @@ const int HEIGHT = 400;
 const int GLUI_WIDTH = 166;	//not actually set-able by GLUI
 int main_window;
 int sub_window;
-WorldEngine engine = WorldEngine(WIDTH, HEIGHT);
+WorldEngine engine = WorldEngine();
 GLUI *glui;
 GLUI_EditText *filename;
 GLUI_EditText *enterWidth;
@@ -30,7 +30,7 @@ void renderScene(void);
 MeshObject myMesh;
 
 void reshape(int x, int y);
-void initGLUI();
+void initGLUI(int main_window);
 
 GroupObject test;
 
@@ -94,7 +94,7 @@ int main(int argc, char **argv) {
 	//glutIdleFunc(updateGame);
 
 	glutFullScreen();
-	initGLUI();
+	initGLUI(main_window);
 
 	GLUI_Master.set_glutKeyboardFunc(InputManager::KeyPress);
 	GLUI_Master.set_glutMouseFunc(InputManager::MouseInput);
@@ -171,7 +171,7 @@ void reshape(int x, int y) {
 	glutPostRedisplay();
 }
 
-void initGLUI() {
+void initGLUI(int main_window) {
 	glui = GLUI_Master.create_glui_subwindow(main_window, GLUI_SUBWINDOW_RIGHT);
 	glui->set_main_gfx_window(main_window);
 

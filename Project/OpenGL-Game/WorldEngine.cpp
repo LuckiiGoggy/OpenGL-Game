@@ -5,12 +5,10 @@ const int FLOOR = 1;
 const int MOVEWALL = 2;
 const int SPAWN = 3;
 
-WorldEngine::WorldEngine(int WIDTH, int HEIGHT) {
+WorldEngine::WorldEngine() {
 	loaded = false;
 	filetype = ".lvl";
 	path = "../Assets/Levels/";
-	width = WIDTH;
-	height = HEIGHT;
 }
 
 void WorldEngine::loadDirectory() {

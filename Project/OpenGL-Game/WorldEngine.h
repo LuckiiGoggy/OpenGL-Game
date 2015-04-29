@@ -18,8 +18,6 @@ public:
 	std::vector<std::string> levelNames;
 	std::string filetype;
 	std::string path;
-	int height;
-	int width;
 	int w;
 	int h;
 	int currentsectionx;
@@ -27,7 +25,7 @@ public:
 
 	bool loaded;
 
-	WorldEngine(int WIDTH, int HEIGHT);
+	WorldEngine();
 	void loadDirectory();
 	void readWorld(std::string filename);
 	bool writeWorld(std::string filename);
