@@ -31,6 +31,7 @@ public:
 	void loadDirectory();
 	void readWorld(std::string filename);
 	bool writeWorld(std::string filename);
+	bool newWorld(std::string filename, std::string sW, std::string sH);
 	void renderWorld();
 	void updateSquare(Point p, int type);
 };

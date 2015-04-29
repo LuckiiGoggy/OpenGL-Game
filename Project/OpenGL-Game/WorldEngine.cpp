@@ -3,6 +3,7 @@
 const int WALL = 0;
 const int FLOOR = 1;
 const int MOVEWALL = 2;
+const int SPAWN = 3;
 
 WorldEngine::WorldEngine(int WIDTH, int HEIGHT) {
 	loaded = false;
@@ -20,7 +21,7 @@ void WorldEngine::loadDirectory() {
 		/* print all the files and directories within directory */
 		while ((ent = readdir(dir)) != NULL) {
 			if (ent->d_namlen > filetype.size()) {
-				if (filetype.compare(0, filetype.size(), ent->d_name, 
+				if (filetype.compare(0, filetype.size(), ent->d_name,
 					ent->d_namlen - filetype.size(), filetype.size()) == 0) {
 					levelNames.push_back(strtok_s(ent->d_name, ".", &temp));
 				}
@@ -71,7 +72,9 @@ void WorldEngine::readWorld(std::string filename) {
 
 bool WorldEngine::writeWorld(std::string filename) {
 	std::ofstream file;
-	file.open(path + filename + filetype, std::ofstream::trunc);
+	if (!filename.empty()) {
+		file.open(path + filename + filetype, std::ofstream::trunc);
+	}
 
 	if (file.is_open()) {
 		file << w << std::endl;
@@ -83,14 +86,64 @@ bool WorldEngine::writeWorld(std::string filename) {
 			file << squares.at(i).type;
 		}
 
+		for (int j = 0; j < levelNames.size(); j++) {
+			if (filename.compare(levelNames[j].substr(0, levelNames[j].find("."))) == 0) {
+				return false;
+			}
+		}
+		levelNames.push_back(filename);
+
 		file.close();
 	}
-	for (int j = 0; j < levelNames.size(); j++) {
-		if (filename.compare(levelNames[j].substr(0, levelNames[j].find("."))) == 0) {
-			return true;
-		}
+
+	return true;
+}
+
+bool WorldEngine::newWorld(std::string filename, std::string sW, std::string sH) {
+	std::ofstream file;
+
+	if (!filename.empty() && !sW.empty() && !sH.empty()) {
+		file.open(path + filename + filetype, std::ofstream::trunc);
 	}
-	levelNames.push_back(filename);
+
+	if (file.is_open()) {
+		int block;
+		squares.clear();
+
+		w = stoi(sW);
+		h = stoi(sH);
+
+		glMatrixMode(GL_PROJECTION);		// setup viewing projection
+		glLoadIdentity();					// start with identity matrix
+		glOrtho(0.0, w, 0.0, h, -1.0, 1.0);	// setup a wxhx2 viewing world
+
+		for (int i = 0; i < h; i++) {
+			for (int j = 0; j < w; j++) {
+				if (i == 0 || j == 0 || i == h - 1 || j == w - 1) {
+					block = WALL;
+				}
+				else {
+					block = FLOOR;
+				}
+				squares.push_back(WorldSquare((int)i, (int)j, block));
+			}
+		}
+
+		file << w << std::endl;
+		file << h << std::endl;
+		for (std::vector<int>::size_type k = 0; k != squares.size(); k++) {
+			if (k % w == 0 && k != 0) {
+				file << std::endl;
+			}
+			file << squares.at(k).type;
+		}
+
+		file.close();
+		levelNames.push_back(filename);
+
+		loaded = true;
+		return true;
+	}
 	return false;
 }
 
@@ -104,48 +157,60 @@ void WorldEngine::renderWorld() {
 			switch (block) {
 			case WALL:
 			{
-				glColor3f(0.0, 0.0, 0.0);
+				glColor3f(0.0f, 0.0f, 0.0f);
 				glBegin(GL_POLYGON);
-				glVertex3f(i, j, 0.0);
-				glVertex3f(i + 1.0f, j, 0.0);
-				glVertex3f(i + 1.0f, j + 1.0f, 0.0);
-				glVertex3f(i, j + 1.0f, 0.0);
+				glVertex3f(i, j, 0.0f);
+				glVertex3f(i + 1.0f, j, 0.0f);
+				glVertex3f(i + 1.0f, j + 1.0f, 0.0f);
+				glVertex3f(i, j + 1.0f, 0.0f);
 				glEnd();
 				glFlush();
 				break;
 			}
 			case FLOOR:
 			{
-				glColor3f(1.0, 0.0, 0.0);
+				glColor3f(1.0f, 0.0f, 0.0f);
 				glBegin(GL_POLYGON);
-				glVertex3f(i, j, 0.0);
-				glVertex3f(i + 1.0f, j, 0.0);
-				glVertex3f(i + 1.0f, j + 1.0f, 0.0);
-				glVertex3f(i, j + 1.0f, 0.0);
+				glVertex3f(i, j, 0.0f);
+				glVertex3f(i + 1.0f, j, 0.0f);
+				glVertex3f(i + 1.0f, j + 1.0f, 0.0f);
+				glVertex3f(i, j + 1.0f, 0.0f);
 				glEnd();
 				glFlush();
 				break;
 			}
 			case MOVEWALL:
 			{
-				glColor3f(0.0, 1.0, 1.0);
+				glColor3f(0.0f, 1.0f, 1.0f);
 				glBegin(GL_POLYGON);
-				glVertex3f(i, j, 0.0);
-				glVertex3f(i + 1.0f, j, 0.0);
-				glVertex3f(i + 1.0f, j + 1.0f, 0.0);
-				glVertex3f(i, j + 1.0f, 0.0);
+				glVertex3f(i, j, 0.0f);
+				glVertex3f(i + 1.0f, j, 0.0f);
+				glVertex3f(i + 1.0f, j + 1.0f, 0.0f);
+				glVertex3f(i, j + 1.0f, 0.0f);
+				glEnd();
+				glFlush();
+				break;
+			}
+			case SPAWN:
+			{
+				glColor3f(0.0f, 0.8f, 0.0f);
+				glBegin(GL_POLYGON);
+				glVertex3f(i, j, 0.0f);
+				glVertex3f(i + 1.0f, j, 0.0f);
+				glVertex3f(i + 1.0f, j + 1.0f, 0.0f);
+				glVertex3f(i, j + 1.0f, 0.0f);
 				glEnd();
 				glFlush();
 				break;
 			}
 			default:
 			{
-				glColor3f(0.0, 0.0, 0.0);
+				glColor3f(0.0f, 0.0f, 0.0f);
 				glBegin(GL_POLYGON);
-				glVertex3f(i, j, 0.0);
-				glVertex3f(i + 1.0f, j, 0.0);
-				glVertex3f(i + 1.0f, j + 1.0f, 0.0);
-				glVertex3f(i, j + 1.0f, 0.0);
+				glVertex3f(i, j, 0.0f);
+				glVertex3f(i + 1.0f, j, 0.0f);
+				glVertex3f(i + 1.0f, j + 1.0f, 0.0f);
+				glVertex3f(i, j + 1.0f, 0.0f);
 				glEnd();
 				glFlush();
 				break;
@@ -156,7 +221,7 @@ void WorldEngine::renderWorld() {
 }
 
 void WorldEngine::updateSquare(Point p, int type) {
-	currentsectionx = p.x / (width / w);
-	currentsectiony = (height - p.y) / (height / h);
+	currentsectionx = p.x / ((glutGet(GLUT_WINDOW_WIDTH) - 166) / w);
+	currentsectiony = (glutGet(GLUT_WINDOW_HEIGHT) - p.y) / (glutGet(GLUT_WINDOW_HEIGHT) / h);
 	squares[currentsectionx * h + currentsectiony].type = type;
 }
