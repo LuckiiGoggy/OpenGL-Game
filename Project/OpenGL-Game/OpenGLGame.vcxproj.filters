@@ -135,6 +135,9 @@
     <ClCompile Include="Velocity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GLUIManager.cpp">
+      <Filter>Source Files\GameEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MeshObject.h">
@@ -211,6 +214,9 @@
     </ClInclude>
     <ClInclude Include="Velocity.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GLUIManager.h">
+      <Filter>Header Files\GameEngine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
