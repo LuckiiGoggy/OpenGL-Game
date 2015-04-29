@@ -38,6 +38,7 @@ public:
 
 
 private:
+	virtual void SetUpCamera(void);
 	virtual void BindBuffers(void);
 	virtual void ReadObjFile(std::string filename);
 

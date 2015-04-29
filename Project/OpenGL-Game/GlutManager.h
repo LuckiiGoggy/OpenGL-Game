@@ -24,7 +24,6 @@ public:
 
 private:
 	/**Initializes the Window**/
-	static void Init(void);
 	static void RenderScene(void);
 	static void IdleFunc(void);
 	static void CheckKeyInput(void);

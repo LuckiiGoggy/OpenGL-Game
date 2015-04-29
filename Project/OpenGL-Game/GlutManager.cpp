@@ -5,6 +5,7 @@
 #include "InputManager.h"
 
 std::map<std::string, IObject *> GlutManager::members;
+Camera *GlutManager::mainCamera = NULL;
 
 
 void GlutManager::Init(void)
@@ -15,11 +16,7 @@ void GlutManager::Init(void)
 
 	glutCreateWindow("OpenGL First Window");
 
-	GLenum glew_status = glewInit();
-	if (glew_status != GLEW_OK) {
-		fprintf(stderr, "Error: %s\n", glewGetErrorString(glew_status));
-		return 1;
-	}
+	glewInit();
 	if (glewIsSupported("GL_VERSION_4_0")) {
 		std::cout << "GLEW Version is 4.0\n";
 	}
