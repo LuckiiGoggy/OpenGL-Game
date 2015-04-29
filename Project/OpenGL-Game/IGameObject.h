@@ -4,7 +4,7 @@
 #include "IRenderable.h"
 
 /**Generic Interface for game objects*/
-class IGameObject : public IRenderable
+class IGameObject
 {
 public:
 

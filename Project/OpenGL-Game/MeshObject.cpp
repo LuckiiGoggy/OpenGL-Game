@@ -158,6 +158,13 @@ void MeshObject::Render() {
 		glDisableVertexAttribArray(attribute_v_coord);
 }
 
+void MeshObject::SetUpCamera(){
+
+}
+
+
+
+
 /**
 * Draw object bounding box
 */
