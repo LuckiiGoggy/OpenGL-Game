@@ -100,8 +100,8 @@ void PhysicsEngine::triggerImpact(RectObject* A, RectObject* B)
 
 	AreaOfOverlap = AreaOfObjectA + AreaOfObjectB - AreaOfIntersection
 	*/
-	float xIntersect = std::max(0, ( std::max(A->ex, B->ex) - std::min(A->sx, B->sx) ) );
-	float yIntersect = std::max(0, ( std::max(A->ey, B->ey) - std::min(A->sy, B->sy) ) );
+	float xIntersect = std::fmax(0, ( std::fmax(A->ex, B->ex) - std::fmin(A->sx, B->sx) ) );
+	float yIntersect = std::fmax(0, ( std::fmax(A->ey, B->ey) - std::fmin(A->sy, B->sy) ) );
 	float xOverlap = (A->ex - A->sx) + (B->ex - B->sx) - xIntersect;
 	float yOverlap = (A->ey - A->sy) + (B->ey - B->sy) - yIntersect;
 	

@@ -36,7 +36,7 @@ void GroupObject::Render()
 #ifdef DEBUG
 	std::cout << "\nGroup Object Rendering..";
 #endif
-	
+	/*
 	std::map<std::string, IGameObject *>::iterator iter;
 	IRenderable *renderable;
 
@@ -48,7 +48,7 @@ void GroupObject::Render()
 			#endif
 			renderable->Render();
 		}
-	}
+	}*/
 }
 
 void GroupObject::Move(glm::vec3 moveDelta)
@@ -68,7 +68,7 @@ void GroupObject::Move(glm::vec3 moveDelta)
 void GroupObject::MoveMembers(glm::vec3 moveDelta){
 	std::map<std::string, IGameObject *>::iterator iter;
 	IMovable *moveable;
-
+	/*
 	for (iter = members.begin(); iter != members.end(); ++iter) {
 		moveable = dynamic_cast<IMovable*>(iter->second);
 		if (moveable != 0 && moveable->CanMove()){
@@ -77,5 +77,5 @@ void GroupObject::MoveMembers(glm::vec3 moveDelta){
 			#endif
 			moveable->Move(moveDelta);
 		}
-	}
+	}*/
 }
