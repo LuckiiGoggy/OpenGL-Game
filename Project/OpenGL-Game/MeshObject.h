@@ -22,24 +22,25 @@ public:
 	MeshObject();
 	~MeshObject();
 
-	void Update(float timeDelta);
+	virtual void Update(float timeDelta);
 
-	bool Init(char* model_filename, char* vshader_filename, char* fshader_filename);
+	virtual bool Init(char* model_filename, char* vshader_filename, char* fshader_filename);
 
-	void Render(void);
-	void RenderBoundingBox(void);
+	virtual void Render(void);
+	virtual void RenderBoundingBox(void);
 	
-	void Move(glm::vec3);
-	void Rotate(glm::vec3, float);
-	void Scale(glm::vec3);
+	virtual void Move(glm::vec3);
+	virtual void Rotate(glm::vec3, float);
+	virtual void Scale(glm::vec3);
 
 
 	GLuint program;
 
 
 private:
-	void BindBuffers(void);
-	void ReadObjFile(std::string filename);
+	virtual void SetUpCamera(void);
+	virtual void BindBuffers(void);
+	virtual void ReadObjFile(std::string filename);
 
 
 	std::vector<glm::vec4> vertices;

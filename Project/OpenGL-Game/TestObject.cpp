@@ -5,7 +5,6 @@
 
 TestObject::TestObject()
 {
-	isVisible = true;
 	canMove = true;
 }
 

@@ -27,12 +27,12 @@ MouseInfo InputManager::mouseInfo;
 
 
 void InputManager::Init(){
-	glutKeyboardFunc(InputManager::KeyPress);
+	//glutKeyboardFunc(InputManager::KeyPress);
 	glutKeyboardUpFunc(InputManager::KeyUp);
 	glutSpecialFunc(InputManager::SpecialKeyPress);
 	glutSpecialUpFunc(InputManager::SpecialKeyUp);
 
-	glutMouseFunc(InputManager::MouseInput);
+	//glutMouseFunc(InputManager::MouseInput);
 
 	glutMotionFunc(InputManager::MouseMotion);
 	glutPassiveMotionFunc(InputManager::MouseMotion);
@@ -287,4 +287,17 @@ Point InputManager::GetMousePos(){
 	std::cout << ", x: " << mouseInfo.currPos.x;
 	std::cout << ", y: " << mouseInfo.currPos.y;
 #endif
+}
+
+void InputManager::ClearInput(void){
+	for (int i = 0; i < 256; i++){
+		keySpecialStates[i].state = false;
+	}
+	for (int i = 0; i < 512; i++){
+		keyStates[i].state = false;
+	}
+
+	mouseInfo.isLeftButtonDown = false;
+	mouseInfo.isMiddleButtonDown = false;
+	mouseInfo.isRightButtonDown = false;
 }
