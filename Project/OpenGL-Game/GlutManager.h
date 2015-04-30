@@ -15,6 +15,7 @@ public:
 	static void Init(void);
 	static void StartLoop(void);
 	static void EndLoop(void);
+	static void IdleFunc(void);
 
 	static Camera *GetMainCamera(void);
 	static void SetMainCamera(Camera *camera);
@@ -22,16 +23,20 @@ public:
 
 	static void AddMember(std::string name, IObject *object);
 
+
+	static GLint mainWindow;
+
+
 private:
 	/**Initializes the Window**/
 	static void RenderScene(void);
-	static void IdleFunc(void);
 	static void CheckKeyInput(void);
 	static void Reshape(int x, int y);
 
 	/*Members*/
 	static std::map<std::string, IObject *> members;
 	static Camera *mainCamera;
+
 	
 };
 

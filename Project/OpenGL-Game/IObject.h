@@ -1,6 +1,9 @@
 #ifndef IOBJECT_H
 #define IOBJECT_H
 
-class IObject{};
+#include "IRenderable.h"
+
+class IObject : public IRenderable
+{};
 
 #endif

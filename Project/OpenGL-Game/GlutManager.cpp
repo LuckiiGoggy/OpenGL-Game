@@ -3,9 +3,11 @@
 #include "GlutManager.h"
 #include "IRenderable.h"
 #include "InputManager.h"
+#include "GLUIManager.h"
 
 std::map<std::string, IObject *> GlutManager::members;
 Camera *GlutManager::mainCamera = NULL;
+GLint GlutManager::mainWindow;
 
 
 void GlutManager::Init(void)
@@ -14,7 +16,7 @@ void GlutManager::Init(void)
 	glutInitWindowPosition(200, 200);//optional
 	glutInitWindowSize(400, 400); //optional
 
-	glutCreateWindow("OpenGL First Window");
+	mainWindow = glutCreateWindow("OpenGL First Window");
 
 	glewInit();
 	if (glewIsSupported("GL_VERSION_4_0")) {
@@ -24,7 +26,9 @@ void GlutManager::Init(void)
 		std::cout << "GLEW 4.0 not supported\n";
 	}
 
-	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);	
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glutDisplayFunc(GlutManager::RenderScene);
 	glutIdleFunc(GlutManager::IdleFunc);
@@ -49,8 +53,24 @@ void GlutManager::EndLoop(void){
 }
 
 void GlutManager::RenderScene(void){
+
+	//std::cout << "\n In RenderScene";
+
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(1.0, 1.0, 1.0, 1.0);
+
+	std::map<std::string, IObject *>::iterator iter;
+	IRenderable *renderable;
+
+	for (iter = members.begin(); iter != members.end(); ++iter) {
+		renderable = dynamic_cast<IRenderable*>(iter->second);
+		if (renderable != 0){
+			dynamic_cast<IUpdateable*>(iter->second)->Update(0.0f);
+			renderable->Render();
+		}
+	}
+
 
 	glutSwapBuffers();
 }
@@ -73,7 +93,8 @@ void GlutManager::IdleFunc(void){
 	if (InputManager::isKeyDown(KeyCodes::Space)) myMesh.Move(glm::vec3(0.0f, 0.01f, 0.0f));
 	*/
 
-
+	//std::cout << "\n In IdleFunc";
+	glutSetWindow(mainWindow);
 	glutPostRedisplay();
 }
 
@@ -93,6 +114,13 @@ void GlutManager::Reshape(int x, int y) {
 	glLoadIdentity();
 	*/
 
+	GLUIManager::reshape(x, y);
 
-	glutPostRedisplay();
+
+	//glutPostRedisplay();
+}
+
+
+void GlutManager::AddMember(std::string name, IObject *object){
+	members[name] = object;
 }

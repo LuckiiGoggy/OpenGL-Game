@@ -2,9 +2,10 @@
 #define IGAMEOBJECT_H
 
 #include "IRenderable.h"
+#include "IObject.h"
 
 /**Generic Interface for game objects*/
-class IGameObject
+class IGameObject: public IObject
 {
 public:
 
