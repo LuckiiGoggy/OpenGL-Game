@@ -169,6 +169,11 @@ public:
 	**/
 	static Point GetMousePosOfSpecialKeyRelease(unsigned char key);
 
+	/**
+		Sets all keyinput status to false
+	**/
+	static void ClearInput(void);
+
 	/** Checks if the left Mouse Button is currently pressed down **/
 	static bool isLeftButtonDown();
 	/** Checks if the left Mouse Button is currently released **/
