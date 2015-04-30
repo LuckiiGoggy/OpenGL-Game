@@ -1,4 +1,13 @@
 #include "GLUIManager.h"
+#include "GlutManager.h"
+
+WorldEngine GLUIManager::engine;
+GLUI *GLUIManager::glui;
+GLUI_EditText *GLUIManager::filename;
+GLUI_EditText *GLUIManager::enterWidth;
+GLUI_EditText *GLUIManager::enterHeight;
+GLUI_RadioGroup *GLUIManager::radiogroup;
+GLUI_Panel *GLUIManager::panel4;
 
 const int SAVE = 1;
 const int LOAD = 2;
@@ -7,6 +16,7 @@ const int NEW = 3;
 void GLUIManager::reshape(int x, int y) {
 	GLUI_Master.auto_set_viewport();
 
+	glutSetWindow(GlutManager::mainWindow);
 	glutPostRedisplay();
 }
 
@@ -64,6 +74,13 @@ void GLUIManager::initGLUI(int main_window, void updateGame()) {
 	/* We register the idle callback with GLUI, *not* with GLUT */
 	GLUI_Master.set_glutIdleFunc(updateGame);
 	GLUI_Master.set_glutReshapeFunc(reshape);
-	GLUI_Master.set_glutKeyboardFunc(InputManager::KeyPress);
+	GLUI_Master.set_glutKeyboardFunc(GLUIManager::KeyHandling);
 	GLUI_Master.set_glutMouseFunc(InputManager::MouseInput);
+	
+}
+
+void GLUIManager::KeyHandling(unsigned char key, int x, int y)
+{
+	InputManager::KeyPress(key, x, y);
+	//glutSetWindow(GlutManager::mainWindow);
 }
