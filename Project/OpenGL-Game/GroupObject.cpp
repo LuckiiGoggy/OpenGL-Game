@@ -1,53 +1,42 @@
 #include "GroupObject.h"
+#include <iostream>
+#include <typeinfo>
 
 
 GroupObject::GroupObject()
 {
 }
 
-
 GroupObject::~GroupObject()
 {
+	EmptyMembers();
 }
-
-
 
 void GroupObject::Render()
 {
-
-}
-
-void GroupObject::Move(int x, int y, int z)
-{
-
-}
-
-void GroupObject::MoveUp(int delta)
-{
+	#ifdef DEBUG
+		std::cout << "\nGroup Object Rendering..";
+	#endif
 	
+	RenderMembers();
+
 }
 
-void GroupObject::MoveDown(int delta)
+void GroupObject::Update(float timeDelta){
+	UpdateMembers(timeDelta);
+}
+
+void GroupObject::Move(glm::vec3 moveDelta)
 {
+#ifdef DEBUG
+	std::cout << "\nGroup Object Moving..";
+	std::cout << "(x: " << moveDelta.x;
+	std::cout << ", y: ";
+	std::cout << y << ", z: ";
+	std::cout << z << ")";
+#endif
+	position += moveDelta;
 
+	MoveMembers(moveDelta);
 }
 
-void GroupObject::MoveLeft(int delta)
-{
-
-}
-
-void GroupObject::MoveRight(int delta)
-{
-
-}
-
-void GroupObject::MoveForward(int delta)
-{
-
-}
-
-void GroupObject::MoveBackward(int delta)
-{
-
-}

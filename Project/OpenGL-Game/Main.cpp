@@ -2,71 +2,69 @@
 #include "openGL.h"
 #include <gl/GLU.h>
 
-//Santo Tallarico COMP4900 World Builder/Editor
 #include "WorldEngine.h"
 #include "InputManager.h"
+#include "IGameObject.h"
+#include "GroupObject.h"
+#include "TestObject.h"
+#include "MeshObject.h"
+#include "GLUIManager.h"
+#include "GlutManager.h"
+#include "GameScene.h"
 
-WorldEngine engine;
-void renderScene(void);
+WorldEngine engine = WorldEngine();
 void updateGame();
+void menuEvents(int choice);
+void renderScene(void);
+MeshObject myMesh;
+
+GroupObject test;
 
 int main(int argc, char **argv) {
+	int menu;
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-	glutInitWindowPosition(200, 200);//optional
-	glutInitWindowSize(400, 400); //optional
-	glutCreateWindow("OpenGL First Window");
+	GlutManager::Init();
 
-	glewInit();
-	if (glewIsSupported("GL_VERSION_4_0")) {
-		std::cout << " GLEW Version is 4.0\n ";
-	}
-	else {
-		std::cout << "GLEW 4.0 not supported\n ";
-	}
+	char* obj_filename = (char*) "../Assets/Models/spear.obj";
+	char* v_shader_filename = (char*) "../Assets/Shaders/gouraud-shading-two-sided.v.glsl";
+	char* f_shader_filename = (char*) "../Assets/Shaders/gouraud-shading-two-sided.f.glsl";
 
-	glEnable(GL_DEPTH_TEST);
+	myMesh.Init(obj_filename, v_shader_filename, f_shader_filename);
 
-	engine.readWorld();
-	engine.writeWorld();
+	
+	GlutManager::AddMember("MyMesh", &myMesh);
+	
+	InputManager::Init();
 
-	glutDisplayFunc(renderScene);
+	/*
+	GameScene *gS = new GameScene();
 
+	gS->Init();
 
-
-	glutKeyboardFunc(InputManager::KeyPress);
-	glutKeyboardUpFunc(InputManager::KeyUp);
-	glutSpecialFunc(InputManager::SpecialKeyPress);
-	glutSpecialUpFunc(InputManager::SpecialKeyUp);
-
-	glutMouseFunc(InputManager::MouseInput);
-
-	glutMotionFunc(InputManager::MouseMotion);
-	glutPassiveMotionFunc(InputManager::MouseMotion);
+	GlutManager::AddMember("Derp", gS);
+	*/
+	
 
 
-	glutIdleFunc(updateGame);
 
-	glutMainLoop();
+	GlutManager::StartLoop();
 
 	return 0;
 }
 
 
-void updateGame()
-{
-	if (InputManager::isKeyDown(KeyCodes::ESC)) glutLeaveMainLoop();
-		glutPostRedisplay();
-}
-
 void renderScene(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(1.0, 1.0, 1.0, 1.0);
+	glClearColor(0.5, 0.5, 0.5, 1.0);
+
+	myMesh.Update(0.0f);
+	myMesh.Render();
+	myMesh.RenderBoundingBox();
 
 	if (engine.loaded == true) {
 		engine.renderWorld();
 	}
 
+
 	glutSwapBuffers();
 }
-

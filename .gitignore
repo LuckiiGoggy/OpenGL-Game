@@ -4,8 +4,8 @@
 *.exe
 *.ilk
 *.pdb
-*.obj
 *.tlog
 *.log
 *.pdb
 *.idb
+Project/OpenGL-Game/Debug/

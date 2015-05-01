@@ -1,12 +1,19 @@
+#ifndef POSITION_H
+#define POSITION_H
+
 #pragma once
 
 struct Position2D{
-	int x = 0;
-	int y = 0;
+	Position2D();
+	int x;
+	int y;
 };
 
 struct Position3D{
-	int x = 0;
-	int y = 0;
-	int z = 0;
+	Position3D();
+	int x;
+	int y;
+	int z;
 };
+
+#endif
