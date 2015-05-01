@@ -3,6 +3,7 @@
 
 #include "openGL.h"
 #include "WorldSquare.h"
+#include "MeshObject.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -14,7 +15,9 @@
 class WorldEngine {
 
 public:
+	enum TileType{ WALL, FLOOR, MOVEWALL, SPAWN };
 	std::vector<WorldSquare> squares;
+	std::vector<MeshObject*> meshes;
 	std::vector<std::string> levelNames;
 	std::string filetype;
 	std::string path;

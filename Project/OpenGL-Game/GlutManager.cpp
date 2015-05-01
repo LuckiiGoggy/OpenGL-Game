@@ -15,7 +15,7 @@ void GlutManager::Init(void)
 {
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(200, 200);//optional
-	glutInitWindowSize(400, 400); //optional
+	glutInitWindowSize(566, 400); //optional
 
 	mainWindow = glutCreateWindow("OpenGL First Window");
 
@@ -76,6 +76,10 @@ void GlutManager::RenderScene(void){
 		}
 	}
 
+	if (GLUIManager::engine.loaded == true) {
+		GLUIManager::engine.renderWorld();
+	}
+
 
 	glutSwapBuffers();
 }
@@ -86,12 +90,12 @@ void GlutManager::IdleFunc(void){
 
 	if (InputManager::isKeyDown(KeyCodes::ESC)) glutLeaveMainLoop();
 
-	/*
-	if (InputManager::isLeftButtonDown() && engine.loaded == true) {
+	
+	if (InputManager::isLeftButtonDown() && GLUIManager::engine.loaded == true) {
 		Point p = InputManager::GetMousePos();
-		engine.updateSquare(p, radiogroup->get_int_val());
+		GLUIManager::engine.updateSquare(p, GLUIManager::radiogroup->get_int_val());
 	}
-	*/
+	
 	
 	if (InputManager::isKeyDown(KeyCodes::w)) mainCamera->Move(glm::vec3(0.0f, 0.0f, 0.005f));
 	if (InputManager::isKeyDown(KeyCodes::a)) mainCamera->Move(glm::vec3(0.005f, 0.0f, 0.0f));
@@ -116,6 +120,17 @@ void GlutManager::IdleFunc(void){
 	mainCamera->Update(currDelta);
 
 	UpdateMembers(currDelta);
+
+	
+	/*
+	if (InputManager::isKeyDown(KeyCodes::w)) myMesh.Move(glm::vec3(0.0f, 0.0f, 0.01f));
+	if (InputManager::isKeyDown(KeyCodes::a)) myMesh.Move(glm::vec3(-0.01f, 0.0f, 0.0f));
+	if (InputManager::isKeyDown(KeyCodes::s)) myMesh.Move(glm::vec3(0.0f, 0.0f, -0.01f));
+	if (InputManager::isKeyDown(KeyCodes::d)) myMesh.Move(glm::vec3(0.01f, 0.0f, 0.0f));
+	if (InputManager::isSpecialKeyDown(GLUT_KEY_SHIFT_L)) myMesh.Move(glm::vec3(0.0f, -0.01f, 0.0f));
+	if (InputManager::isKeyDown(KeyCodes::Space)) myMesh.Move(glm::vec3(0.0f, 0.01f, 0.0f));
+	*/
+	
 
 	glutSetWindow(mainWindow);
 
