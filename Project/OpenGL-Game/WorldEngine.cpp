@@ -6,6 +6,11 @@ const int FLOOR = 1;
 const int MOVEWALL = 2;
 const int SPAWN = 3;
 
+char* floor_filename = (char*) "../Assets/Models/floorCube.obj";
+char* wall_filename = (char*) "../Assets/Models/wallCube.obj";
+char* v_shader_filename = (char*) "../Assets/Shaders/gouraud-shading.v.glsl";
+char* f_shader_filename = (char*) "../Assets/Shaders/gouraud-shading.f.glsl";
+
 WorldEngine::WorldEngine() {
 	loaded = false;
 	filetype = ".lvl";
@@ -44,6 +49,7 @@ void WorldEngine::readWorld(std::string filename) {
 		int block;
 		std::string s;
 		squares.clear();
+		meshes.clear();
 
 		std::getline(file, s);
 		w = stoi(s);
@@ -60,10 +66,38 @@ void WorldEngine::readWorld(std::string filename) {
 			for (float j = 0; j < w; j++) {
 				block = (int)(s.at(index) - '0');
 				squares.push_back(WorldSquare((int)i, (int)j, block));
+				MeshObject* p = new MeshObject();
+				switch (block) {
+				case WALL:
+				{
+					p->Init(wall_filename, v_shader_filename, f_shader_filename);
+					break;
+				}
+				case FLOOR:
+				{
+					p->Init(floor_filename, v_shader_filename, f_shader_filename);
+					break;
+				}
+				case MOVEWALL:
+				{
+					p->Init(wall_filename, v_shader_filename, f_shader_filename);
+					break;
+				}
+				case SPAWN:
+				{
+					p->Init(floor_filename, v_shader_filename, f_shader_filename);
+					break;
+				}
+				default:
+				{
+					p->Init(wall_filename, v_shader_filename, f_shader_filename);
+					break;
+				}
+				}
+				meshes.push_back(p);
 				index++;
 			}
 		}
-
 		loaded = true;
 		file.close();
 	}
@@ -108,6 +142,7 @@ bool WorldEngine::newWorld(std::string filename, std::string sW, std::string sH)
 	if (file.is_open()) {
 		int block;
 		squares.clear();
+		meshes.clear();
 
 		w = stoi(sW);
 		h = stoi(sH);
@@ -118,13 +153,17 @@ bool WorldEngine::newWorld(std::string filename, std::string sW, std::string sH)
 
 		for (int i = 0; i < h; i++) {
 			for (int j = 0; j < w; j++) {
+				MeshObject* p = new MeshObject();
 				if (i == 0 || j == 0 || i == h - 1 || j == w - 1) {
 					block = WALL;
+					p->Init(wall_filename, v_shader_filename, f_shader_filename);
 				}
 				else {
 					block = FLOOR;
+					p->Init(floor_filename, v_shader_filename, f_shader_filename);
 				}
 				squares.push_back(WorldSquare((int)i, (int)j, block));
+				meshes.push_back(p);
 			}
 		}
 
@@ -157,14 +196,13 @@ void WorldEngine::renderWorld() {
 	int index = 0;
 	int block;
 
-	char* obj_filename = (char*) "../Assets/Models/cube.obj";
-	char* v_shader_filename = (char*) "../Assets/Shaders/gouraud-shading.v.glsl";
-	char* f_shader_filename = (char*) "../Assets/Shaders/gouraud-shading.f.glsl";
-
 	for (float i = 0; i < h; i++) {
 		for (float j = 0; j < w; j++) {
 			block = squares.at(index).type;
 			index++;
+			meshes[i]->Move(glm::vec3(j / 100, 0.0f, i / 100));
+			meshes[i]->Render();
+
 			switch (block) {
 			case WALL:
 			{

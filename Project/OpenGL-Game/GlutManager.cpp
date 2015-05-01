@@ -14,7 +14,7 @@ void GlutManager::Init(void)
 {
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(200, 200);//optional
-	glutInitWindowSize(400, 400); //optional
+	glutInitWindowSize(566, 400); //optional
 
 	mainWindow = glutCreateWindow("OpenGL First Window");
 
@@ -35,7 +35,6 @@ void GlutManager::Init(void)
 	glutReshapeFunc(GlutManager::Reshape);
 
 	InputManager::Init();
-
 }
 
 
@@ -96,6 +95,7 @@ void GlutManager::IdleFunc(void){
 	if (InputManager::isSpecialKeyDown(GLUT_KEY_SHIFT_L)) myMesh.Move(glm::vec3(0.0f, -0.01f, 0.0f));
 	if (InputManager::isKeyDown(KeyCodes::Space)) myMesh.Move(glm::vec3(0.0f, 0.01f, 0.0f));
 	*/
+	
 
 	//std::cout << "\n In IdleFunc";
 	glutSetWindow(mainWindow);

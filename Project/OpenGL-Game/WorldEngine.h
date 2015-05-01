@@ -16,7 +16,7 @@ class WorldEngine {
 
 public:
 	std::vector<WorldSquare> squares;
-	std::vector<MeshObject> meshes;
+	std::vector<MeshObject*> meshes;
 	std::vector<std::string> levelNames;
 	std::string filetype;
 	std::string path;
