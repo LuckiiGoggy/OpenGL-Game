@@ -1,4 +1,5 @@
 #include "WorldEngine.h"
+#include "MeshObject.h"
 
 const int WALL = 0;
 const int FLOOR = 1;
