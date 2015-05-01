@@ -156,6 +156,8 @@ void MeshObject::Render() {
 		glDisableVertexAttribArray(attribute_v_normal);
 	if (vbo_vertices != 0)
 		glDisableVertexAttribArray(attribute_v_coord);
+
+	RenderBoundingBox();
 }
 
 void MeshObject::SetUpCamera(){
@@ -265,8 +267,11 @@ void MeshObject::Update(float timeDelta){
 }
 
 void MeshObject::Move(glm::vec3 moveDelta){
+	sumTranslation = glm::translate(sumTranslation, moveDelta);	
+}
+void MeshObject::Move(float x, float y, float z){
+	glm::vec3 moveDelta = glm::vec3(x, y, z);
 	sumTranslation = glm::translate(sumTranslation, moveDelta);
-	
 }
 
 void MeshObject::Rotate(glm::vec3 rotateAxis, float angle){
@@ -274,6 +279,10 @@ void MeshObject::Rotate(glm::vec3 rotateAxis, float angle){
 }
 
 void MeshObject::Scale(glm::vec3 scaleF){
+	sumScale = glm::scale(sumScale, scaleF);
+}
+void MeshObject::Scale(float x, float y, float z){
+	glm::vec3 scaleF = glm::vec3(x, y, z);
 	sumScale = glm::scale(sumScale, scaleF);
 }
 
