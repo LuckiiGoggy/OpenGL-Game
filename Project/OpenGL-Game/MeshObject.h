@@ -30,8 +30,10 @@ public:
 	virtual void RenderBoundingBox(void);
 	
 	virtual void Move(glm::vec3);
+	virtual void Move(float x, float y, float z);
 	virtual void Rotate(glm::vec3, float);
 	virtual void Scale(glm::vec3);
+	virtual void Scale(float x, float y, float z);
 
 
 	GLuint program;
@@ -54,10 +56,10 @@ private:
 	glm::mat4 sumScale;
 
 
-	GLint attribute_v_coord = -1;
-	GLint attribute_v_normal = -1;
-	GLint uniform_m = -1, uniform_v = -1, uniform_p = -1;
-	GLint uniform_m_3x3_inv_transp = -1, uniform_v_inv = -1;
+	GLint attribute_v_coord;
+	GLint attribute_v_normal;
+	GLint uniform_m, uniform_v, uniform_p;
+	GLint uniform_m_3x3_inv_transp, uniform_v_inv;
 
 	GLuint vbo_vertices, vbo_normals, ibo_elements;
 };
