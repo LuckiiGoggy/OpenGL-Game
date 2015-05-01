@@ -30,8 +30,10 @@ public:
 	virtual void RenderBoundingBox(void);
 	
 	virtual void Move(glm::vec3);
+	virtual void Move(float x, float y, float z);
 	virtual void Rotate(glm::vec3, float);
 	virtual void Scale(glm::vec3);
+	virtual void Scale(float x, float y, float z);
 
 
 	GLuint program;
