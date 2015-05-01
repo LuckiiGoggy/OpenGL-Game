@@ -9,6 +9,15 @@ MeshObject::MeshObject() : vbo_vertices(0), vbo_normals(0), ibo_elements(0), obj
 	sumRotation = glm::mat4();
 	sumTranslation = glm::mat4();
 	sumScale = glm::mat4();
+
+
+	attribute_v_coord = -1;
+	attribute_v_normal = -1;
+	uniform_m = -1;
+	uniform_v = -1;
+	uniform_p = -1;
+	uniform_m_3x3_inv_transp = -1;
+	uniform_v_inv = -1;
 }
 
 MeshObject::~MeshObject() {
