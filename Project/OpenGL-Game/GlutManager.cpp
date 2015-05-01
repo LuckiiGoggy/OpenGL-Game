@@ -8,6 +8,7 @@
 std::map<std::string, IObject *> GlutManager::members;
 Camera *GlutManager::mainCamera = NULL;
 GLint GlutManager::mainWindow;
+float GlutManager::currDelta;
 
 
 void GlutManager::Init(void)
@@ -36,6 +37,9 @@ void GlutManager::Init(void)
 
 	InputManager::Init();
 
+	GLUIManager::initGLUI(GlutManager::mainWindow, GlutManager::IdleFunc);
+
+	currDelta = glutGet(GLUT_ELAPSED_TIME);
 }
 
 
@@ -66,7 +70,6 @@ void GlutManager::RenderScene(void){
 	for (iter = members.begin(); iter != members.end(); ++iter) {
 		renderable = dynamic_cast<IRenderable*>(iter->second);
 		if (renderable != 0){
-			dynamic_cast<IUpdateable*>(iter->second)->Update(0.0f);
 			renderable->Render();
 		}
 	}
@@ -94,7 +97,12 @@ void GlutManager::IdleFunc(void){
 	*/
 
 	//std::cout << "\n In IdleFunc";
-	glutSetWindow(mainWindow);
+
+	currDelta = glutGet(GLUT_ELAPSED_TIME) - currDelta;
+	UpdateMembers(currDelta);
+
+	glutSetWindow(mainWindow);
+
 	glutPostRedisplay();
 }
 
@@ -123,4 +131,17 @@ void GlutManager::Reshape(int x, int y) {
 
 void GlutManager::AddMember(std::string name, IObject *object){
 	members[name] = object;
+}
+
+void GlutManager::UpdateMembers(float timeDelta){
+	std::map<std::string, IObject *>::iterator iter;
+	IUpdateable *updateable;
+
+	for (iter = members.begin(); iter != members.end(); ++iter) {
+		updateable = dynamic_cast<IUpdateable*>(iter->second);
+		if (updateable != 0){
+			updateable->Update(timeDelta);
+		}
+	}
+
 }

@@ -7,7 +7,7 @@
 #include <map>
 
 
-class GlutManager
+class GlutManager 
 {
 public:
 	GlutManager();
@@ -32,10 +32,13 @@ private:
 	static void RenderScene(void);
 	static void CheckKeyInput(void);
 	static void Reshape(int x, int y);
+	static void UpdateMembers(float timeDelta);
 
 	/*Members*/
 	static std::map<std::string, IObject *> members;
 	static Camera *mainCamera;
+	static glm::vec3 position;
+	static float currDelta;
 
 	
 };

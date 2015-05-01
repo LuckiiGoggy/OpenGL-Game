@@ -7,10 +7,6 @@
 /**Generic Interface for game objects*/
 class IGameObject: public IObject
 {
-public:
-
-protected:
-
 };
 
 #endif

@@ -10,6 +10,7 @@
 #include "MeshObject.h"
 #include "GLUIManager.h"
 #include "GlutManager.h"
+#include "GameScene.h"
 
 WorldEngine engine = WorldEngine();
 void updateGame();
@@ -23,6 +24,7 @@ int main(int argc, char **argv) {
 	int menu;
 	glutInit(&argc, argv);
 	GlutManager::Init();
+	
 	/*
 	char* obj_filename = (char*) "../Assets/Models/suzanne.obj";
 	char* v_shader_filename = (char*) "../Assets/Shaders/phong-shading.v.glsl";
@@ -30,17 +32,27 @@ int main(int argc, char **argv) {
 
 	myMesh.Init(obj_filename, v_shader_filename, f_shader_filename);
 
-
+	
 	GlutManager::AddMember("MyMesh", &myMesh);
 	*/
+	
+
+
+
 	InputManager::Init();
 
-	GLUIManager::initGLUI(GlutManager::mainWindow, GlutManager::IdleFunc);
+	
+	GameScene *gS = new GameScene();
+
+	gS->Init();
+
+	GlutManager::AddMember("Derp", gS);
+	
+	
+
+
 
 	GlutManager::StartLoop();
-
-
-	glutMainLoop();
 
 	return 0;
 }
