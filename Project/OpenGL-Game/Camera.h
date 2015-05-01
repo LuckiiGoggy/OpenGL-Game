@@ -21,6 +21,7 @@ public:
 	virtual void Move(glm::vec3);
 	virtual void Rotate(glm::vec3, float);
 	virtual void Update(float timeDelta);
+	virtual void ClearRotation(void);
 	virtual glm::mat4 GetPerspective();
 	virtual glm::mat4 GetCameraMat();
 

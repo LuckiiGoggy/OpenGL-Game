@@ -40,6 +40,8 @@ void GlutManager::Init(void)
 	GLUIManager::initGLUI(GlutManager::mainWindow, GlutManager::IdleFunc);
 
 	currDelta = glutGet(GLUT_ELAPSED_TIME);
+
+	mainCamera = new Camera();
 }
 
 
@@ -79,6 +81,9 @@ void GlutManager::RenderScene(void){
 }
 
 void GlutManager::IdleFunc(void){
+
+	currDelta = glutGet(GLUT_ELAPSED_TIME) - currDelta;
+
 	if (InputManager::isKeyDown(KeyCodes::ESC)) glutLeaveMainLoop();
 
 	/*
@@ -87,18 +92,29 @@ void GlutManager::IdleFunc(void){
 		engine.updateSquare(p, radiogroup->get_int_val());
 	}
 	*/
-	/*
-	if (InputManager::isKeyDown(KeyCodes::w)) myMesh.Move(glm::vec3(0.0f, 0.0f, 0.01f));
-	if (InputManager::isKeyDown(KeyCodes::a)) myMesh.Move(glm::vec3(-0.01f, 0.0f, 0.0f));
-	if (InputManager::isKeyDown(KeyCodes::s)) myMesh.Move(glm::vec3(0.0f, 0.0f, -0.01f));
-	if (InputManager::isKeyDown(KeyCodes::d)) myMesh.Move(glm::vec3(0.01f, 0.0f, 0.0f));
-	if (InputManager::isSpecialKeyDown(GLUT_KEY_SHIFT_L)) myMesh.Move(glm::vec3(0.0f, -0.01f, 0.0f));
-	if (InputManager::isKeyDown(KeyCodes::Space)) myMesh.Move(glm::vec3(0.0f, 0.01f, 0.0f));
-	*/
+	
+	if (InputManager::isKeyDown(KeyCodes::w)) mainCamera->Move(glm::vec3(0.0f, 0.0f, 0.005f));
+	if (InputManager::isKeyDown(KeyCodes::a)) mainCamera->Move(glm::vec3(0.005f, 0.0f, 0.0f));
+	if (InputManager::isKeyDown(KeyCodes::s)) mainCamera->Move(glm::vec3(0.0f, 0.0f, -0.005f));
+	if (InputManager::isKeyDown(KeyCodes::d)) mainCamera->Move(glm::vec3(-0.005f, 0.0f, 0.0f));
+	if (InputManager::isSpecialKeyDown(GLUT_KEY_SHIFT_L)) mainCamera->Move(glm::vec3(0.0f, -0.005f, 0.0f));
+	if (InputManager::isKeyDown(KeyCodes::Space)) mainCamera->Move(glm::vec3(0.0f, 0.005f, 0.0f));
+	
+	if (InputManager::isSpecialKeyDown(GLUT_KEY_LEFT)) mainCamera->Rotate(glm::vec3(0.0f, 1.0f, 0.0f), 0.001f);
+	if (InputManager::isSpecialKeyDown(GLUT_KEY_RIGHT)) mainCamera->Rotate(glm::vec3(0.0f, 1.0f, 0.0f), -0.001f);
+	if (InputManager::isSpecialKeyDown(GLUT_KEY_UP)) mainCamera->Rotate(glm::vec3(1.0f, 0.0f, 0.0f), 0.001f);
+	if (InputManager::isSpecialKeyDown(GLUT_KEY_DOWN)) mainCamera->Rotate(glm::vec3(1.0f, 0.0f, 0.0f), -0.001f);
+
+
+	if (InputManager::isKeyDown(KeyCodes::m)) mainCamera->ClearRotation();
+
+
+
 
 	//std::cout << "\n In IdleFunc";
 
-	currDelta = glutGet(GLUT_ELAPSED_TIME) - currDelta;
+	mainCamera->Update(currDelta);
+
 	UpdateMembers(currDelta);
 
 	glutSetWindow(mainWindow);
