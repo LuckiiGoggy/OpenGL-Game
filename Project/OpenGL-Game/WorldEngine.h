@@ -15,6 +15,7 @@
 class WorldEngine {
 
 public:
+	enum TileType{ WALL, FLOOR, MOVEWALL, SPAWN };
 	std::vector<WorldSquare> squares;
 	std::vector<MeshObject*> meshes;
 	std::vector<std::string> levelNames;

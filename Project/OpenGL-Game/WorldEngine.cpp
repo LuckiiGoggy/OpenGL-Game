@@ -1,11 +1,6 @@
 #include "WorldEngine.h"
 #include "MeshObject.h"
 
-const int WALL = 0;
-const int FLOOR = 1;
-const int MOVEWALL = 2;
-const int SPAWN = 3;
-
 char* floor_filename = (char*) "../Assets/Models/floorCube.obj";
 char* wall_filename = (char*) "../Assets/Models/wallCube.obj";
 char* v_shader_filename = (char*) "../Assets/Shaders/gouraud-shading.v.glsl";
@@ -200,7 +195,7 @@ void WorldEngine::renderWorld() {
 		for (float j = 0; j < w; j++) {
 			block = squares.at(index).type;
 			index++;
-			meshes[i]->Move(glm::vec3(j / 100, 0.0f, i / 100));
+			meshes[i]->Move(glm::vec3(j * 2, 0.0f, i * 2));
 			meshes[i]->Render();
 
 			switch (block) {
