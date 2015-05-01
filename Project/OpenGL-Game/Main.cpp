@@ -11,7 +11,6 @@
 #include "GLUIManager.h"
 #include "GlutManager.h"
 
-WorldEngine engine = WorldEngine();
 void updateGame();
 void menuEvents(int choice);
 void renderScene(void);
@@ -39,7 +38,6 @@ int main(int argc, char **argv) {
 
 	GlutManager::StartLoop();
 
-
 	glutMainLoop();
 
 	return 0;
@@ -53,11 +51,6 @@ void renderScene(void) {
 	myMesh.Update(0.0f);
 	myMesh.Render();
 	myMesh.RenderBoundingBox();
-
-	if (engine.loaded == true) {
-		engine.renderWorld();
-	}
-
 
 	glutSwapBuffers();
 }

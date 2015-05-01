@@ -137,9 +137,16 @@ bool WorldEngine::newWorld(std::string filename, std::string sW, std::string sH)
 		}
 
 		file.close();
+		loaded = true;
+
+		for (int j = 0; j < levelNames.size(); j++) {
+			if (filename.compare(levelNames[j]) == 0) {
+				return false;
+			}
+		}
+
 		levelNames.push_back(filename);
 
-		loaded = true;
 		return true;
 	}
 	return false;
@@ -148,6 +155,11 @@ bool WorldEngine::newWorld(std::string filename, std::string sW, std::string sH)
 void WorldEngine::renderWorld() {
 	int index = 0;
 	int block;
+
+	char* obj_filename = (char*) "../Assets/Models/cube.obj";
+	char* v_shader_filename = (char*) "../Assets/Shaders/gouraud-shading.v.glsl";
+	char* f_shader_filename = (char*) "../Assets/Shaders/gouraud-shading.f.glsl";
+
 	for (float i = 0; i < h; i++) {
 		for (float j = 0; j < w; j++) {
 			block = squares.at(index).type;
@@ -157,10 +169,10 @@ void WorldEngine::renderWorld() {
 			{
 				glColor3f(0.0f, 0.0f, 0.0f);
 				glBegin(GL_POLYGON);
-				glVertex3f(i, j, 0.0f);
-				glVertex3f(i + 1.0f, j, 0.0f);
-				glVertex3f(i + 1.0f, j + 1.0f, 0.0f);
-				glVertex3f(i, j + 1.0f, 0.0f);
+				glVertex3f(j, i, 0.0f);
+				glVertex3f(j + 1.0f, i, 0.0f);
+				glVertex3f(j + 1.0f, i + 1.0f, 0.0f);
+				glVertex3f(j, i + 1.0f, 0.0f);
 				glEnd();
 				glFlush();
 				break;
@@ -169,10 +181,10 @@ void WorldEngine::renderWorld() {
 			{
 				glColor3f(1.0f, 0.0f, 0.0f);
 				glBegin(GL_POLYGON);
-				glVertex3f(i, j, 0.0f);
-				glVertex3f(i + 1.0f, j, 0.0f);
-				glVertex3f(i + 1.0f, j + 1.0f, 0.0f);
-				glVertex3f(i, j + 1.0f, 0.0f);
+				glVertex3f(j, i, 0.0f);
+				glVertex3f(j + 1.0f, i, 0.0f);
+				glVertex3f(j + 1.0f, i + 1.0f, 0.0f);
+				glVertex3f(j, i + 1.0f, 0.0f);
 				glEnd();
 				glFlush();
 				break;
@@ -181,10 +193,10 @@ void WorldEngine::renderWorld() {
 			{
 				glColor3f(0.0f, 1.0f, 1.0f);
 				glBegin(GL_POLYGON);
-				glVertex3f(i, j, 0.0f);
-				glVertex3f(i + 1.0f, j, 0.0f);
-				glVertex3f(i + 1.0f, j + 1.0f, 0.0f);
-				glVertex3f(i, j + 1.0f, 0.0f);
+				glVertex3f(j, i, 0.0f);
+				glVertex3f(j + 1.0f, i, 0.0f);
+				glVertex3f(j + 1.0f, i + 1.0f, 0.0f);
+				glVertex3f(j, i + 1.0f, 0.0f);
 				glEnd();
 				glFlush();
 				break;
@@ -193,10 +205,10 @@ void WorldEngine::renderWorld() {
 			{
 				glColor3f(0.0f, 0.8f, 0.0f);
 				glBegin(GL_POLYGON);
-				glVertex3f(i, j, 0.0f);
-				glVertex3f(i + 1.0f, j, 0.0f);
-				glVertex3f(i + 1.0f, j + 1.0f, 0.0f);
-				glVertex3f(i, j + 1.0f, 0.0f);
+				glVertex3f(j, i, 0.0f);
+				glVertex3f(j + 1.0f, i, 0.0f);
+				glVertex3f(j + 1.0f, i + 1.0f, 0.0f);
+				glVertex3f(j, i + 1.0f, 0.0f);
 				glEnd();
 				glFlush();
 				break;
@@ -205,10 +217,10 @@ void WorldEngine::renderWorld() {
 			{
 				glColor3f(0.0f, 0.0f, 0.0f);
 				glBegin(GL_POLYGON);
-				glVertex3f(i, j, 0.0f);
-				glVertex3f(i + 1.0f, j, 0.0f);
-				glVertex3f(i + 1.0f, j + 1.0f, 0.0f);
-				glVertex3f(i, j + 1.0f, 0.0f);
+				glVertex3f(j, i, 0.0f);
+				glVertex3f(j + 1.0f, i, 0.0f);
+				glVertex3f(j + 1.0f, i + 1.0f, 0.0f);
+				glVertex3f(j, i + 1.0f, 0.0f);
 				glEnd();
 				glFlush();
 				break;
@@ -221,5 +233,5 @@ void WorldEngine::renderWorld() {
 void WorldEngine::updateSquare(Point p, int type) {
 	currentsectionx = p.x / ((glutGet(GLUT_WINDOW_WIDTH) - 166) / w);
 	currentsectiony = (glutGet(GLUT_WINDOW_HEIGHT) - p.y) / (glutGet(GLUT_WINDOW_HEIGHT) / h);
-	squares[currentsectionx * h + currentsectiony].type = type;
+	squares[currentsectiony * h + currentsectionx].type = type;
 }

@@ -71,6 +71,10 @@ void GlutManager::RenderScene(void){
 		}
 	}
 
+	if (GLUIManager::engine.loaded == true) {
+		GLUIManager::engine.renderWorld();
+	}
+
 
 	glutSwapBuffers();
 }
@@ -78,12 +82,12 @@ void GlutManager::RenderScene(void){
 void GlutManager::IdleFunc(void){
 	if (InputManager::isKeyDown(KeyCodes::ESC)) glutLeaveMainLoop();
 
-	/*
-	if (InputManager::isLeftButtonDown() && engine.loaded == true) {
+	
+	if (InputManager::isLeftButtonDown() && GLUIManager::engine.loaded == true) {
 		Point p = InputManager::GetMousePos();
-		engine.updateSquare(p, radiogroup->get_int_val());
+		GLUIManager::engine.updateSquare(p, GLUIManager::radiogroup->get_int_val());
 	}
-	*/
+	
 	/*
 	if (InputManager::isKeyDown(KeyCodes::w)) myMesh.Move(glm::vec3(0.0f, 0.0f, 0.01f));
 	if (InputManager::isKeyDown(KeyCodes::a)) myMesh.Move(glm::vec3(-0.01f, 0.0f, 0.0f));
@@ -94,7 +98,8 @@ void GlutManager::IdleFunc(void){
 	*/
 
 	//std::cout << "\n In IdleFunc";
-	glutSetWindow(mainWindow);
+	glutSetWindow(mainWindow);
+
 	glutPostRedisplay();
 }
 
