@@ -7,13 +7,13 @@
 #include <iostream>
 #include <sstream>
 
+#include "IGameObject.h"
+#include "IUpdateable.h"
+
 #include "openGL.h"
 #include "Dependencies/glm/glm/gtc/matrix_transform.hpp"
 #include "Dependencies/glm/glm/gtc/type_ptr.hpp"
 
-
-#include "IGameObject.h"
-#include "IUpdateable.h"
 
 #pragma once
 class MeshObject: public IGameObject, public IUpdateable
@@ -26,7 +26,7 @@ public:
 
 	virtual bool Init(char* model_filename, char* vshader_filename, char* fshader_filename);
 
-	virtual void Render(void);
+	void Render(void);
 	virtual void RenderBoundingBox(void);
 	
 	virtual void Move(glm::vec3);

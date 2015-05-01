@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <iostream>
 #include "shader_utils.h"
-
+#include "GlutManager.h"
 
 MeshObject::MeshObject() : vbo_vertices(0), vbo_normals(0), ibo_elements(0), object2world(glm::mat4(1)) 
 {
@@ -267,8 +267,8 @@ void MeshObject::Update(float timeDelta){
 	glm::mat4 camera2screen = glm::perspective(45.0f, 1.0f*glutGet(GLUT_WINDOW_WIDTH) / glutGet(GLUT_WINDOW_HEIGHT), 0.1f, 100.0f);
 
 	glUseProgram(program);
-	glUniformMatrix4fv(uniform_v, 1, GL_FALSE, glm::value_ptr(world2camera));
-	glUniformMatrix4fv(uniform_p, 1, GL_FALSE, glm::value_ptr(camera2screen));
+	glUniformMatrix4fv(uniform_v, 1, GL_FALSE, glm::value_ptr(GlutManager::GetMainCamera()->GetCameraMat()));
+	glUniformMatrix4fv(uniform_p, 1, GL_FALSE, glm::value_ptr(GlutManager::GetMainCamera()->GetPerspective()));
 
 	glm::mat4 v_inv = glm::inverse(world2camera);
 	glUniformMatrix4fv(uniform_v_inv, 1, GL_FALSE, glm::value_ptr(v_inv));

@@ -8,6 +8,7 @@
 std::map<std::string, IObject *> GlutManager::members;
 Camera *GlutManager::mainCamera = NULL;
 GLint GlutManager::mainWindow;
+float GlutManager::currDelta;
 
 
 void GlutManager::Init(void)
@@ -36,6 +37,11 @@ void GlutManager::Init(void)
 
 	InputManager::Init();
 
+	GLUIManager::initGLUI(GlutManager::mainWindow, GlutManager::IdleFunc);
+
+	currDelta = glutGet(GLUT_ELAPSED_TIME);
+
+	mainCamera = new Camera();
 }
 
 
@@ -66,7 +72,6 @@ void GlutManager::RenderScene(void){
 	for (iter = members.begin(); iter != members.end(); ++iter) {
 		renderable = dynamic_cast<IRenderable*>(iter->second);
 		if (renderable != 0){
-			dynamic_cast<IUpdateable*>(iter->second)->Update(0.0f);
 			renderable->Render();
 		}
 	}
@@ -76,6 +81,9 @@ void GlutManager::RenderScene(void){
 }
 
 void GlutManager::IdleFunc(void){
+
+	currDelta = glutGet(GLUT_ELAPSED_TIME) - currDelta;
+
 	if (InputManager::isKeyDown(KeyCodes::ESC)) glutLeaveMainLoop();
 
 	/*
@@ -84,17 +92,33 @@ void GlutManager::IdleFunc(void){
 		engine.updateSquare(p, radiogroup->get_int_val());
 	}
 	*/
-	/*
-	if (InputManager::isKeyDown(KeyCodes::w)) myMesh.Move(glm::vec3(0.0f, 0.0f, 0.01f));
-	if (InputManager::isKeyDown(KeyCodes::a)) myMesh.Move(glm::vec3(-0.01f, 0.0f, 0.0f));
-	if (InputManager::isKeyDown(KeyCodes::s)) myMesh.Move(glm::vec3(0.0f, 0.0f, -0.01f));
-	if (InputManager::isKeyDown(KeyCodes::d)) myMesh.Move(glm::vec3(0.01f, 0.0f, 0.0f));
-	if (InputManager::isSpecialKeyDown(GLUT_KEY_SHIFT_L)) myMesh.Move(glm::vec3(0.0f, -0.01f, 0.0f));
-	if (InputManager::isKeyDown(KeyCodes::Space)) myMesh.Move(glm::vec3(0.0f, 0.01f, 0.0f));
-	*/
+	
+	if (InputManager::isKeyDown(KeyCodes::w)) mainCamera->Move(glm::vec3(0.0f, 0.0f, 0.005f));
+	if (InputManager::isKeyDown(KeyCodes::a)) mainCamera->Move(glm::vec3(0.005f, 0.0f, 0.0f));
+	if (InputManager::isKeyDown(KeyCodes::s)) mainCamera->Move(glm::vec3(0.0f, 0.0f, -0.005f));
+	if (InputManager::isKeyDown(KeyCodes::d)) mainCamera->Move(glm::vec3(-0.005f, 0.0f, 0.0f));
+	if (InputManager::isSpecialKeyDown(GLUT_KEY_SHIFT_L)) mainCamera->Move(glm::vec3(0.0f, -0.005f, 0.0f));
+	if (InputManager::isKeyDown(KeyCodes::Space)) mainCamera->Move(glm::vec3(0.0f, 0.005f, 0.0f));
+	
+	if (InputManager::isSpecialKeyDown(GLUT_KEY_LEFT)) mainCamera->Rotate(glm::vec3(0.0f, 1.0f, 0.0f), 0.001f);
+	if (InputManager::isSpecialKeyDown(GLUT_KEY_RIGHT)) mainCamera->Rotate(glm::vec3(0.0f, 1.0f, 0.0f), -0.001f);
+	if (InputManager::isSpecialKeyDown(GLUT_KEY_UP)) mainCamera->Rotate(glm::vec3(1.0f, 0.0f, 0.0f), 0.001f);
+	if (InputManager::isSpecialKeyDown(GLUT_KEY_DOWN)) mainCamera->Rotate(glm::vec3(1.0f, 0.0f, 0.0f), -0.001f);
+
+
+	if (InputManager::isKeyDown(KeyCodes::m)) mainCamera->ClearRotation();
+
+
+
 
 	//std::cout << "\n In IdleFunc";
-	glutSetWindow(mainWindow);
+
+	mainCamera->Update(currDelta);
+
+	UpdateMembers(currDelta);
+
+	glutSetWindow(mainWindow);
+
 	glutPostRedisplay();
 }
 
@@ -123,4 +147,17 @@ void GlutManager::Reshape(int x, int y) {
 
 void GlutManager::AddMember(std::string name, IObject *object){
 	members[name] = object;
+}
+
+void GlutManager::UpdateMembers(float timeDelta){
+	std::map<std::string, IObject *>::iterator iter;
+	IUpdateable *updateable;
+
+	for (iter = members.begin(); iter != members.end(); ++iter) {
+		updateable = dynamic_cast<IUpdateable*>(iter->second);
+		if (updateable != 0){
+			updateable->Update(timeDelta);
+		}
+	}
+
 }
