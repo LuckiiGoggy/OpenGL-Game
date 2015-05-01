@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
 	glutInit(&argc, argv);
 	GlutManager::Init();
 
-	char* obj_filename = (char*) "../Assets/Models/spear.obj";
+	char* obj_filename = (char*) "../Assets/Models/wallCube.obj";
 	char* v_shader_filename = (char*) "../Assets/Shaders/gouraud-shading-two-sided.v.glsl";
 	char* f_shader_filename = (char*) "../Assets/Shaders/gouraud-shading-two-sided.f.glsl";
 
