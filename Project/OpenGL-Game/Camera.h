@@ -11,7 +11,7 @@
 #include "Dependencies/glm/glm/gtx/rotate_vector.hpp"
 
 
-class Camera : public IGameObject
+class Camera: public IUpdateable
 {
 public:
 	Camera();

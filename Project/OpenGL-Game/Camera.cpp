@@ -30,7 +30,7 @@ void Camera::Rotate(glm::vec3 rotateAxis, float angle){
 void Camera::Update(float timeDelta){
 
 	glm::vec4 lookAtPos4(origLookAtPos, 1);
-	lookAtPos4 *= netRotation;
+	lookAtPos4 = lookAtPos4 * netRotation;
 	glm::vec3 lookAtPos(lookAtPos4);
 
 	cameraMat = glm::lookAt(cameraPos, cameraPos + lookAtPos, upDirection);
