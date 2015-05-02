@@ -71,11 +71,13 @@
   <ItemGroup>
     <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CharacterStat.cpp" />
     <ClCompile Include="Collisions.cpp" />
     <ClCompile Include="CQDemo01.cpp" />
     <ClCompile Include="GameObjectContainer.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="GLUIManager.cpp" />
+    <ClCompile Include="LocationRect.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="RigidBody.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -103,11 +105,13 @@
   <ItemGroup>
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CharacterStat.h" />
     <ClInclude Include="Collisions.h" />
     <ClInclude Include="CQDemo01.h" />
     <ClInclude Include="GameObjectContainer.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="GLUIManager.h" />
+    <ClInclude Include="LocationRect.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RigidBody.h" />
     <ClInclude Include="Scene.h" />
