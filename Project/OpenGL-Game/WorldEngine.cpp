@@ -53,7 +53,7 @@ void WorldEngine::readWorld(std::string filename) {
 
 		glMatrixMode(GL_PROJECTION);		// setup viewing projection
 		glLoadIdentity();					// start with identity matrix
-		glOrtho(0.0, w, 0.0, h, -1.0, 1.0);	// setup a wxhx2 viewing world
+		glOrtho(0.0, w, 0.0, h, -h, h);	// setup a wxhx2h viewing world
 
 		for (float i = 0; i < h; i++) {
 			std::getline(file, s);
@@ -66,26 +66,31 @@ void WorldEngine::readWorld(std::string filename) {
 				case WALL:
 				{
 					p->Init(wall_filename, v_shader_filename, f_shader_filename);
+					p->Move(glm::vec3(j * 2, 0.0f, i * 2));
 					break;
 				}
 				case FLOOR:
 				{
 					p->Init(floor_filename, v_shader_filename, f_shader_filename);
+					p->Move(glm::vec3(j * 2, 0.0f, i * 2));
 					break;
 				}
 				case MOVEWALL:
 				{
 					p->Init(wall_filename, v_shader_filename, f_shader_filename);
+					p->Move(glm::vec3(j * 2, 0.0f, i * 2));
 					break;
 				}
 				case SPAWN:
 				{
 					p->Init(floor_filename, v_shader_filename, f_shader_filename);
+					p->Move(glm::vec3(j * 2, 0.0f, i * 2));
 					break;
 				}
 				default:
 				{
 					p->Init(wall_filename, v_shader_filename, f_shader_filename);
+					p->Move(glm::vec3(j * 2, 0.0f, i * 2));
 					break;
 				}
 				}
@@ -144,7 +149,7 @@ bool WorldEngine::newWorld(std::string filename, std::string sW, std::string sH)
 
 		glMatrixMode(GL_PROJECTION);		// setup viewing projection
 		glLoadIdentity();					// start with identity matrix
-		glOrtho(0.0, w, 0.0, h, -1.0, 1.0);	// setup a wxhx2 viewing world
+		glOrtho(0.0, w, 0.0, h, -h, h);	// setup a wxhx2h viewing world
 
 		for (int i = 0; i < h; i++) {
 			for (int j = 0; j < w; j++) {
@@ -152,10 +157,12 @@ bool WorldEngine::newWorld(std::string filename, std::string sW, std::string sH)
 				if (i == 0 || j == 0 || i == h - 1 || j == w - 1) {
 					block = WALL;
 					p->Init(wall_filename, v_shader_filename, f_shader_filename);
+					p->Move(glm::vec3(j * 2, 0.0f, i * 2));
 				}
 				else {
 					block = FLOOR;
 					p->Init(floor_filename, v_shader_filename, f_shader_filename);
+					p->Move(glm::vec3(j * 2, 0.0f, i * 2));
 				}
 				squares.push_back(WorldSquare((int)i, (int)j, block));
 				meshes.push_back(p);
@@ -194,11 +201,11 @@ void WorldEngine::renderWorld() {
 	for (float i = 0; i < h; i++) {
 		for (float j = 0; j < w; j++) {
 			block = squares.at(index).type;
+			meshes[index]->Update(0.0);
+			meshes[index]->Render();
 			index++;
-			meshes[i]->Move(glm::vec3(j * 2, 0.0f, i * 2));
-			meshes[i]->Render();
 
-			switch (block) {
+			/*switch (block) {
 			case WALL:
 			{
 				glColor3f(0.0f, 0.0f, 0.0f);
@@ -259,7 +266,7 @@ void WorldEngine::renderWorld() {
 				glFlush();
 				break;
 			}
-			}
+			}*/
 		}
 	}
 }
