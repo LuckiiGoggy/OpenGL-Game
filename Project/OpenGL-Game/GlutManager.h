@@ -38,7 +38,7 @@ private:
 	static std::map<std::string, IObject *> members;
 	static Camera *mainCamera;
 	static glm::vec3 position;
-	static float currDelta;
+	static float lastTime;
 
 	
 };
