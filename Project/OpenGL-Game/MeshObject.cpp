@@ -226,6 +226,7 @@ void MeshObject::RenderBoundingBox() {
 		if (this->vertices[i].z < min_z) min_z = this->vertices[i].z;
 		if (this->vertices[i].z > max_z) max_z = this->vertices[i].z;
 	}
+	returnBB(glm::vec3(min_x, min_y, min_z), glm::vec3(max_x, max_y, max_z));
 	glm::vec3 size = glm::vec3(max_x - min_x, max_y - min_y, max_z - min_z);
 	glm::vec3 center = glm::vec3((min_x + max_x) / 2, (min_y + max_y) / 2, (min_z + max_z) / 2);
 	glm::mat4 transform = glm::scale(glm::mat4(1), size) * glm::translate(glm::mat4(1), center);
@@ -256,6 +257,11 @@ void MeshObject::RenderBoundingBox() {
 
 	glDeleteBuffers(1, &vbo_vertices);
 	glDeleteBuffers(1, &ibo_elements);
+}
+
+void MeshObject::returnBB(glm::vec3 startPoint, glm::vec3 endPoint)
+{
+	bottomFace = LocationRect(startPoint.x, startPoint.z, endPoint.x, endPoint.y);
 }
 
 void MeshObject::Update(float timeDelta){
@@ -375,5 +381,19 @@ bool MeshObject::Init(char* model_filename, char* vshader_filename, char* fshade
 		fprintf(stderr, "Could not bind uniform %s\n", uniform_name);
 		return 0;
 	}
+
+	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat mat_shininess[] = { 50.0 };
+	GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
+	glClearColor(0.0, 0.0, 0.0, 0.0);
+	glShadeModel(GL_SMOOTH);
+
+	glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+	glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glEnable(GL_DEPTH_TEST);
 	return 1;
 }
