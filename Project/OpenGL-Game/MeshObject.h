@@ -13,6 +13,7 @@
 #include "openGL.h"
 #include "Dependencies/glm/glm/gtc/matrix_transform.hpp"
 #include "Dependencies/glm/glm/gtc/type_ptr.hpp"
+#include "LocationRect.h"
 
 
 #pragma once
@@ -34,7 +35,9 @@ public:
 	virtual void Rotate(glm::vec3, float);
 	virtual void Scale(glm::vec3);
 	virtual void Scale(float x, float y, float z);
-
+	void returnBB(glm::vec3, glm::vec3);
+	
+	LocationRect bottomFace;
 
 	GLuint program;
 
