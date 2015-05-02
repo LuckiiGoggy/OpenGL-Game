@@ -12,7 +12,7 @@ class GlutManager
 public:
 	GlutManager();
 	~GlutManager();
-	static void Init(void);
+	static void Init(bool editor);
 	static void StartLoop(void);
 	static void EndLoop(void);
 	static void IdleFunc(void);

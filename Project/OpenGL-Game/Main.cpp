@@ -23,7 +23,7 @@ GroupObject test;
 int main(int argc, char **argv) {
 	int menu;
 	glutInit(&argc, argv);
-	GlutManager::Init();
+	GlutManager::Init(false);
 
 	char* obj_filename = (char*) "../Assets/Models/wallCube.obj";
 	char* v_shader_filename = (char*) "../Assets/Shaders/gouraud-shading-two-sided.v.glsl";

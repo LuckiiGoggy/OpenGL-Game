@@ -27,12 +27,12 @@ MouseInfo InputManager::mouseInfo;
 
 
 void InputManager::Init(){
-	//glutKeyboardFunc(InputManager::KeyPress);
+	glutKeyboardFunc(InputManager::KeyPress);
 	glutKeyboardUpFunc(InputManager::KeyUp);
 	glutSpecialFunc(InputManager::SpecialKeyPress);
 	glutSpecialUpFunc(InputManager::SpecialKeyUp);
 
-	//glutMouseFunc(InputManager::MouseInput);
+	glutMouseFunc(InputManager::MouseInput);
 
 	glutMotionFunc(InputManager::MouseMotion);
 	glutPassiveMotionFunc(InputManager::MouseMotion);

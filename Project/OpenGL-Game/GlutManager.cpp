@@ -11,7 +11,7 @@ GLint GlutManager::mainWindow;
 float GlutManager::currDelta;
 
 
-void GlutManager::Init(void)
+void GlutManager::Init(bool editor)
 {
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(200, 200);//optional
@@ -33,15 +33,21 @@ void GlutManager::Init(void)
 
 	glutDisplayFunc(GlutManager::RenderScene);
 	glutIdleFunc(GlutManager::IdleFunc);
-	glutReshapeFunc(GlutManager::Reshape);
+	//glutReshapeFunc(GlutManager::Reshape);
 
 	InputManager::Init();
 
-	GLUIManager::initGLUI(GlutManager::mainWindow, GlutManager::IdleFunc);
+	glutSetCursor(GLUT_CURSOR_NONE);
 
 	currDelta = glutGet(GLUT_ELAPSED_TIME);
 
 	mainCamera = new Camera();
+
+	if (editor)	GLUIManager::initGLUI(GlutManager::mainWindow, GlutManager::IdleFunc);
+	else glutFullScreen();
+
+
+
 }
 
 
@@ -100,10 +106,12 @@ void GlutManager::IdleFunc(void){
 	if (InputManager::isSpecialKeyDown(GLUT_KEY_SHIFT_L)) mainCamera->Move(glm::vec3(0.0f, -0.005f, 0.0f));
 	if (InputManager::isKeyDown(KeyCodes::Space)) mainCamera->Move(glm::vec3(0.0f, 0.005f, 0.0f));
 	
-	if (InputManager::isSpecialKeyDown(GLUT_KEY_LEFT)) mainCamera->Rotate(glm::vec3(0.0f, 1.0f, 0.0f), 0.001f);
-	if (InputManager::isSpecialKeyDown(GLUT_KEY_RIGHT)) mainCamera->Rotate(glm::vec3(0.0f, 1.0f, 0.0f), -0.001f);
-	if (InputManager::isSpecialKeyDown(GLUT_KEY_UP)) mainCamera->Rotate(glm::vec3(1.0f, 0.0f, 0.0f), 0.001f);
-	if (InputManager::isSpecialKeyDown(GLUT_KEY_DOWN)) mainCamera->Rotate(glm::vec3(1.0f, 0.0f, 0.0f), -0.001f);
+	if (InputManager::isSpecialKeyDown(GLUT_KEY_LEFT)) mainCamera->RotateY(0.001f);
+	if (InputManager::isSpecialKeyDown(GLUT_KEY_RIGHT)) mainCamera->RotateY(-0.001f);
+	if (InputManager::isSpecialKeyDown(GLUT_KEY_UP)) mainCamera->RotateX(0.001f);
+	if (InputManager::isSpecialKeyDown(GLUT_KEY_DOWN)) mainCamera->RotateX(-0.001f);
+	if (InputManager::isKeyDown(',')) mainCamera->RotateZ(0.001f);
+	if (InputManager::isKeyDown('.')) mainCamera->RotateZ(-0.001f);
 
 
 	if (InputManager::isKeyDown(KeyCodes::m)) mainCamera->ClearRotation();
@@ -133,15 +141,15 @@ void GlutManager::SetMainCamera(Camera *camera){
 void GlutManager::Reshape(int x, int y) {
 	/*
 	GLUI_Master.auto_set_viewport();
-
+	*/
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	*/
-
-	GLUIManager::reshape(x, y);
+	
 
 
-	//glutPostRedisplay();
+
+	glutSetWindow(mainWindow);
+	glutPostRedisplay();
 }
 
 
