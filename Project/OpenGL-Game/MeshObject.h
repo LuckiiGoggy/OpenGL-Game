@@ -14,6 +14,7 @@
 #include "Dependencies/glm/glm/gtc/matrix_transform.hpp"
 #include "Dependencies/glm/glm/gtc/type_ptr.hpp"
 #include "LocationRect.h"
+#include "BoundingBox.h"
 
 
 #pragma once
@@ -37,7 +38,6 @@ public:
 	virtual void Scale(float x, float y, float z);
 	void returnBB(glm::vec3, glm::vec3);
 	
-	LocationRect bottomFace;
 
 	GLuint program;
 
@@ -58,6 +58,8 @@ private:
 	glm::mat4 sumTranslation;
 	glm::mat4 sumScale;
 
+	BoundingBox boundingBox;
+	LocationRect bottomFace;
 
 	GLint attribute_v_coord;
 	GLint attribute_v_normal;
