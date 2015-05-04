@@ -226,7 +226,10 @@ void MeshObject::RenderBoundingBox() {
 		if (this->vertices[i].z < min_z) min_z = this->vertices[i].z;
 		if (this->vertices[i].z > max_z) max_z = this->vertices[i].z;
 	}
+
 	returnBB(glm::vec3(min_x, min_y, min_z), glm::vec3(max_x, max_y, max_z));
+
+
 	glm::vec3 size = glm::vec3(max_x - min_x, max_y - min_y, max_z - min_z);
 	glm::vec3 center = glm::vec3((min_x + max_x) / 2, (min_y + max_y) / 2, (min_z + max_z) / 2);
 	glm::mat4 transform = glm::scale(glm::mat4(1), size) * glm::translate(glm::mat4(1), center);
@@ -261,13 +264,22 @@ void MeshObject::RenderBoundingBox() {
 
 void MeshObject::returnBB(glm::vec3 startPoint, glm::vec3 endPoint)
 {
-	bottomFace = LocationRect(startPoint.x, startPoint.z, endPoint.x, endPoint.y);
+	bottomFace = LocationRect(startPoint.x, startPoint.z, endPoint.x, endPoint.z);
+	boundingBox.v1 = glm::vec3(startPoint.x, endPoint.y, startPoint.z);
+	boundingBox.v2 = glm::vec3(startPoint.x, startPoint.y, startPoint.z);
+	boundingBox.v3 = glm::vec3(endPoint.x, startPoint.y, startPoint.z);
+	boundingBox.v4 = glm::vec3(endPoint.x, endPoint.y, startPoint.z);
+	boundingBox.v1 = glm::vec3(startPoint.x, endPoint.y, endPoint.z);
+	boundingBox.v2 = glm::vec3(startPoint.x, startPoint.y, endPoint.z);
+	boundingBox.v3 = glm::vec3(endPoint.x, startPoint.y, endPoint.z);
+	boundingBox.v4 = glm::vec3(endPoint.x, endPoint.y, endPoint.z);
+
 }
 
 void MeshObject::Update(float timeDelta){
 
 	object2world = glm::mat4(1.0);
-	object2world *= (sumScale * sumRotation * sumTranslation);
+	object2world *= (sumScale * sumRotation * sumTranslation);	
 
 	// Projection
 	glm::mat4 camera2screen = glm::perspective(45.0f, 1.0f*glutGet(GLUT_WINDOW_WIDTH) / glutGet(GLUT_WINDOW_HEIGHT), 0.1f, 100.0f);
