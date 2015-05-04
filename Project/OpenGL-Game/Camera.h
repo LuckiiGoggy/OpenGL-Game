@@ -19,7 +19,9 @@ public:
 	~Camera();
 
 	virtual void Move(glm::vec3);
-	virtual void Rotate(glm::vec3, float);
+	virtual void RotateX(float);
+	virtual void RotateY(float);
+	virtual void RotateZ(float);
 	virtual void Update(float timeDelta);
 	virtual void ClearRotation(void);
 	virtual glm::mat4 GetPerspective();
@@ -36,6 +38,12 @@ private:
 
 	glm::mat4 netTranslation;
 	glm::mat4 netRotation;
+	glm::mat4 netRotationX;
+	glm::mat4 netRotationY;
+	glm::mat4 netRotationZ;
+
+	void UpdateNetRotation(void);
+	glm::vec3 GetRotationAxis(glm::vec3);
 
 
 };

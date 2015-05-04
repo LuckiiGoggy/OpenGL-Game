@@ -71,6 +71,7 @@
   <ItemGroup>
     <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CharacterStat.cpp" />
     <ClCompile Include="Collisions.cpp" />
     <ClCompile Include="CQDemo01.cpp" />
     <ClCompile Include="GameObjectContainer.cpp" />
@@ -104,6 +105,7 @@
   <ItemGroup>
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CharacterStat.h" />
     <ClInclude Include="Collisions.h" />
     <ClInclude Include="CQDemo01.h" />
     <ClInclude Include="GameObjectContainer.h" />

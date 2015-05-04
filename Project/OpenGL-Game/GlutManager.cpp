@@ -8,10 +8,10 @@
 std::map<std::string, IObject *> GlutManager::members;
 Camera *GlutManager::mainCamera = NULL;
 GLint GlutManager::mainWindow;
-float GlutManager::currDelta;
+float GlutManager::lastTime;
 
 
-void GlutManager::Init(void)
+void GlutManager::Init(bool editor)
 {
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(200, 200);//optional
@@ -27,21 +27,27 @@ void GlutManager::Init(void)
 		std::cout << "GLEW 4.0 not supported\n";
 	}
 
-	glEnable(GL_DEPTH_TEST);	
-	glEnable(GL_BLEND);
+	//glEnable(GL_DEPTH_TEST);	
+	//glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glutDisplayFunc(GlutManager::RenderScene);
 	glutIdleFunc(GlutManager::IdleFunc);
-	glutReshapeFunc(GlutManager::Reshape);
+	//glutReshapeFunc(GlutManager::Reshape);
 
 	InputManager::Init();
 
-	GLUIManager::initGLUI(GlutManager::mainWindow, GlutManager::IdleFunc);
+	glutSetCursor(GLUT_CURSOR_NONE);
 
-	currDelta = glutGet(GLUT_ELAPSED_TIME);
+	lastTime = glutGet(GLUT_ELAPSED_TIME) / 1000.0f;
 
 	mainCamera = new Camera();
+
+	if (editor)	GLUIManager::initGLUI(GlutManager::mainWindow, GlutManager::IdleFunc);
+	else glutFullScreen();
+
+
+
 }
 
 
@@ -82,8 +88,10 @@ void GlutManager::RenderScene(void){
 
 void GlutManager::IdleFunc(void){
 
-	currDelta = glutGet(GLUT_ELAPSED_TIME) - currDelta;
+	float currTime = glutGet(GLUT_ELAPSED_TIME)/1000.0f;
 
+	float currDelta = currTime - lastTime;
+	lastTime = currTime;
 	if (InputManager::isKeyDown(KeyCodes::ESC)) glutLeaveMainLoop();
 
 	/*
@@ -93,22 +101,27 @@ void GlutManager::IdleFunc(void){
 	}
 	*/
 	
-	if (InputManager::isKeyDown(KeyCodes::w)) mainCamera->Move(glm::vec3(0.0f, 0.0f, 0.005f));
-	if (InputManager::isKeyDown(KeyCodes::a)) mainCamera->Move(glm::vec3(0.005f, 0.0f, 0.0f));
-	if (InputManager::isKeyDown(KeyCodes::s)) mainCamera->Move(glm::vec3(0.0f, 0.0f, -0.005f));
-	if (InputManager::isKeyDown(KeyCodes::d)) mainCamera->Move(glm::vec3(-0.005f, 0.0f, 0.0f));
-	if (InputManager::isSpecialKeyDown(GLUT_KEY_SHIFT_L)) mainCamera->Move(glm::vec3(0.0f, -0.005f, 0.0f));
-	if (InputManager::isKeyDown(KeyCodes::Space)) mainCamera->Move(glm::vec3(0.0f, 0.005f, 0.0f));
+	float moveSpd = currDelta * 1.0f;
+
+	std::cout << "\n" << currDelta;
+
+
+	if (InputManager::isKeyDown(KeyCodes::w)) mainCamera->Move(glm::vec3(0.0f, 0.0f, currDelta * 5.0f));
+	if (InputManager::isKeyDown(KeyCodes::a)) mainCamera->Move(glm::vec3(currDelta * 5.0f, 0.0f, 0.0f));
+	if (InputManager::isKeyDown(KeyCodes::s)) mainCamera->Move(glm::vec3(0.0f, 0.0f, -currDelta * 5.0f));
+	if (InputManager::isKeyDown(KeyCodes::d)) mainCamera->Move(glm::vec3(-currDelta * 5.0f, 0.0f, 0.0f));
+	if (InputManager::isSpecialKeyDown(GLUT_KEY_SHIFT_L)) mainCamera->Move(glm::vec3(0.0f, -currDelta * 10.0f, 0.0f));
+	if (InputManager::isKeyDown(KeyCodes::Space)) mainCamera->Move(glm::vec3(0.0f, currDelta * 10.0f, 0.0f));
 	
-	if (InputManager::isSpecialKeyDown(GLUT_KEY_LEFT)) mainCamera->Rotate(glm::vec3(0.0f, 1.0f, 0.0f), 0.001f);
-	if (InputManager::isSpecialKeyDown(GLUT_KEY_RIGHT)) mainCamera->Rotate(glm::vec3(0.0f, 1.0f, 0.0f), -0.001f);
-	if (InputManager::isSpecialKeyDown(GLUT_KEY_UP)) mainCamera->Rotate(glm::vec3(1.0f, 0.0f, 0.0f), 0.001f);
-	if (InputManager::isSpecialKeyDown(GLUT_KEY_DOWN)) mainCamera->Rotate(glm::vec3(1.0f, 0.0f, 0.0f), -0.001f);
+	if (InputManager::isSpecialKeyDown(GLUT_KEY_LEFT))	mainCamera->RotateY(0.1f  * currDelta);
+	if (InputManager::isSpecialKeyDown(GLUT_KEY_RIGHT)) mainCamera->RotateY(-0.1f * currDelta);
+	if (InputManager::isSpecialKeyDown(GLUT_KEY_UP))	mainCamera->RotateX(0.1f  * currDelta);
+	if (InputManager::isSpecialKeyDown(GLUT_KEY_DOWN))	mainCamera->RotateX(-0.1f * currDelta);
+	if (InputManager::isKeyDown(','))					mainCamera->RotateZ(0.1f  * currDelta);
+	if (InputManager::isKeyDown('.'))					mainCamera->RotateZ(-0.1f * currDelta);
 
 
 	if (InputManager::isKeyDown(KeyCodes::m)) mainCamera->ClearRotation();
-
-
 
 
 	//std::cout << "\n In IdleFunc";
@@ -133,15 +146,15 @@ void GlutManager::SetMainCamera(Camera *camera){
 void GlutManager::Reshape(int x, int y) {
 	/*
 	GLUI_Master.auto_set_viewport();
-
+	*/
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	*/
-
-	GLUIManager::reshape(x, y);
+	
 
 
-	//glutPostRedisplay();
+
+	glutSetWindow(mainWindow);
+	glutPostRedisplay();
 }
 
 
