@@ -12,7 +12,7 @@ class GlutManager
 public:
 	GlutManager();
 	~GlutManager();
-	static void Init(void);
+	static void Init(bool editor);
 	static void StartLoop(void);
 	static void EndLoop(void);
 	static void IdleFunc(void);
@@ -38,7 +38,7 @@ private:
 	static std::map<std::string, IObject *> members;
 	static Camera *mainCamera;
 	static glm::vec3 position;
-	static float currDelta;
+	static float lastTime;
 
 	
 };

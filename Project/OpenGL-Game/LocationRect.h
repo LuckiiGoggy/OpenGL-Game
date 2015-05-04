@@ -7,7 +7,7 @@
 class LocationRect
 {
 public:
-	LocationRect();
+	LocationRect(void);
 	LocationRect(int sx, int sy, int ex, int ey);
 	LocationRect(int sx, int sy, int ex, int ey, int id_);
 	LocationRect(int sx, int sy, int ex, int ey, glm::vec3 color);
