@@ -14,7 +14,7 @@
 
 
 /** A Group Object is a group of Game Objects that move as one entity **/
-class GroupObject : public GameObjectContainer, public IMovable, public IGameObject, public IUpdateable
+class GroupObject : public GameObjectContainer, public IMovable, public IGameObject
 {
 public:
 	GroupObject();
@@ -27,6 +27,7 @@ public:
 
 	void Update(float timeDelta);
 
+	void RotateY(float angle);
 
 protected:
 
