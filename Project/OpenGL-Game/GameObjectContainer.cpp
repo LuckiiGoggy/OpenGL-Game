@@ -4,6 +4,10 @@
 #include "IRenderable.h"
 #include "IMovable.h"
 
+#include <iostream>
+
+//#define DEBUG
+
 GameObjectContainer::GameObjectContainer()
 {
 }
@@ -39,17 +43,33 @@ void GameObjectContainer::EmptyMembers(void){
 	members.empty();
 	
 }
+
 void GameObjectContainer::MoveMembers(glm::vec3 moveDelta){
 	std::map<std::string, IGameObject *>::iterator iter;
 	IMovable *moveable;
 	
 	for (iter = this->members.begin(); iter != this->members.end(); ++iter) {
 		moveable = dynamic_cast<IMovable*>(iter->second);
-		if (moveable != 0 && moveable->CanMove()){
+		if (moveable != 0){
 			#ifdef DEBUG
 			std::cout << "\n\tMoving Member: " << iter->first;
 			#endif
 			moveable->Move(moveDelta);
+		}
+	}
+
+}
+void GameObjectContainer::MoveMembers(float x, float y, float z){
+	std::map<std::string, IGameObject *>::iterator iter;
+	IMovable *moveable;
+
+	for (iter = this->members.begin(); iter != this->members.end(); ++iter) {
+		moveable = dynamic_cast<IMovable*>(iter->second);
+		if (moveable != 0){
+#ifdef DEBUG
+			std::cout << "\n\tMoving Member: " << iter->first;
+#endif
+			moveable->Move(glm::vec3(x, y, z));
 		}
 	}
 
@@ -89,4 +109,8 @@ void GameObjectContainer::UpdateMembers(float timeDelta)
 		}
 	}
 
+}
+
+IGameObject * GameObjectContainer::GetMember(std::string name){
+	return members[name];
 }
