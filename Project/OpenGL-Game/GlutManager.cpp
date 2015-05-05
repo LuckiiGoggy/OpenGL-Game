@@ -97,13 +97,6 @@ void GlutManager::IdleFunc(void){
 	float currDelta = currTime - lastTime;
 	lastTime = currTime;
 	if (InputManager::isKeyDown(KeyCodes::ESC)) glutLeaveMainLoop();
-
-	
-	if (InputManager::isLeftButtonDown() && GLUIManager::engine.loaded == true) {
-		Point p = InputManager::GetMousePos();
-		GLUIManager::engine.updateSquare(p, GLUIManager::radiogroup->get_int_val());
-	}
-	
 	
 	float moveSpd = currDelta * 1.0f;
 

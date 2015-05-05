@@ -66,31 +66,31 @@ void WorldEngine::readWorld(std::string filename) {
 				case WALL:
 				{
 					p->Init(wall_filename, v_shader_filename, f_shader_filename);
-					p->Move(glm::vec3(j * 2, 0.0f, i * 2));
+					p->Move(glm::vec3(j, 0.0f, i));
 					break;
 				}
 				case FLOOR:
 				{
 					p->Init(floor_filename, v_shader_filename, f_shader_filename);
-					p->Move(glm::vec3(j * 2, 0.0f, i * 2));
+					p->Move(glm::vec3(j, 0.0f, i));
 					break;
 				}
 				case MOVEWALL:
 				{
 					p->Init(wall_filename, v_shader_filename, f_shader_filename);
-					p->Move(glm::vec3(j * 2, 0.0f, i * 2));
+					p->Move(glm::vec3(j, 0.0f, i));
 					break;
 				}
 				case SPAWN:
 				{
 					p->Init(floor_filename, v_shader_filename, f_shader_filename);
-					p->Move(glm::vec3(j * 2, 0.0f, i * 2));
+					p->Move(glm::vec3(j, 0.0f, i));
 					break;
 				}
 				default:
 				{
 					p->Init(wall_filename, v_shader_filename, f_shader_filename);
-					p->Move(glm::vec3(j * 2, 0.0f, i * 2));
+					p->Move(glm::vec3(j, 0.0f, i));
 					break;
 				}
 				}
@@ -157,12 +157,12 @@ bool WorldEngine::newWorld(std::string filename, std::string sW, std::string sH)
 				if (i == 0 || j == 0 || i == h - 1 || j == w - 1) {
 					block = WALL;
 					p->Init(wall_filename, v_shader_filename, f_shader_filename);
-					p->Move(glm::vec3(j * 2, 0.0f, i * 2));
+					p->Move(glm::vec3(j, 0.0f, i));
 				}
 				else {
 					block = FLOOR;
 					p->Init(floor_filename, v_shader_filename, f_shader_filename);
-					p->Move(glm::vec3(j * 2, 0.0f, i * 2));
+					p->Move(glm::vec3(j, 0.0f, i));
 				}
 				squares.push_back(WorldSquare((int)i, (int)j, block));
 				meshes.push_back(p);
@@ -271,8 +271,8 @@ void WorldEngine::renderWorld() {
 	}
 }
 
-void WorldEngine::updateSquare(Point p, int type) {
+/*void WorldEngine::updateSquare(Point p, int type) {
 	currentsectionx = p.x / ((glutGet(GLUT_WINDOW_WIDTH) - 166) / w);
 	currentsectiony = (glutGet(GLUT_WINDOW_HEIGHT) - p.y) / (glutGet(GLUT_WINDOW_HEIGHT) / h);
 	squares[currentsectiony * h + currentsectionx].type = type;
-}
+}*/
