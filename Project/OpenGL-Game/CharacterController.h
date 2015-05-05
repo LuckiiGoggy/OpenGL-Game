@@ -12,20 +12,23 @@
 class CharacterController: public IUpdateable
 {
 public:
-	CharacterController();
+	CharacterController(Character *chara);
 	~CharacterController();
 
-	virtual void AddControl(std::string, Character *);
-	virtual void RemoveControl(std::string);
+	//virtual void AddControl(std::string, Character *);
+	//virtual void RemoveControl(std::string);
 
 	virtual void Update(float timeDelta);
 
 protected:
-	std::map<std::string, Character *> controls;
+	Character *control;
+	//Temporarily removing for simplification
+	//std::map<std::string, Character *> controls; 
 	std::map<KeyCodes, std::string> keyMapping;
 
 	virtual std::vector<std::string> GetAllInputs();
-	virtual void ApplyAllInputs(std::vector<std::string>);
+	//virtual void ApplyAllInputs(std::vector<std::string>);
+	virtual void ApplyAllInputs(std::vector<std::string> inputs);
 };
 
 #endif
