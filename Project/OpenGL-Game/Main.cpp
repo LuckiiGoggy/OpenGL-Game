@@ -11,6 +11,7 @@
 #include "GLUIManager.h"
 #include "GlutManager.h"
 #include "GameScene.h"
+#include "Player.h"
 
 WorldEngine engine = WorldEngine();
 void updateGame();
@@ -24,25 +25,33 @@ int main(int argc, char **argv) {
 	int menu;
 	glutInit(&argc, argv);
 	GlutManager::Init(false);
+	InputManager::Init();
 
-	char* obj_filename = (char*) "../Assets/Models/sonic.obj";
+	char* obj_filename = (char*) "../Assets/Models/floorCube.obj";
 	char* v_shader_filename = (char*) "../Assets/Shaders/phong-shading.v.glsl";
 	char* f_shader_filename = (char*) "../Assets/Shaders/phong-shading.f.glsl";
 
 	myMesh.Init(obj_filename, v_shader_filename, f_shader_filename);
 
 	
+	
+
+	myMesh.Move(1.0f, 0.0f, 0.0f);
+
 	GlutManager::AddMember("MyMesh", &myMesh);
 	
-	InputManager::Init();
 
-	/*
+	
 	GameScene *gS = new GameScene();
 
 	gS->Init();
 
+	
+	Player *player = new Player();
+	gS->AddMember("Player", player);
+
 	GlutManager::AddMember("Derp", gS);
-	*/
+
 	
 
 

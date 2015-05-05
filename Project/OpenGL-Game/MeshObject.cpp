@@ -74,9 +74,9 @@ void MeshObject::ReadObjFile(std::string filename){
 			}
 			else {
 				// average
-				normals[cur_v].x = normals[cur_v].x * (1.0 - 1.0 / nb_seen[cur_v]) + normal.x * 1.0 / nb_seen[cur_v];
-				this->normals[cur_v].y = this->normals[cur_v].y * (1.0 - 1.0 / nb_seen[cur_v]) + normal.y * 1.0 / nb_seen[cur_v];
-				this->normals[cur_v].z = this->normals[cur_v].z * (1.0 - 1.0 / nb_seen[cur_v]) + normal.z * 1.0 / nb_seen[cur_v];
+				normals[cur_v].x = (float)normals[cur_v].x * (1.0 - 1.0 / nb_seen[cur_v]) + normal.x * 1.0 / nb_seen[cur_v];
+				this->normals[cur_v].y = (float)this->normals[cur_v].y * (1.0 - 1.0 / nb_seen[cur_v]) + normal.y * 1.0 / nb_seen[cur_v];
+				this->normals[cur_v].z = (float)this->normals[cur_v].z * (1.0 - 1.0 / nb_seen[cur_v]) + normal.z * 1.0 / nb_seen[cur_v];
 				this->normals[cur_v] = glm::normalize(this->normals[cur_v]);
 			}
 		}
@@ -261,32 +261,31 @@ void MeshObject::RenderBoundingBox() {
 
 void MeshObject::returnBB(glm::vec3 startPoint, glm::vec3 endPoint)
 {
-	bottomFace = LocationRect(startPoint.x, startPoint.z, endPoint.x, endPoint.y);
+	bottomFace = LocationRect((int)startPoint.x, (int)startPoint.z, (int)endPoint.x, (int)endPoint.y);
 }
 
 void MeshObject::Update(float timeDelta){
 
 	object2world = glm::mat4(1.0);
-	object2world *= (sumScale * sumRotation * sumTranslation);
-
-	// Projection
-	glm::mat4 camera2screen = glm::perspective(45.0f, 1.0f*glutGet(GLUT_WINDOW_WIDTH) / glutGet(GLUT_WINDOW_HEIGHT), 0.1f, 100.0f);
+	object2world = (sumTranslation * sumScale * sumRotation);
 
 	glUseProgram(program);
 	glUniformMatrix4fv(uniform_v, 1, GL_FALSE, glm::value_ptr(GlutManager::GetMainCamera()->GetCameraMat()));
 	glUniformMatrix4fv(uniform_p, 1, GL_FALSE, glm::value_ptr(GlutManager::GetMainCamera()->GetPerspective()));
 
-	glm::mat4 v_inv = glm::inverse(world2camera);
+	glm::mat4 v_inv = glm::inverse(GlutManager::GetMainCamera()->GetCameraMat());
 	glUniformMatrix4fv(uniform_v_inv, 1, GL_FALSE, glm::value_ptr(v_inv));
 
 }
 
 void MeshObject::Move(glm::vec3 moveDelta){
-	sumTranslation = glm::translate(sumTranslation, moveDelta);	
+	glm::vec4 move4(moveDelta, 1);
+	move4 = move4 * inverse(sumRotation);
+	glm::vec3 move3(move4);
+	sumTranslation = glm::translate(sumTranslation, move3);
 }
 void MeshObject::Move(float x, float y, float z){
-	glm::vec3 moveDelta = glm::vec3(x, y, z);
-	sumTranslation = glm::translate(sumTranslation, moveDelta);
+	Move(glm::vec3(x, y, z));
 }
 
 void MeshObject::Rotate(glm::vec3 rotateAxis, float angle){
@@ -307,11 +306,6 @@ bool MeshObject::Init(char* model_filename, char* vshader_filename, char* fshade
 	// mesh position initialized in init_view()
 
 	BindBuffers();
-
-	world2camera = glm::lookAt(
-		glm::vec3(0.0, 0.0, 4.0),   // eye
-		glm::vec3(0.0, 0.0, 0.0),   // direction
-		glm::vec3(0.0, 1.0, 0.0));  // up
 
 	/* Compile and link shaders */
 	GLint link_ok = GL_FALSE;
@@ -384,7 +378,7 @@ bool MeshObject::Init(char* model_filename, char* vshader_filename, char* fshade
 
 	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
 	GLfloat mat_shininess[] = { 50.0 };
-	GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
+	GLfloat light_position[] = { 0.0, 20.0, 0.0, 0.0 };
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glShadeModel(GL_SMOOTH);
 

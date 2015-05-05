@@ -86,7 +86,6 @@
     <ClCompile Include="CharacterController.cpp" />
     <ClCompile Include="GlutManager.cpp" />
     <ClCompile Include="GroupObject.cpp" />
-    <ClCompile Include="IGameObject.cpp" />
     <ClCompile Include="IMovable.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Main.cpp" />
