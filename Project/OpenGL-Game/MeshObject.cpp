@@ -180,8 +180,6 @@ void MeshObject::SetUpCamera(){
 * Draw object bounding box
 */
 void MeshObject::RenderBoundingBox() {
-	if (this->vertices.size() == 0)
-		return;
 
 	// Cube 1x1x1, centered on origin
 	GLfloat vertices[] = {
@@ -226,7 +224,9 @@ void MeshObject::RenderBoundingBox() {
 		if (this->vertices[i].z < min_z) min_z = this->vertices[i].z;
 		if (this->vertices[i].z > max_z) max_z = this->vertices[i].z;
 	}
+
 	returnBB(glm::vec3(min_x, min_y, min_z), glm::vec3(max_x, max_y, max_z));
+
 	glm::vec3 size = glm::vec3(max_x - min_x, max_y - min_y, max_z - min_z);
 	glm::vec3 center = glm::vec3((min_x + max_x) / 2, (min_y + max_y) / 2, (min_z + max_z) / 2);
 	glm::mat4 transform = glm::scale(glm::mat4(1), size) * glm::translate(glm::mat4(1), center);
@@ -261,13 +261,33 @@ void MeshObject::RenderBoundingBox() {
 
 void MeshObject::returnBB(glm::vec3 startPoint, glm::vec3 endPoint)
 {
+<<<<<<< HEAD
 	bottomFace = LocationRect((int)startPoint.x, (int)startPoint.z, (int)endPoint.x, (int)endPoint.y);
+=======
+	bottomFace = LocationRect(startPoint.x, startPoint.z, endPoint.x, endPoint.z);
+	boundingBox.v1 = glm::vec3(startPoint.x, endPoint.y, startPoint.z);
+	boundingBox.v2 = glm::vec3(startPoint.x, startPoint.y, startPoint.z);
+	boundingBox.v3 = glm::vec3(endPoint.x, startPoint.y, startPoint.z);
+	boundingBox.v4 = glm::vec3(endPoint.x, endPoint.y, startPoint.z);
+	boundingBox.v1 = glm::vec3(startPoint.x, endPoint.y, endPoint.z);
+	boundingBox.v2 = glm::vec3(startPoint.x, startPoint.y, endPoint.z);
+	boundingBox.v3 = glm::vec3(endPoint.x, startPoint.y, endPoint.z);
+	boundingBox.v4 = glm::vec3(endPoint.x, endPoint.y, endPoint.z);
+
+>>>>>>> origin/develop
 }
 
 void MeshObject::Update(float timeDelta){
 
 	object2world = glm::mat4(1.0);
+<<<<<<< HEAD
 	object2world = (sumTranslation * sumScale * sumRotation);
+=======
+	object2world *= (sumScale * sumRotation * sumTranslation);	
+
+	// Projection
+	glm::mat4 camera2screen = glm::perspective(45.0f, 1.0f*glutGet(GLUT_WINDOW_WIDTH) / glutGet(GLUT_WINDOW_HEIGHT), 0.1f, 100.0f);
+>>>>>>> origin/develop
 
 	glUseProgram(program);
 	glUniformMatrix4fv(uniform_v, 1, GL_FALSE, glm::value_ptr(GlutManager::GetMainCamera()->GetCameraMat()));
@@ -375,6 +395,52 @@ bool MeshObject::Init(char* model_filename, char* vshader_filename, char* fshade
 		fprintf(stderr, "Could not bind uniform %s\n", uniform_name);
 		return 0;
 	}
+
+	// Cube 1x1x1, centered on origin
+	GLfloat vertices[] = {
+		-0.5, -0.5, -0.5, 1.0,
+		0.5, -0.5, -0.5, 1.0,
+		0.5, 0.5, -0.5, 1.0,
+		-0.5, 0.5, -0.5, 1.0,
+		-0.5, -0.5, 0.5, 1.0,
+		0.5, -0.5, 0.5, 1.0,
+		0.5, 0.5, 0.5, 1.0,
+		-0.5, 0.5, 0.5, 1.0,
+	};
+	GLuint vbo_vertices;
+	glGenBuffers(1, &vbo_vertices);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	GLushort elements[] = {
+		0, 1, 2, 3,
+		4, 5, 6, 7,
+		0, 4, 1, 5, 2, 6, 3, 7
+	};
+	GLuint ibo_elements;
+	glGenBuffers(1, &ibo_elements);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	GLfloat
+		min_x, max_x,
+		min_y, max_y,
+		min_z, max_z;
+	min_x = max_x = this->vertices[0].x;
+	min_y = max_y = this->vertices[0].y;
+	min_z = max_z = this->vertices[0].z;
+	for (unsigned int i = 0; i < this->vertices.size(); i++) {
+		if (this->vertices[i].x < min_x) min_x = this->vertices[i].x;
+		if (this->vertices[i].x > max_x) max_x = this->vertices[i].x;
+		if (this->vertices[i].y < min_y) min_y = this->vertices[i].y;
+		if (this->vertices[i].y > max_y) max_y = this->vertices[i].y;
+		if (this->vertices[i].z < min_z) min_z = this->vertices[i].z;
+		if (this->vertices[i].z > max_z) max_z = this->vertices[i].z;
+	}
+
+	returnBB(glm::vec3(min_x, min_y, min_z), glm::vec3(max_x, max_y, max_z));
 
 	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
 	GLfloat mat_shininess[] = { 50.0 };
