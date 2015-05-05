@@ -261,9 +261,6 @@ void MeshObject::RenderBoundingBox() {
 
 void MeshObject::returnBB(glm::vec3 startPoint, glm::vec3 endPoint)
 {
-<<<<<<< HEAD
-	bottomFace = LocationRect((int)startPoint.x, (int)startPoint.z, (int)endPoint.x, (int)endPoint.y);
-=======
 	bottomFace = LocationRect(startPoint.x, startPoint.z, endPoint.x, endPoint.z);
 	boundingBox.v1 = glm::vec3(startPoint.x, endPoint.y, startPoint.z);
 	boundingBox.v2 = glm::vec3(startPoint.x, startPoint.y, startPoint.z);
@@ -274,20 +271,16 @@ void MeshObject::returnBB(glm::vec3 startPoint, glm::vec3 endPoint)
 	boundingBox.v3 = glm::vec3(endPoint.x, startPoint.y, endPoint.z);
 	boundingBox.v4 = glm::vec3(endPoint.x, endPoint.y, endPoint.z);
 
->>>>>>> origin/develop
 }
 
 void MeshObject::Update(float timeDelta){
 
 	object2world = glm::mat4(1.0);
-<<<<<<< HEAD
-	object2world = (sumTranslation * sumScale * sumRotation);
-=======
-	object2world *= (sumScale * sumRotation * sumTranslation);	
+	object2world = (sumTranslation * sumScale * sumRotation);	
 
 	// Projection
 	glm::mat4 camera2screen = glm::perspective(45.0f, 1.0f*glutGet(GLUT_WINDOW_WIDTH) / glutGet(GLUT_WINDOW_HEIGHT), 0.1f, 100.0f);
->>>>>>> origin/develop
+
 
 	glUseProgram(program);
 	glUniformMatrix4fv(uniform_v, 1, GL_FALSE, glm::value_ptr(GlutManager::GetMainCamera()->GetCameraMat()));
