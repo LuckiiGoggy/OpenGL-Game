@@ -1,7 +1,7 @@
 #include "WorldEngine.h"
 #include "MeshObject.h"
 
-char* floor_filename = (char*) "../Assets/Models/floorCube.obj";
+char* floor_filename = (char*) "../Assets/Models/floorPlane.obj";
 char* wall_filename = (char*) "../Assets/Models/wallCube.obj";
 char* v_shader_filename = (char*) "../Assets/Shaders/gouraud-shading.v.glsl";
 char* f_shader_filename = (char*) "../Assets/Shaders/gouraud-shading.f.glsl";
@@ -53,7 +53,7 @@ void WorldEngine::readWorld(std::string filename) {
 
 		glMatrixMode(GL_PROJECTION);		// setup viewing projection
 		glLoadIdentity();					// start with identity matrix
-		glOrtho(0.0, w, 0.0, h, -h, h);	// setup a wxhx2h viewing world
+		glOrtho(-w, w, -h, h, -h, h);	// setup a wxhx2h viewing world
 
 		for (float i = 0; i < h; i++) {
 			std::getline(file, s);
@@ -149,7 +149,7 @@ bool WorldEngine::newWorld(std::string filename, std::string sW, std::string sH)
 
 		glMatrixMode(GL_PROJECTION);		// setup viewing projection
 		glLoadIdentity();					// start with identity matrix
-		glOrtho(0.0, w, 0.0, h, -h, h);	// setup a wxhx2h viewing world
+		glOrtho(-w, w, -h, h, -h, h);	// setup a wxhx2h viewing world
 
 		for (int i = 0; i < h; i++) {
 			for (int j = 0; j < w; j++) {
