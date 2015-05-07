@@ -40,3 +40,8 @@ void GroupObject::Move(glm::vec3 moveDelta)
 	MoveMembers(moveDelta);
 }
 
+
+void GroupObject::RotateY(float angle)
+{
+
+}

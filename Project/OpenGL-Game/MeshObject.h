@@ -8,7 +8,8 @@
 #include <sstream>
 
 #include "IGameObject.h"
-#include "IUpdateable.h"
+#include "IRenderable.h"
+#include "IMovable.h"
 
 #include "openGL.h"
 #include "Dependencies/glm/glm/gtc/matrix_transform.hpp"
@@ -18,7 +19,7 @@
 
 
 #pragma once
-class MeshObject: public IGameObject, public IUpdateable
+class MeshObject: public IGameObject, public IRenderable, public IMovable
 {
 public:
 	MeshObject();
@@ -52,7 +53,6 @@ private:
 	std::vector<glm::vec3> normals;
 	std::vector<GLushort> elements;
 	glm::mat4 object2world;
-	glm::mat4 world2camera;
 
 	glm::mat4 sumRotation;
 	glm::mat4 sumTranslation;
