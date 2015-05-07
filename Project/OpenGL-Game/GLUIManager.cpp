@@ -9,10 +9,6 @@ GLUI_EditText *GLUIManager::enterHeight;
 GLUI_RadioGroup *GLUIManager::radiogroup;
 GLUI_Panel *GLUIManager::panel4;
 
-const int SAVE = 1;
-const int LOAD = 2;
-const int NEW = 3;
-
 void GLUIManager::reshape(int x, int y) {
 	GLUI_Master.auto_set_viewport();
 
@@ -22,7 +18,7 @@ void GLUIManager::reshape(int x, int y) {
 
 void GLUIManager::menuEvents(int choice) {
 	switch (choice) {
-	case FileManagement::SAVE: {
+	case SAVE: {
 		if (engine.loaded = true) {
 			if (engine.writeWorld(filename->get_text())) {
 				glui->add_statictext_to_panel(panel4, filename->get_text());
@@ -30,11 +26,11 @@ void GLUIManager::menuEvents(int choice) {
 		}
 		break;
 	}
-	case FileManagement::LOAD: {
+	case LOAD: {
 		engine.readWorld(filename->get_text());
 		break;
 	}
-	case FileManagement::NEW: {
+	case NEW: {
 		if (engine.newWorld(filename->get_text(), enterWidth->get_text(), enterHeight->get_text())) {
 			glui->add_statictext_to_panel(panel4, filename->get_text());
 		}
