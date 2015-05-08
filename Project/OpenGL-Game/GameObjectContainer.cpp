@@ -5,6 +5,7 @@
 #include "IMovable.h"
 
 #include <iostream>
+#include "Transform.h"
 
 //#define DEBUG
 
@@ -46,35 +47,42 @@ void GameObjectContainer::EmptyMembers(void){
 
 void GameObjectContainer::MoveMembers(glm::vec3 moveDelta){
 	std::map<std::string, IGameObject *>::iterator iter;
-	IMovable *moveable;
+	Transform *moveable;
 	
 	for (iter = this->members.begin(); iter != this->members.end(); ++iter) {
-		moveable = dynamic_cast<IMovable*>(iter->second);
+		moveable = dynamic_cast<Transform*>(iter->second);
 		if (moveable != 0){
-			#ifdef DEBUG
-			std::cout << "\n\tMoving Member: " << iter->first;
-			#endif
-			moveable->Move(moveDelta);
+			moveable->Move(moveDelta, Transform::Space::Local);
 		}
 	}
 
 }
 void GameObjectContainer::MoveMembers(float x, float y, float z){
 	std::map<std::string, IGameObject *>::iterator iter;
-	IMovable *moveable;
+	Transform *moveable;
 
 	for (iter = this->members.begin(); iter != this->members.end(); ++iter) {
-		moveable = dynamic_cast<IMovable*>(iter->second);
+		moveable = dynamic_cast<Transform*>(iter->second);
 		if (moveable != 0){
-#ifdef DEBUG
-			std::cout << "\n\tMoving Member: " << iter->first;
-#endif
-			moveable->Move(glm::vec3(x, y, z));
+			moveable->Move(glm::vec3(x, y, z), Transform::Space::Local);
 		}
 	}
 
 }
 
+
+
+void GameObjectContainer::RotateMembers(float axisX, float axisY, float axisZ, float angle, glm::vec3 rotPoint, Transform::Space transformSpace){
+	std::map<std::string, IGameObject *>::iterator iter;
+	Transform *transformable;
+
+	for (iter = this->members.begin(); iter != this->members.end(); ++iter) {
+		transformable = dynamic_cast<Transform*>(iter->second);
+		if (transformable != 0){
+			transformable->Rotate(axisX, axisY, axisZ, angle, rotPoint, transformSpace);
+		}
+	}
+}
 
 void GameObjectContainer::RenderMembers(void)
 {
@@ -84,9 +92,6 @@ void GameObjectContainer::RenderMembers(void)
 	for (iter = this->members.begin(); iter != this->members.end(); ++iter) {
 		renderable = dynamic_cast<IRenderable*>(iter->second);
 		if (renderable != 0){
-			#ifdef DEBUG
-				std::cout << "\n\tRendering Member: " << iter->first;
-			#endif
 			renderable->Render();
 		}
 	}
@@ -102,9 +107,6 @@ void GameObjectContainer::UpdateMembers(float timeDelta)
 		updateable = dynamic_cast<IUpdateable *>(iter->second);
 
 		if (updateable != 0){
-			#ifdef DEBUG
-				std::cout << "\n\tUpdating Member: " << iter->first;
-			#endif
 			updateable->Update(timeDelta);
 		}
 	}

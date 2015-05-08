@@ -5,6 +5,7 @@
 #include <string>
 
 #include "IGameObject.h"
+#include "Transform.h"
 #include "Dependencies\glm\glm\glm.hpp"
 
 class GameObjectContainer
@@ -36,6 +37,8 @@ protected:
 	virtual void MoveMembers(float x, float y, float z);
 	virtual void RenderMembers(void);
 	virtual void UpdateMembers(float timeDelta);
+	virtual void RotateMembers(float axisX, float axisY, float axisZ, float angle, glm::vec3 rotPoint = glm::vec3(0.0f), Transform::Space transformSpace = Transform::Space::Local);
+
 
 
 };
