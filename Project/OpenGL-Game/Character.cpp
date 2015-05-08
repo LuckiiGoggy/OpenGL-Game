@@ -1,6 +1,4 @@
 #include "Character.h"
-#include "MeshObject.h"
-#include "Camera.h"
 
 
 Character::Character()
@@ -20,28 +18,14 @@ Character::Character()
 
 Character::~Character()
 {
-	std::map<std::string, GroupObject *>::iterator iter;
-
-	for (iter = members.begin(); iter != members.end(); ++iter) {
-		#ifdef DEBUG
-		std::cout << "\n\tDeleting " << iter->first;
-		#endif
-		delete iter->second;
-	}
-	members.empty();
 }
 
 void Character::Update(float timeDelta){
-	moveDelta *= timeDelta;
+	MoveMembers(moveDelta * timeDelta);
+	UpdateMembers(timeDelta);
+	position += moveDelta *  timeDelta;
 
-	std::map<std::string, GroupObject *>::iterator iter;
-
-	for (iter = members.begin(); iter != members.end(); ++iter) {
-		(iter->second)->Update(timeDelta);
-	}
-
-	position += moveDelta;
-	MoveMembers();
+	moveDelta = glm::vec3(0.0f);
 }
 
 void Character::MoveUp(void){
@@ -70,60 +54,21 @@ int Character::GetMovementSpeed(void){
 	return movementSpeed;
 }
 
-void Character::MoveMembers(){
-	if (moveDelta == glm::vec3(0.0f)) return;
-
-	std::map<std::string, GroupObject *>::iterator iter;
-
-	for (iter = members.begin(); iter != members.end(); ++iter) {
-		(iter->second)->Move(moveDelta);
-	}
-}
-
 void Character::Act(std::string funcName){
 	std::map<std::string, void(Character::*)(void)>::iterator it = baseActions.find(funcName);
 	if (it != baseActions.end()) (this->*(it->second))();
 }
 
-void Character::AddMember(std::string name, GroupObject * obj){
-	members[name] = obj;
-}
-
-void Character::RemoveMember(std::string name){
-	delete members[name];
-
-	members.erase(name);
-}
-
 void Character::Render(void){
-	std::map<std::string, GroupObject *>::iterator iter;
-
-	for (iter = members.begin(); iter != members.end(); ++iter) {
-		(iter->second)->Render();
-	}
+	RenderMembers();
 }
 
 void Character::RotateX(float angle){
-	MeshObject *mesh = dynamic_cast<MeshObject *>((members["Sonic"])->GetMember("Mesh"));
-	Camera *camera = dynamic_cast<Camera *>((members["Sonic"])->GetMember("Camera"));
-
-	//mesh->Rotate(glm::vec3(1.0f, 0.0f, 0.0f), angle);
-	//camera->RotateAtLookAtX(angle);
+	RotateMembers(1.0f, 0.0f, 0.0f, angle);
 }
 void Character::RotateY(float angle){
-	MeshObject *mesh = dynamic_cast<MeshObject *>((members["Sonic"])->GetMember("Mesh"));
-
-	MeshObject *mesh2 = dynamic_cast<MeshObject *>((members["Sonic"])->GetMember("Mesh2"));
-	Camera *camera = dynamic_cast<Camera *>((members["Sonic"])->GetMember("Camera"));
-
-	mesh->Rotate(glm::vec3(0.0f, 1.0f, 0.0f), angle);
-	//mesh2->Rotate(glm::vec3(0.0f, 1.0f, 0.0f), angle);
-	camera->RotateAtLookAtY(angle);
+	RotateMembers(0.0f, 1.0f, 0.0f, angle);
 }
 void Character::RotateZ(float angle){
-	MeshObject *mesh = dynamic_cast<MeshObject *>((members["Sonic"])->GetMember("Mesh"));
-	Camera *camera = dynamic_cast<Camera *>((members["Sonic"])->GetMember("Camera"));
-
-	//mesh->Rotate(glm::vec3(0.0f, 0.0f, 1.0f), angle);
-	//camera->RotateAtLookAtZ(angle);
+	RotateMembers(0.0f, 0.0f, 1.0f, angle);
 }

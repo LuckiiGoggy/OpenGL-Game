@@ -10,6 +10,7 @@ Player::Player(void)
 	Camera *camera = new Camera();
 	MeshObject *mesh = new MeshObject();
 	MeshObject *mesh2 = new MeshObject();
+	MeshObject *mesh3 = new MeshObject();
 	chara = new Character();
 	controller = new CharacterController(chara);
 	
@@ -19,13 +20,19 @@ Player::Player(void)
 
 	mesh->Init(obj_filename, v_shader_filename, f_shader_filename);
 	mesh2->Init(obj_filename, v_shader_filename, f_shader_filename);
+	mesh3->Init(obj_filename, v_shader_filename, f_shader_filename);
 
-	//camera->Move(glm::vec3(0.0f, 3.0f, 4.0f));
+//	camera->Move(glm::vec3(0.0f, 3.0f, 10.0f));
 	//camera->SetCameraLookAt(glm::vec3(-0.0f, -2.0f, 8.0f));
-	mesh2->Move(1.0f, 2.0f, 0.0f);
+	mesh2->Move(1.0f, 1.5f, 0.0f);
+	mesh3->Move(-1.0f, 1.5f, 0.0f);
+
+	mesh3->Scale(0.5f, 0.5f, 0.5f);
+	mesh2->Scale(0.5f, 0.5f, 0.5f);
 
 	group->AddMember("Mesh", mesh);
-	//group->AddMember("Mesh2", mesh2);
+	group->AddMember("Mesh2", mesh2);
+	group->AddMember("Mesh3", mesh3);
 	group->AddMember("Camera", camera);
 
 	
