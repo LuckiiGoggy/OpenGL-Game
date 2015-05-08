@@ -15,7 +15,7 @@ void GlutManager::Init(bool editor)
 {
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(200, 200);//optional
-	glutInitWindowSize(400, 400); //optional
+	glutInitWindowSize(566, 400); //optional
 
 	mainWindow = glutCreateWindow("OpenGL First Window");
 
@@ -37,14 +37,14 @@ void GlutManager::Init(bool editor)
 
 	InputManager::Init();
 
-	glutSetCursor(GLUT_CURSOR_NONE);
+	//glutSetCursor(GLUT_CURSOR_NONE);
 
 	lastTime = glutGet(GLUT_ELAPSED_TIME) / 1000.0f;
 
 	mainCamera = new Camera();
 
 	if (editor)	GLUIManager::initGLUI(GlutManager::mainWindow, GlutManager::IdleFunc);
-	else glutFullScreen();
+	//else glutFullScreen();
 
 
 
@@ -78,8 +78,13 @@ void GlutManager::RenderScene(void){
 	for (iter = members.begin(); iter != members.end(); ++iter) {
 		renderable = dynamic_cast<IRenderable*>(iter->second);
 		if (renderable != 0){
+			//std::cout << "\n Rendering: " << iter->first;
 			renderable->Render();
 		}
+	}
+
+	if (GLUIManager::engine.loaded == true) {
+		GLUIManager::engine.renderWorld();
 	}
 
 
@@ -93,42 +98,37 @@ void GlutManager::IdleFunc(void){
 	float currDelta = currTime - lastTime;
 	lastTime = currTime;
 	if (InputManager::isKeyDown(KeyCodes::ESC)) glutLeaveMainLoop();
-
-	/*
-	if (InputManager::isLeftButtonDown() && engine.loaded == true) {
-		Point p = InputManager::GetMousePos();
-		engine.updateSquare(p, radiogroup->get_int_val());
-	}
-	*/
 	
 	float moveSpd = currDelta * 1.0f;
 
-	std::cout << "\n" << currDelta;
+	//std::cout << "\n" << currDelta;
 
 
-	if (InputManager::isKeyDown(KeyCodes::w)) mainCamera->Move(glm::vec3(0.0f, 0.0f, currDelta * 5.0f));
-	if (InputManager::isKeyDown(KeyCodes::a)) mainCamera->Move(glm::vec3(currDelta * 5.0f, 0.0f, 0.0f));
-	if (InputManager::isKeyDown(KeyCodes::s)) mainCamera->Move(glm::vec3(0.0f, 0.0f, -currDelta * 5.0f));
-	if (InputManager::isKeyDown(KeyCodes::d)) mainCamera->Move(glm::vec3(-currDelta * 5.0f, 0.0f, 0.0f));
-	if (InputManager::isSpecialKeyDown(GLUT_KEY_SHIFT_L)) mainCamera->Move(glm::vec3(0.0f, -currDelta * 10.0f, 0.0f));
-	if (InputManager::isKeyDown(KeyCodes::Space)) mainCamera->Move(glm::vec3(0.0f, currDelta * 10.0f, 0.0f));
-	
-	if (InputManager::isSpecialKeyDown(GLUT_KEY_LEFT))	mainCamera->RotateY(0.1f  * currDelta);
-	if (InputManager::isSpecialKeyDown(GLUT_KEY_RIGHT)) mainCamera->RotateY(-0.1f * currDelta);
-	if (InputManager::isSpecialKeyDown(GLUT_KEY_UP))	mainCamera->RotateX(0.1f  * currDelta);
-	if (InputManager::isSpecialKeyDown(GLUT_KEY_DOWN))	mainCamera->RotateX(-0.1f * currDelta);
-	if (InputManager::isKeyDown(','))					mainCamera->RotateZ(0.1f  * currDelta);
-	if (InputManager::isKeyDown('.'))					mainCamera->RotateZ(-0.1f * currDelta);
-
+	//if (InputManager::isKeyDown(KeyCodes::w)) mainCamera->Move(glm::vec3(0.0f, 0.0f, currDelta * 5.0f));
+	//if (InputManager::isKeyDown(KeyCodes::a)) mainCamera->Move(glm::vec3(currDelta * 5.0f, 0.0f, 0.0f));
+	//if (InputManager::isKeyDown(KeyCodes::s)) mainCamera->Move(glm::vec3(0.0f, 0.0f, -currDelta * 5.0f));
+	//if (InputManager::isKeyDown(KeyCodes::d)) mainCamera->Move(glm::vec3(-currDelta * 5.0f, 0.0f, 0.0f));
+	//if (InputManager::isSpecialKeyDown(GLUT_KEY_SHIFT_L)) mainCamera->Move(glm::vec3(0.0f, -currDelta * 10.0f, 0.0f));
 
 	if (InputManager::isKeyDown(KeyCodes::m)) mainCamera->ClearRotation();
 
 
 	//std::cout << "\n In IdleFunc";
 
-	mainCamera->Update(currDelta);
+	//mainCamera->Update(currDelta);
 
 	UpdateMembers(currDelta);
+
+	
+	/*
+	if (InputManager::isKeyDown(KeyCodes::w)) myMesh.Move(glm::vec3(0.0f, 0.0f, 0.01f));
+	if (InputManager::isKeyDown(KeyCodes::a)) myMesh.Move(glm::vec3(-0.01f, 0.0f, 0.0f));
+	if (InputManager::isKeyDown(KeyCodes::s)) myMesh.Move(glm::vec3(0.0f, 0.0f, -0.01f));
+	if (InputManager::isKeyDown(KeyCodes::d)) myMesh.Move(glm::vec3(0.01f, 0.0f, 0.0f));
+	if (InputManager::isSpecialKeyDown(GLUT_KEY_SHIFT_L)) myMesh.Move(glm::vec3(0.0f, -0.01f, 0.0f));
+	if (InputManager::isKeyDown(KeyCodes::Space)) myMesh.Move(glm::vec3(0.0f, 0.01f, 0.0f));
+	*/
+	
 
 	glutSetWindow(mainWindow);
 

@@ -5,7 +5,7 @@
 #include "IGameObject.h"
 #include "GameObjectContainer.h"
 
-class Scene : public GameObjectContainer, public IGameObject, public IUpdateable
+class Scene : public GameObjectContainer, public IGameObject, public IRenderable
 {
 public:
 	Scene();

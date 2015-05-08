@@ -7,11 +7,12 @@
 
 #include "GroupObject.h"
 #include "IUpdateable.h"
+#include "IRenderable.h"
 
 /**Character Class is a container for the GroupObject that makes up
 	a character.
 	It provides the interface for interacting with a character.**/
-class Character: public IUpdateable
+class Character: public IGameObject, public IRenderable
 {
 public:
 	Character();
@@ -25,10 +26,15 @@ public:
 	virtual void MoveForward(void);
 	virtual void MoveBackward(void);
 
+	virtual void RotateX(float angle);
+	virtual void RotateY(float angle);
+	virtual void RotateZ(float angle);
+
 	virtual void SetMovementSpeed(int speed);
 	virtual int  GetMovementSpeed();
 
 	virtual void Update(float timeDelta);
+	virtual void Render(void);
 
 	virtual void AddMember(std::string, GroupObject *);
 	virtual void RemoveMember(std::string);

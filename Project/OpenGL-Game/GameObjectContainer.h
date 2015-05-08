@@ -29,9 +29,11 @@ public:
 
 	std::map<std::string, IGameObject *> members;
 
+	IGameObject *GetMember(std::string name);
 
 protected:
 	virtual void MoveMembers(glm::vec3);
+	virtual void MoveMembers(float x, float y, float z);
 	virtual void RenderMembers(void);
 	virtual void UpdateMembers(float timeDelta);
 
