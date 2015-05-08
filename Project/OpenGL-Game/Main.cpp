@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
 	GlutManager::Init(false);
 	InputManager::Init();
 
-	char* obj_filename = (char*) "../Assets/Models/floorCube.obj";
+	char* obj_filename = (char*) "../Assets/Models/boxMan.obj";
 	char* v_shader_filename = (char*) "../Assets/Shaders/phong-shading.v.glsl";
 	char* f_shader_filename = (char*) "../Assets/Shaders/phong-shading.f.glsl";
 
