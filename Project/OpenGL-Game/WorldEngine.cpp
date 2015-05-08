@@ -1,10 +1,10 @@
 #include "WorldEngine.h"
 #include "MeshObject.h"
 
-const int WALL = 0;
-const int FLOOR = 1;
-const int MOVEWALL = 2;
-const int SPAWN = 3;
+char* floor_filename = (char*) "../Assets/Models/floorPlane.obj";
+char* wall_filename = (char*) "../Assets/Models/wallCube.obj";
+char* v_shader_filename = (char*) "../Assets/Shaders/gouraud-shading.v.glsl";
+char* f_shader_filename = (char*) "../Assets/Shaders/gouraud-shading.f.glsl";
 
 WorldEngine::WorldEngine() {
 	loaded = false;
@@ -44,6 +44,7 @@ void WorldEngine::readWorld(std::string filename) {
 		int block;
 		std::string s;
 		squares.clear();
+		meshes.clear();
 
 		std::getline(file, s);
 		w = stoi(s);
@@ -52,7 +53,7 @@ void WorldEngine::readWorld(std::string filename) {
 
 		glMatrixMode(GL_PROJECTION);		// setup viewing projection
 		glLoadIdentity();					// start with identity matrix
-		glOrtho(0.0, w, 0.0, h, -1.0, 1.0);	// setup a wxhx2 viewing world
+		glOrtho(-w, w, -h, h, -h, h);	// setup a wxhx2h viewing world
 
 		for (float i = 0; i < h; i++) {
 			std::getline(file, s);
@@ -60,10 +61,43 @@ void WorldEngine::readWorld(std::string filename) {
 			for (float j = 0; j < w; j++) {
 				block = (int)(s.at(index) - '0');
 				squares.push_back(WorldSquare((int)i, (int)j, block));
+				MeshObject* p = new MeshObject();
+				switch (block) {
+				case WALL:
+				{
+					p->Init(wall_filename, v_shader_filename, f_shader_filename);
+					p->Move(glm::vec3(j, 0.0f, i));
+					break;
+				}
+				case FLOOR:
+				{
+					p->Init(floor_filename, v_shader_filename, f_shader_filename);
+					p->Move(glm::vec3(j, 0.0f, i));
+					break;
+				}
+				case MOVEWALL:
+				{
+					p->Init(wall_filename, v_shader_filename, f_shader_filename);
+					p->Move(glm::vec3(j, 0.0f, i));
+					break;
+				}
+				case SPAWN:
+				{
+					p->Init(floor_filename, v_shader_filename, f_shader_filename);
+					p->Move(glm::vec3(j, 0.0f, i));
+					break;
+				}
+				default:
+				{
+					p->Init(wall_filename, v_shader_filename, f_shader_filename);
+					p->Move(glm::vec3(j, 0.0f, i));
+					break;
+				}
+				}
+				meshes.push_back(p);
 				index++;
 			}
 		}
-
 		loaded = true;
 		file.close();
 	}
@@ -108,23 +142,30 @@ bool WorldEngine::newWorld(std::string filename, std::string sW, std::string sH)
 	if (file.is_open()) {
 		int block;
 		squares.clear();
+		meshes.clear();
 
 		w = stoi(sW);
 		h = stoi(sH);
 
 		glMatrixMode(GL_PROJECTION);		// setup viewing projection
 		glLoadIdentity();					// start with identity matrix
-		glOrtho(0.0, w, 0.0, h, -1.0, 1.0);	// setup a wxhx2 viewing world
+		glOrtho(-w, w, -h, h, -h, h);	// setup a wxhx2h viewing world
 
 		for (int i = 0; i < h; i++) {
 			for (int j = 0; j < w; j++) {
+				MeshObject* p = new MeshObject();
 				if (i == 0 || j == 0 || i == h - 1 || j == w - 1) {
 					block = WALL;
+					p->Init(wall_filename, v_shader_filename, f_shader_filename);
+					p->Move(glm::vec3(j, 0.0f, i));
 				}
 				else {
 					block = FLOOR;
+					p->Init(floor_filename, v_shader_filename, f_shader_filename);
+					p->Move(glm::vec3(j, 0.0f, i));
 				}
 				squares.push_back(WorldSquare((int)i, (int)j, block));
+				meshes.push_back(p);
 			}
 		}
 
@@ -138,9 +179,16 @@ bool WorldEngine::newWorld(std::string filename, std::string sW, std::string sH)
 		}
 
 		file.close();
+		loaded = true;
+
+		for (int j = 0; j < levelNames.size(); j++) {
+			if (filename.compare(levelNames[j]) == 0) {
+				return false;
+			}
+		}
+
 		levelNames.push_back(filename);
 
-		loaded = true;
 		return true;
 	}
 	return false;
@@ -149,19 +197,23 @@ bool WorldEngine::newWorld(std::string filename, std::string sW, std::string sH)
 void WorldEngine::renderWorld() {
 	int index = 0;
 	int block;
+
 	for (float i = 0; i < h; i++) {
 		for (float j = 0; j < w; j++) {
 			block = squares.at(index).type;
+			meshes[index]->Update(0.0);
+			meshes[index]->Render();
 			index++;
-			switch (block) {
+
+			/*switch (block) {
 			case WALL:
 			{
 				glColor3f(0.0f, 0.0f, 0.0f);
 				glBegin(GL_POLYGON);
-				glVertex3f(i, j, 0.0f);
-				glVertex3f(i + 1.0f, j, 0.0f);
-				glVertex3f(i + 1.0f, j + 1.0f, 0.0f);
-				glVertex3f(i, j + 1.0f, 0.0f);
+				glVertex3f(j, i, 0.0f);
+				glVertex3f(j + 1.0f, i, 0.0f);
+				glVertex3f(j + 1.0f, i + 1.0f, 0.0f);
+				glVertex3f(j, i + 1.0f, 0.0f);
 				glEnd();
 				glFlush();
 				break;
@@ -170,10 +222,10 @@ void WorldEngine::renderWorld() {
 			{
 				glColor3f(1.0f, 0.0f, 0.0f);
 				glBegin(GL_POLYGON);
-				glVertex3f(i, j, 0.0f);
-				glVertex3f(i + 1.0f, j, 0.0f);
-				glVertex3f(i + 1.0f, j + 1.0f, 0.0f);
-				glVertex3f(i, j + 1.0f, 0.0f);
+				glVertex3f(j, i, 0.0f);
+				glVertex3f(j + 1.0f, i, 0.0f);
+				glVertex3f(j + 1.0f, i + 1.0f, 0.0f);
+				glVertex3f(j, i + 1.0f, 0.0f);
 				glEnd();
 				glFlush();
 				break;
@@ -182,10 +234,10 @@ void WorldEngine::renderWorld() {
 			{
 				glColor3f(0.0f, 1.0f, 1.0f);
 				glBegin(GL_POLYGON);
-				glVertex3f(i, j, 0.0f);
-				glVertex3f(i + 1.0f, j, 0.0f);
-				glVertex3f(i + 1.0f, j + 1.0f, 0.0f);
-				glVertex3f(i, j + 1.0f, 0.0f);
+				glVertex3f(j, i, 0.0f);
+				glVertex3f(j + 1.0f, i, 0.0f);
+				glVertex3f(j + 1.0f, i + 1.0f, 0.0f);
+				glVertex3f(j, i + 1.0f, 0.0f);
 				glEnd();
 				glFlush();
 				break;
@@ -194,10 +246,10 @@ void WorldEngine::renderWorld() {
 			{
 				glColor3f(0.0f, 0.8f, 0.0f);
 				glBegin(GL_POLYGON);
-				glVertex3f(i, j, 0.0f);
-				glVertex3f(i + 1.0f, j, 0.0f);
-				glVertex3f(i + 1.0f, j + 1.0f, 0.0f);
-				glVertex3f(i, j + 1.0f, 0.0f);
+				glVertex3f(j, i, 0.0f);
+				glVertex3f(j + 1.0f, i, 0.0f);
+				glVertex3f(j + 1.0f, i + 1.0f, 0.0f);
+				glVertex3f(j, i + 1.0f, 0.0f);
 				glEnd();
 				glFlush();
 				break;
@@ -206,21 +258,21 @@ void WorldEngine::renderWorld() {
 			{
 				glColor3f(0.0f, 0.0f, 0.0f);
 				glBegin(GL_POLYGON);
-				glVertex3f(i, j, 0.0f);
-				glVertex3f(i + 1.0f, j, 0.0f);
-				glVertex3f(i + 1.0f, j + 1.0f, 0.0f);
-				glVertex3f(i, j + 1.0f, 0.0f);
+				glVertex3f(j, i, 0.0f);
+				glVertex3f(j + 1.0f, i, 0.0f);
+				glVertex3f(j + 1.0f, i + 1.0f, 0.0f);
+				glVertex3f(j, i + 1.0f, 0.0f);
 				glEnd();
 				glFlush();
 				break;
 			}
-			}
+			}*/
 		}
 	}
 }
 
-void WorldEngine::updateSquare(Point p, int type) {
+/*void WorldEngine::updateSquare(Point p, int type) {
 	currentsectionx = p.x / ((glutGet(GLUT_WINDOW_WIDTH) - 166) / w);
 	currentsectiony = (glutGet(GLUT_WINDOW_HEIGHT) - p.y) / (glutGet(GLUT_WINDOW_HEIGHT) / h);
-	squares[currentsectionx * h + currentsectiony].type = type;
-}
+	squares[currentsectiony * h + currentsectionx].type = type;
+}*/
