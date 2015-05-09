@@ -9,6 +9,6 @@ class AnimatedObject : public IGameObject, public Transform, public IRenderable,
 public:
 	AnimatedObject();
 	~AnimatedObject();
-	void Update();
+	void Update(float delta);
 };
 
