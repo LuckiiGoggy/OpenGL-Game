@@ -35,7 +35,6 @@ AnimatedObject::AnimatedObject()
 AnimatedObject::~AnimatedObject()
 {
 }
-
 void AnimatedObject::Update(float timeDelta){
 	UpdateMembers(timeDelta);
 
@@ -64,4 +63,3 @@ void AnimatedObject::Move(glm::vec3 moveDelta, Space transformSpace){
 
 void AnimatedObject::Rotate(float axisX, float axisY, float axisZ, float angle, glm::vec3 rotPoint, Space transformSpace){
 	RotateMembers(axisX, axisY, axisZ, angle, rotPoint, transformSpace);
-}
