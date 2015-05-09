@@ -139,7 +139,7 @@ void InputManager::MouseMotion(int x, int y){
 }
 
 bool InputManager::isKeyDown(unsigned int key){
-	if (key >= 256) key - 256;
+	if (key >= 256) key -= 256;
 	return keyStates[key].state;
 
 #ifdef DEBUG
@@ -150,7 +150,7 @@ bool InputManager::isKeyDown(unsigned int key){
 }
 
 bool InputManager::isKeyUp(unsigned int key){
-	if (key >= 256) key - 256;
+	if (key >= 256) key -= 256;
 	return !keyStates[key].state;
 
 #ifdef DEBUG
@@ -174,7 +174,7 @@ bool InputManager::isSpecialKeyUp(unsigned char key){
 	return !keySpecialStates[key].state;
 
 #ifdef DEBUG
-	std::cout << "\isSpecialKeyUp: ";
+	std::cout << "\nisSpecialKeyUp: ";
 	std::cout << "key: " << key;
 	std::cout << ", state: " << (!keySpecialStates[key].state) ? "true" : "false";
 #endif
@@ -185,7 +185,7 @@ Point InputManager::GetMousePosOfKeyPress(unsigned char key){
 	return keyStates[key].pressedPoint;
 
 #ifdef DEBUG
-	std::cout << "\GetMousePosOfKeyPress: ";
+	std::cout << "\nGetMousePosOfKeyPress: ";
 	std::cout << "key: " << key;
 	std::cout << ", x: " << keyStates[key].pressedPoint.x;
 	std::cout << ", y: " << keyStates[key].pressedPoint.y;
@@ -196,7 +196,7 @@ Point InputManager::GetMousePosOfKeyRelease(unsigned char key){
 	return keyStates[key].releasedPoint;
 
 #ifdef DEBUG
-	std::cout << "\GetMousePosOfKeyRelease: ";
+	std::cout << "\nGetMousePosOfKeyRelease: ";
 	std::cout << "key: " << key;
 	std::cout << ", x: " << keyStates[key].releasedPoint.x;
 	std::cout << ", y: " << keyStates[key].releasedPoint.y;
@@ -207,7 +207,7 @@ Point InputManager::GetMousePosOfSpecialKeyPress(unsigned char key){
 	return keySpecialStates[key].pressedPoint;
 
 #ifdef DEBUG
-	std::cout << "\GetMousePosOfSpecialKeyPress: ";
+	std::cout << "\nGetMousePosOfSpecialKeyPress: ";
 	std::cout << "key: " << key;
 	std::cout << ", x: " << keySpecialStates[key].pressedPoint.x;
 	std::cout << ", y: " << keySpecialStates[key].pressedPoint.y;
@@ -218,7 +218,7 @@ Point InputManager::GetMousePosOfSpecialKeyRelease(unsigned char key){
 	return keySpecialStates[key].releasedPoint;
 
 #ifdef DEBUG
-	std::cout << "\GetMousePosOfSpecialKeyRelease: ";
+	std::cout << "\nGetMousePosOfSpecialKeyRelease: ";
 	std::cout << "key: " << key;
 	std::cout << ", x: " << keySpecialStates[key].releasedPoint.x;
 	std::cout << ", y: " << keySpecialStates[key].releasedPoint.y;
@@ -229,7 +229,7 @@ bool InputManager::isLeftButtonDown(){
 	return mouseInfo.isLeftButtonDown;
 
 #ifdef DEBUG
-	std::cout << "\isLeftButtonDown: ";
+	std::cout << "\nisLeftButtonDown: ";
 	std::cout << (mouseInfo.isLeftButtonDown) ? "true" : "false";
 #endif
 }
@@ -238,7 +238,7 @@ bool InputManager::isLeftButtonUp(){
 	return !mouseInfo.isLeftButtonDown;
 
 #ifdef DEBUG
-	std::cout << "\isLeftButtonUp: ";
+	std::cout << "\nisLeftButtonUp: ";
 	std::cout << (!mouseInfo.isLeftButtonDown) ? "true" : "false";
 #endif
 }
@@ -247,7 +247,7 @@ bool InputManager::isRightButtonDown(){
 	return mouseInfo.isRightButtonDown;
 
 #ifdef DEBUG
-	std::cout << "\isRightButtonDown: ";
+	std::cout << "\nisRightButtonDown: ";
 	std::cout << (mouseInfo.isRightButtonDown) ? "true" : "false";
 #endif
 }
@@ -256,7 +256,7 @@ bool InputManager::isRightButtonUp(){
 	return !mouseInfo.isRightButtonDown;
 
 #ifdef DEBUG
-	std::cout << "\isRightButtonUp: ";
+	std::cout << "\nisRightButtonUp: ";
 	std::cout << (!mouseInfo.isRightButtonDown) ? "true" : "false";
 #endif
 }
@@ -265,7 +265,7 @@ bool InputManager::isMiddleButtonDown(){
 	return mouseInfo.isMiddleButtonDown;
 
 #ifdef DEBUG
-	std::cout << "\isMiddleButtonDown: ";
+	std::cout << "\nisMiddleButtonDown: ";
 	std::cout << (mouseInfo.isMiddleButtonDown) ? "true" : "false";
 #endif
 }
@@ -274,7 +274,7 @@ bool InputManager::isMiddleButtonUp(){
 	return !mouseInfo.isMiddleButtonDown;
 
 #ifdef DEBUG
-	std::cout << "\isMiddleButtonUp: ";
+	std::cout << "\nisMiddleButtonUp: ";
 	std::cout << (!mouseInfo.isMiddleButtonDown) ? "true" : "false";
 #endif
 }
@@ -283,7 +283,7 @@ Point InputManager::GetMousePos(){
 	return mouseInfo.currPos;
 
 #ifdef DEBUG
-	std::cout << "\GetMousePos: ";
+	std::cout << "\nGetMousePos: ";
 	std::cout << ", x: " << mouseInfo.currPos.x;
 	std::cout << ", y: " << mouseInfo.currPos.y;
 #endif
