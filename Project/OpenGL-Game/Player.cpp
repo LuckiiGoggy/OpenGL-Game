@@ -3,25 +3,21 @@
 #include "Camera.h"
 #include "MeshObject.h"
 #include "GlutManager.h"
+#include "AnimatedObject.h"
 
 Player::Player(void)
 {
 	GroupObject *group = new GroupObject();
 	Camera *camera = new Camera();
-	MeshObject *mesh = new MeshObject();
+	AnimatedObject *boxman = new AnimatedObject();
 	chara = new Character();
 	controller = new CharacterController(chara);
-	
-	char* obj_filename = (char*) "../Assets/Models/boxMan.obj";
-	char* v_shader_filename = (char*) "../Assets/Shaders/phong-shading.v.glsl";
-	char* f_shader_filename = (char*) "../Assets/Shaders/phong-shading.f.glsl";
 
-	mesh->Init(obj_filename, v_shader_filename, f_shader_filename);
 
 //	camera->Move(glm::vec3(0.0f, 3.0f, 10.0f));
 	//camera->SetCameraLookAt(glm::vec3(-0.0f, -2.0f, 8.0f));
 
-	group->AddMember("Mesh", mesh);
+	group->AddMember("Mesh", boxman);
 
 	group->AddMember("Camera", camera);
 
