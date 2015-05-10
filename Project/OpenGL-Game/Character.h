@@ -8,11 +8,12 @@
 #include "GroupObject.h"
 #include "IUpdateable.h"
 #include "IRenderable.h"
+#include "GameObjectContainer.h"
 
 /**Character Class is a container for the GroupObject that makes up
 	a character.
 	It provides the interface for interacting with a character.**/
-class Character: public IGameObject, public IRenderable
+class Character: public IGameObject, public IRenderable, public GameObjectContainer
 {
 public:
 	Character();
@@ -36,24 +37,16 @@ public:
 	virtual void Update(float timeDelta);
 	virtual void Render(void);
 
-	virtual void AddMember(std::string, GroupObject *);
-	virtual void RemoveMember(std::string);
-
 protected:
 	/**Collection of actions available to all characters.**/
 	/**Note: when extending Character create a new collection and modify
 		the Act function to read through your collection as well**/
 	std::map<std::string, void(Character::*)(void)> baseActions;
-
-	/**Collection of GroupObjects that make up the Character**/
-	std::map<std::string, GroupObject *> members;
-
+	
 	int movementSpeed;
 	glm::vec3 position;
 	glm::vec3 moveDelta;
 
-	virtual void MoveMembers();
-	
 	
 };
 

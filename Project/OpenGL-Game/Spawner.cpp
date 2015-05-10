@@ -40,7 +40,7 @@ void Spawner::SpawnPlayer(MeshObject &player, std::vector<MeshObject> players) {
 			pos = j;
 		}
 	}
-	player.MoveTo(spawnPoints[pos].x, 0.0f, spawnPoints[pos].y);
+	//player.MoveTo(spawnPoints[pos].x, 0.0f, spawnPoints[pos].y);
 }
 
 void Spawner::SpawnProjectile(Player* player) {

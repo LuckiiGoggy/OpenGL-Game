@@ -143,9 +143,6 @@ void GlutManager::Reshape(int x, int y) {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	
-
-
-
 	glutSetWindow(mainWindow);
 	glutPostRedisplay();
 }

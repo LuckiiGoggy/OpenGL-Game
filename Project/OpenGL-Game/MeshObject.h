@@ -10,6 +10,7 @@
 #include "IGameObject.h"
 #include "IRenderable.h"
 #include "IMovable.h"
+#include "Transform.h"
 
 #include "openGL.h"
 #include "Dependencies/glm/glm/gtc/matrix_transform.hpp"
@@ -19,7 +20,7 @@
 
 
 #pragma once
-class MeshObject: public IGameObject, public IRenderable, public IMovable
+class MeshObject: public Transform, public IGameObject, public IRenderable
 {
 public:
 	MeshObject();
@@ -32,12 +33,6 @@ public:
 	void Render(void);
 	virtual void RenderBoundingBox(void);
 	
-	virtual void Move(glm::vec3);
-	virtual void Move(float x, float y, float z);
-	virtual void MoveTo(float x, float y, float z);
-	virtual void Rotate(glm::vec3, float);
-	virtual void Scale(glm::vec3);
-	virtual void Scale(float x, float y, float z);
 	void returnBB(glm::vec3, glm::vec3);
 	
 
@@ -54,7 +49,6 @@ private:
 	std::vector<glm::vec4> vertices;
 	std::vector<glm::vec3> normals;
 	std::vector<GLushort> elements;
-	glm::mat4 object2world;
 
 	glm::mat4 sumRotation;
 	glm::mat4 sumScale;

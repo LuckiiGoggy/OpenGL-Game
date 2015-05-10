@@ -13,5 +13,5 @@ Projectile::Projectile(glm::vec3 dir, glm::vec3 pos) {
 	char* f_shader_filename = (char*) "../Assets/Shaders/gouraud-shading.f.glsl";
 	Init(spear_filename, v_shader_filename, f_shader_filename);
 	Move(pos);
-	Rotate(dir, 0.0f);
+	//Rotate(dir, 0.0f);
 }
