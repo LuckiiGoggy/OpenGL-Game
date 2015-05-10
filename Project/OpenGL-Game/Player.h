@@ -25,6 +25,8 @@ private:
 	Character *chara;
 	CharacterController *controller;
 	int delta;
+	int lastMouseX;
+	int lastMouseY;
 	
 };
 
