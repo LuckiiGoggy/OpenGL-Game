@@ -9,7 +9,7 @@ Player::Player(void)
 {
 	GroupObject *group = new GroupObject();
 	Camera *camera = new Camera();
-	AnimatedObject *boxman = new AnimatedObject();
+	AnimatedObject *boxman = new AnimatedObject;
 	chara = new Character();
 	controller = new CharacterController(chara);
 
@@ -26,6 +26,9 @@ Player::Player(void)
 	chara->AddMember("Sonic", group);
 
 	GlutManager::SetMainCamera(camera);
+
+	chara->AddStat(CharacterStat("Health", 3, 0, 3));
+	chara->AddStat(CharacterStat("Ammo", 3, 0, 3));
 }
 
 

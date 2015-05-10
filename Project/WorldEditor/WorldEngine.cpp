@@ -78,7 +78,7 @@ bool WorldEngine::writeWorld(std::string filename) {
 			file << squares.at(i).type;
 		}
 
-		for (int j = 0; j < levelNames.size(); j++) {
+		for (unsigned int j = 0; j < levelNames.size(); j++) {
 			if (filename.compare(levelNames[j].substr(0, levelNames[j].find("."))) == 0) {
 				return false;
 			}
@@ -133,7 +133,7 @@ bool WorldEngine::newWorld(std::string filename, std::string sW, std::string sH)
 		file.close();
 		loaded = true;
 
-		for (int j = 0; j < levelNames.size(); j++) {
+		for (unsigned int j = 0; j < levelNames.size(); j++) {
 			if (filename.compare(levelNames[j]) == 0) {
 				return false;
 			}

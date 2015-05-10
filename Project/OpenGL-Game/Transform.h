@@ -24,6 +24,8 @@ public:
 
 
 	glm::vec3 Position(void);
+	void* operator new(size_t);
+	void  operator delete(void*);
 protected:
 	glm::vec3 position;
 

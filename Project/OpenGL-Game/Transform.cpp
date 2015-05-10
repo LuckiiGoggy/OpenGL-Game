@@ -79,3 +79,13 @@ glm::vec3 Transform::ApplyTransVec3(glm::vec3 point, glm::mat4 &transMat){
 	return glm::vec3(point4);
 }
 
+void* Transform::operator new(size_t size){
+	void *storage = _aligned_malloc(size, 16);
+	if (NULL == storage) {
+		throw "allocation fail : no free memory";
+	}
+	return storage;
+}
+void  Transform::operator delete(void* storage){
+	_aligned_free(storage);
+}

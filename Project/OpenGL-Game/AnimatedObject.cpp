@@ -41,7 +41,7 @@ void AnimatedObject::Update(float timeDelta){
 	timeSinceLastFrame += timeDelta;
 	if (timeSinceLastFrame >= timeBetweenFrames){
 		timeSinceLastFrame = 0.0f;
-		if (++currentFrame >= frameNames.size()){
+		if (++currentFrame >= (int)frameNames.size()){
 			currentFrame = 0;
 		}
 	}

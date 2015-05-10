@@ -425,3 +425,4 @@ bool MeshObject::Init(char* model_filename, char* vshader_filename, char* fshade
 	glEnable(GL_DEPTH_TEST);
 	return 1;
 }
+
