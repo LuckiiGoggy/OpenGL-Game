@@ -3,7 +3,6 @@
 #include "GlutManager.h"
 #include "IRenderable.h"
 #include "InputManager.h"
-#include "GLUIManager.h"
 
 std::map<std::string, IObject *> GlutManager::members;
 Camera *GlutManager::mainCamera = NULL;
@@ -37,13 +36,13 @@ void GlutManager::Init(bool editor)
 
 	InputManager::Init();
 
-	//glutSetCursor(GLUT_CURSOR_NONE);
+	glutSetCursor(GLUT_CURSOR_NONE);
 
 	lastTime = glutGet(GLUT_ELAPSED_TIME) / 1000.0f;
 
 	mainCamera = new Camera();
 
-	if (editor)	GLUIManager::initGLUI(GlutManager::mainWindow, GlutManager::IdleFunc);
+	//if (editor)	GLUIManager::initGLUI(GlutManager::mainWindow, GlutManager::IdleFunc);
 	//else glutFullScreen();
 
 
@@ -83,11 +82,6 @@ void GlutManager::RenderScene(void){
 		}
 	}
 
-	if (GLUIManager::engine.loaded == true) {
-		GLUIManager::engine.renderWorld();
-	}
-
-
 	glutSwapBuffers();
 }
 
@@ -112,7 +106,6 @@ void GlutManager::IdleFunc(void){
 
 	if (InputManager::isKeyDown(KeyCodes::m)) mainCamera->ClearRotation();
 
-
 	//std::cout << "\n In IdleFunc";
 
 	//mainCamera->Update(currDelta);
@@ -129,6 +122,8 @@ void GlutManager::IdleFunc(void){
 	if (InputManager::isKeyDown(KeyCodes::Space)) myMesh.Move(glm::vec3(0.0f, 0.01f, 0.0f));
 	*/
 	
+
+	InputManager::Update();
 
 	glutSetWindow(mainWindow);
 

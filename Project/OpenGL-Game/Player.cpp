@@ -3,33 +3,34 @@
 #include "Camera.h"
 #include "MeshObject.h"
 #include "GlutManager.h"
+#include "AnimatedObject.h"
 
 Player::Player(void)
 {
 	GroupObject *group = new GroupObject();
 	Camera *camera = new Camera();
-	MeshObject *mesh = new MeshObject();
+	AnimatedObject *boxman = new AnimatedObject();
 	chara = new Character();
 	controller = new CharacterController(chara);
-	
-	char* obj_filename = (char*) "../Assets/Models/boxMan.obj";
-	char* v_shader_filename = (char*) "../Assets/Shaders/phong-shading.v.glsl";
-	char* f_shader_filename = (char*) "../Assets/Shaders/phong-shading.f.glsl";
 
-	mesh->Init(obj_filename, v_shader_filename, f_shader_filename);
 
 //	camera->Move(glm::vec3(0.0f, 3.0f, 10.0f));
 	//camera->SetCameraLookAt(glm::vec3(-0.0f, -2.0f, 8.0f));
 
-	group->AddMember("Mesh", mesh);
+	group->AddMember("Mesh", boxman);
 
 	group->AddMember("Camera", camera);
 
 	
 
-	chara->AddMember("Sonic", group);
+	chara->AddMember("BoxMan", group);
 
 	GlutManager::SetMainCamera(camera);
+
+	chara->AddStat(CharacterStat("Health", 3, 0, 3));
+	chara->AddStat(CharacterStat("Ammo", 3, 0, 3));
+
+	lastMouseX = lastMouseY = -1;
 }
 
 
@@ -40,17 +41,18 @@ Player::~Player(void)
 }
 
 void Player::Update(float timeDelta){
-	
-	if (InputManager::isSpecialKeyDown(GLUT_KEY_LEFT))  chara->RotateY(1.0f  * timeDelta);
-	if (InputManager::isSpecialKeyDown(GLUT_KEY_RIGHT)) chara->RotateY(-1.0f * timeDelta);
-	if (InputManager::isSpecialKeyDown(GLUT_KEY_UP))
-	{
-		chara->RotateX(1.0f  * timeDelta);
-		delta++;
+	int currMouseXDelta = 0;
+	int currMouseYDelta = 0;
+
+	if (lastMouseX != -1 && lastMouseY != -1){
+		currMouseXDelta = InputManager::GetMousePos().x - lastMouseX;
+		currMouseYDelta = InputManager::GetMousePos().y - lastMouseY;
 	}
-	if (InputManager::isSpecialKeyDown(GLUT_KEY_DOWN))	chara->RotateX(-1.0f * timeDelta);
-	if (InputManager::isKeyDown(','))					chara->RotateZ(0.1f  * timeDelta);
-	if (InputManager::isKeyDown('.'))					chara->RotateZ(-0.1f * timeDelta);
+
+	lastMouseX = InputManager::GetMousePos().x;
+	lastMouseY = InputManager::GetMousePos().y;
+
+	chara->RotateY((float)currMouseXDelta * timeDelta);
 
 
 	controller->Update(timeDelta);
@@ -59,4 +61,18 @@ void Player::Update(float timeDelta){
 
 void Player::Render(void){
 	chara->Render();
+}
+
+glm::vec3 Player::Position(void)
+{
+	GroupObject * group = dynamic_cast<GroupObject *>(chara->GetMember("BoxMan"));
+	
+	if (group != 0) return group->Position();
+
+	return glm::vec3(0.0f);
+}
+
+Character * Player::Chara(void)
+{
+	return chara;
 }

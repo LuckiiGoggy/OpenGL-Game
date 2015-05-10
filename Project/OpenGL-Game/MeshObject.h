@@ -34,7 +34,6 @@ public:
 	virtual void RenderBoundingBox(void);
 	
 	void returnBB(glm::vec3, glm::vec3);
-	
 
 	GLuint program;
 
@@ -48,10 +47,6 @@ private:
 	std::vector<glm::vec4> vertices;
 	std::vector<glm::vec3> normals;
 	std::vector<GLushort> elements;
-
-	glm::mat4 sumRotation;
-	glm::mat4 sumTranslation;
-	glm::mat4 sumScale;
 
 	BoundingBox boundingBox;
 	LocationRect bottomFace;

@@ -66,7 +66,7 @@ void WorldEngine::readWorld(std::string filename) {
 				case WALL:
 				{
 					p->Init(wall_filename, v_shader_filename, f_shader_filename);
-					p->Move(glm::vec3(j, 0.0f, i));
+					p->Move(glm::vec3(j, 1.0f, i));
 					break;
 				}
 				case FLOOR:
@@ -78,7 +78,7 @@ void WorldEngine::readWorld(std::string filename) {
 				case MOVEWALL:
 				{
 					p->Init(wall_filename, v_shader_filename, f_shader_filename);
-					p->Move(glm::vec3(j, 0.0f, i));
+					p->Move(glm::vec3(j, 1.0f, i));
 					break;
 				}
 				case SPAWN:
@@ -90,7 +90,7 @@ void WorldEngine::readWorld(std::string filename) {
 				default:
 				{
 					p->Init(wall_filename, v_shader_filename, f_shader_filename);
-					p->Move(glm::vec3(j, 0.0f, i));
+					p->Move(glm::vec3(j, 1.0f, i));
 					break;
 				}
 				}
@@ -119,7 +119,7 @@ bool WorldEngine::writeWorld(std::string filename) {
 			file << squares.at(i).type;
 		}
 
-		for (int j = 0; j < levelNames.size(); j++) {
+		for (unsigned int j = 0; j < levelNames.size(); j++) {
 			if (filename.compare(levelNames[j].substr(0, levelNames[j].find("."))) == 0) {
 				return false;
 			}
@@ -157,12 +157,12 @@ bool WorldEngine::newWorld(std::string filename, std::string sW, std::string sH)
 				if (i == 0 || j == 0 || i == h - 1 || j == w - 1) {
 					block = WALL;
 					p->Init(wall_filename, v_shader_filename, f_shader_filename);
-					p->Move(glm::vec3(j, 0.0f, i));
+					p->Move(glm::vec3(j, 1.0f, i));
 				}
 				else {
 					block = FLOOR;
 					p->Init(floor_filename, v_shader_filename, f_shader_filename);
-					p->Move(glm::vec3(j, 0.0f, i));
+					p->Move(glm::vec3(j, 1.0f, i));
 				}
 				squares.push_back(WorldSquare((int)i, (int)j, block));
 				meshes.push_back(p);
@@ -181,7 +181,7 @@ bool WorldEngine::newWorld(std::string filename, std::string sW, std::string sH)
 		file.close();
 		loaded = true;
 
-		for (int j = 0; j < levelNames.size(); j++) {
+		for (unsigned int j = 0; j < levelNames.size(); j++) {
 			if (filename.compare(levelNames[j]) == 0) {
 				return false;
 			}
@@ -208,63 +208,63 @@ void WorldEngine::renderWorld() {
 			/*switch (block) {
 			case WALL:
 			{
-				glColor3f(0.0f, 0.0f, 0.0f);
-				glBegin(GL_POLYGON);
-				glVertex3f(j, i, 0.0f);
-				glVertex3f(j + 1.0f, i, 0.0f);
-				glVertex3f(j + 1.0f, i + 1.0f, 0.0f);
-				glVertex3f(j, i + 1.0f, 0.0f);
-				glEnd();
-				glFlush();
-				break;
+			glColor3f(0.0f, 0.0f, 0.0f);
+			glBegin(GL_POLYGON);
+			glVertex3f(j, i, 0.0f);
+			glVertex3f(j + 1.0f, i, 0.0f);
+			glVertex3f(j + 1.0f, i + 1.0f, 0.0f);
+			glVertex3f(j, i + 1.0f, 0.0f);
+			glEnd();
+			glFlush();
+			break;
 			}
 			case FLOOR:
 			{
-				glColor3f(1.0f, 0.0f, 0.0f);
-				glBegin(GL_POLYGON);
-				glVertex3f(j, i, 0.0f);
-				glVertex3f(j + 1.0f, i, 0.0f);
-				glVertex3f(j + 1.0f, i + 1.0f, 0.0f);
-				glVertex3f(j, i + 1.0f, 0.0f);
-				glEnd();
-				glFlush();
-				break;
+			glColor3f(1.0f, 0.0f, 0.0f);
+			glBegin(GL_POLYGON);
+			glVertex3f(j, i, 0.0f);
+			glVertex3f(j + 1.0f, i, 0.0f);
+			glVertex3f(j + 1.0f, i + 1.0f, 0.0f);
+			glVertex3f(j, i + 1.0f, 0.0f);
+			glEnd();
+			glFlush();
+			break;
 			}
 			case MOVEWALL:
 			{
-				glColor3f(0.0f, 1.0f, 1.0f);
-				glBegin(GL_POLYGON);
-				glVertex3f(j, i, 0.0f);
-				glVertex3f(j + 1.0f, i, 0.0f);
-				glVertex3f(j + 1.0f, i + 1.0f, 0.0f);
-				glVertex3f(j, i + 1.0f, 0.0f);
-				glEnd();
-				glFlush();
-				break;
+			glColor3f(0.0f, 1.0f, 1.0f);
+			glBegin(GL_POLYGON);
+			glVertex3f(j, i, 0.0f);
+			glVertex3f(j + 1.0f, i, 0.0f);
+			glVertex3f(j + 1.0f, i + 1.0f, 0.0f);
+			glVertex3f(j, i + 1.0f, 0.0f);
+			glEnd();
+			glFlush();
+			break;
 			}
 			case SPAWN:
 			{
-				glColor3f(0.0f, 0.8f, 0.0f);
-				glBegin(GL_POLYGON);
-				glVertex3f(j, i, 0.0f);
-				glVertex3f(j + 1.0f, i, 0.0f);
-				glVertex3f(j + 1.0f, i + 1.0f, 0.0f);
-				glVertex3f(j, i + 1.0f, 0.0f);
-				glEnd();
-				glFlush();
-				break;
+			glColor3f(0.0f, 0.8f, 0.0f);
+			glBegin(GL_POLYGON);
+			glVertex3f(j, i, 0.0f);
+			glVertex3f(j + 1.0f, i, 0.0f);
+			glVertex3f(j + 1.0f, i + 1.0f, 0.0f);
+			glVertex3f(j, i + 1.0f, 0.0f);
+			glEnd();
+			glFlush();
+			break;
 			}
 			default:
 			{
-				glColor3f(0.0f, 0.0f, 0.0f);
-				glBegin(GL_POLYGON);
-				glVertex3f(j, i, 0.0f);
-				glVertex3f(j + 1.0f, i, 0.0f);
-				glVertex3f(j + 1.0f, i + 1.0f, 0.0f);
-				glVertex3f(j, i + 1.0f, 0.0f);
-				glEnd();
-				glFlush();
-				break;
+			glColor3f(0.0f, 0.0f, 0.0f);
+			glBegin(GL_POLYGON);
+			glVertex3f(j, i, 0.0f);
+			glVertex3f(j + 1.0f, i, 0.0f);
+			glVertex3f(j + 1.0f, i + 1.0f, 0.0f);
+			glVertex3f(j, i + 1.0f, 0.0f);
+			glEnd();
+			glFlush();
+			break;
 			}
 			}*/
 		}
@@ -272,7 +272,7 @@ void WorldEngine::renderWorld() {
 }
 
 /*void WorldEngine::updateSquare(Point p, int type) {
-	currentsectionx = p.x / ((glutGet(GLUT_WINDOW_WIDTH) - 166) / w);
-	currentsectiony = (glutGet(GLUT_WINDOW_HEIGHT) - p.y) / (glutGet(GLUT_WINDOW_HEIGHT) / h);
-	squares[currentsectiony * h + currentsectionx].type = type;
+currentsectionx = p.x / ((glutGet(GLUT_WINDOW_WIDTH) - 166) / w);
+currentsectiony = (glutGet(GLUT_WINDOW_HEIGHT) - p.y) / (glutGet(GLUT_WINDOW_HEIGHT) / h);
+squares[currentsectiony * h + currentsectionx].type = type;
 }*/

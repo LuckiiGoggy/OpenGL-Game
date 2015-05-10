@@ -22,8 +22,17 @@ public:
 	virtual void Rotate(float axisX, float axisY, float axisZ, float angle, glm::vec3 rotPoint = glm::vec3(0.0f), Space transformSpace = Space::Local);
 	virtual void Scale(float scaleX, float scaleY, float scaleZ, Space transformSpace = Space::Local);
 
+	static glm::vec3 ApplyTransVec3(glm::vec3 point, glm::mat4 &transMat);
+	static glm::vec3 Inverse(glm::vec3 vec);
+
+
+	virtual glm::mat4& NetTranslation(void);
+	virtual glm::mat4& NetRotation(void);
+	virtual glm::mat4& NetScale(void);
 
 	glm::vec3 Position(void);
+	void* operator new(size_t);
+	void  operator delete(void*);
 protected:
 	glm::vec3 position;
 
@@ -33,8 +42,6 @@ protected:
 	glm::mat4 netScale;
 
 	void UpdateNetTransformations(void);
-	glm::vec3 ApplyTransVec3(glm::vec3 point, glm::mat4 &transMat);
-	glm::vec3 Inverse(glm::vec3 vec);
 
 };
 

@@ -8,7 +8,6 @@
 #include "GroupObject.h"
 #include "TestObject.h"
 #include "MeshObject.h"
-#include "GLUIManager.h"
 #include "GlutManager.h"
 #include "GameScene.h"
 #include "Player.h"
@@ -21,7 +20,6 @@ void renderScene(void);
 GroupObject test;
 
 int main(int argc, char **argv) {
-	int menu;
 	glutInit(&argc, argv);
 	GlutManager::Init(false);
 	InputManager::Init();	

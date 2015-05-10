@@ -63,7 +63,7 @@ void GLUIManager::initGLUI(int main_window, void updateGame()) {
 
 	engine.loadDirectory();
 	panel4 = glui->add_panel("Level Files", GLUI_PANEL_EMBOSSED);
-	for (int i = 0; i < engine.levelNames.size(); i++) {
+	for (unsigned int i = 0; i < engine.levelNames.size(); i++) {
 		glui->add_statictext_to_panel(panel4, engine.levelNames[i].c_str());
 	}
 
