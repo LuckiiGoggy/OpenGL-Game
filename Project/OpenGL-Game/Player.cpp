@@ -9,7 +9,7 @@ Player::Player(void)
 {
 	GroupObject *group = new GroupObject();
 	Camera *camera = new Camera();
-	AnimatedObject *boxman = new AnimatedObject;
+	AnimatedObject *boxman = new AnimatedObject();
 	chara = new Character();
 	controller = new CharacterController(chara);
 
