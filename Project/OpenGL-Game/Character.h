@@ -54,7 +54,6 @@ protected:
 	std::map<std::string, CharacterStat> charaStats;
 
 	int movementSpeed;
-	glm::vec3 position;
 	glm::vec3 moveDelta;
 
 	

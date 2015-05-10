@@ -89,3 +89,14 @@ void* Transform::operator new(size_t size){
 void  Transform::operator delete(void* storage){
 	_aligned_free(storage);
 }
+
+
+glm::mat4& Transform::NetTranslation(void){
+	return netTranslation;
+}
+glm::mat4& Transform::NetRotation(void){
+	return netRotation;
+}
+glm::mat4& Transform::NetScale(void){
+	return netScale;
+}

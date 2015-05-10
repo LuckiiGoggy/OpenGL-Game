@@ -23,7 +23,7 @@ Player::Player(void)
 
 	
 
-	chara->AddMember("Sonic", group);
+	chara->AddMember("BoxMan", group);
 
 	GlutManager::SetMainCamera(camera);
 
@@ -58,4 +58,18 @@ void Player::Update(float timeDelta){
 
 void Player::Render(void){
 	chara->Render();
+}
+
+glm::vec3 Player::Position(void)
+{
+	GroupObject * group = dynamic_cast<GroupObject *>(chara->GetMember("BoxMan"));
+	
+	if (group != 0) return group->Position();
+
+	return glm::vec3(0.0f);
+}
+
+Character * Player::Chara(void)
+{
+	return chara;
 }

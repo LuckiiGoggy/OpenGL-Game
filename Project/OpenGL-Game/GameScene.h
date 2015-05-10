@@ -14,8 +14,8 @@ class GameScene : public Scene
 public:
 	WorldEngine* engine;
 	Spawner* spawn;
-	std::vector<MeshObject> players;
-	std::vector<Projectile*> projectiles;
+	std::vector<MeshObject *> players;
+	std::vector<Projectile *> projectiles;
 	GameScene();
 	~GameScene();
 

@@ -5,7 +5,6 @@ Character::Character()
 {
 	movementSpeed = 1;
 	moveDelta = glm::vec3(0.0);
-	position = glm::vec3(0.0);
 
 	baseActions["MoveUp"]		= &Character::MoveUp;
 	baseActions["MoveDown"]		= &Character::MoveDown;
@@ -23,7 +22,6 @@ Character::~Character()
 void Character::Update(float timeDelta){
 	MoveMembers(moveDelta * timeDelta);
 	UpdateMembers(timeDelta);
-	position += moveDelta *  timeDelta;
 
 	moveDelta = glm::vec3(0.0f);
 }
