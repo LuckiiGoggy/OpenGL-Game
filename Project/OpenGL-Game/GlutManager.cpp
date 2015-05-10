@@ -123,6 +123,8 @@ void GlutManager::IdleFunc(void){
 	*/
 	
 
+	InputManager::Update();
+
 	glutSetWindow(mainWindow);
 
 	glutPostRedisplay();

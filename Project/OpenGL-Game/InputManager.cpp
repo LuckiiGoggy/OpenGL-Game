@@ -19,6 +19,7 @@ MouseInfo::MouseInfo(){
 	isLeftButtonDown   = false;
 	isMiddleButtonDown = false;
 	isRightButtonDown  = false;
+	isClicked = false;
 }
 
 KeyInfo* InputManager::keySpecialStates = new KeyInfo[256];
@@ -107,6 +108,8 @@ void InputManager::MouseInput(int button, int state, int x, int y){
 	mouseInfo.isLeftButtonDown   = button == GLUT_LEFT_BUTTON   ? isDown : mouseInfo.isLeftButtonDown;
 	mouseInfo.isMiddleButtonDown = button == GLUT_MIDDLE_BUTTON ? isDown : mouseInfo.isMiddleButtonDown;
 	mouseInfo.isRightButtonDown  = button == GLUT_RIGHT_BUTTON  ? isDown : mouseInfo.isRightButtonDown;
+	
+	mouseInfo.isClicked = isDown;
 
 	mouseInfo.currPos.x = x;
 	mouseInfo.currPos.y = y;
@@ -300,4 +303,14 @@ void InputManager::ClearInput(void){
 	mouseInfo.isLeftButtonDown = false;
 	mouseInfo.isMiddleButtonDown = false;
 	mouseInfo.isRightButtonDown = false;
+}
+
+bool InputManager::IsMouseClicked(float timeDelta)
+{
+	return mouseInfo.isClicked;
+}
+
+void InputManager::Update()
+{
+	mouseInfo.isClicked = false;
 }
