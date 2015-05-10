@@ -35,7 +35,7 @@ void GameScene::Render() {
 
 void GameScene::Update(float timedelta) {
 	Scene::Update(timedelta);
-	if (InputManager::isLeftButtonDown()) {
+	if (InputManager::IsMouseClicked(timedelta)) {
 		spawn->SpawnProjectile((Player*)members.at("Player"), this);
 	}
 
