@@ -9,6 +9,7 @@
 #include "IUpdateable.h"
 #include "IRenderable.h"
 #include "GameObjectContainer.h"
+#include "CharacterStat.h"
 
 /**Character Class is a container for the GroupObject that makes up
 	a character.
@@ -34,6 +35,13 @@ public:
 	virtual void SetMovementSpeed(int speed);
 	virtual int  GetMovementSpeed();
 
+	virtual void AddStat(CharacterStat newStat);
+	virtual void RemoveStat(std::string statName);
+	virtual int  GetStatValue(std::string statName);
+	virtual void IncStat(std::string statName);
+	virtual void DecStat(std::string statName);
+	virtual void ResetStats(void);
+
 	virtual void Update(float timeDelta);
 	virtual void Render(void);
 
@@ -43,6 +51,8 @@ protected:
 		the Act function to read through your collection as well**/
 	std::map<std::string, void(Character::*)(void)> baseActions;
 	
+	std::map<std::string, CharacterStat> charaStats;
+
 	int movementSpeed;
 	glm::vec3 position;
 	glm::vec3 moveDelta;
