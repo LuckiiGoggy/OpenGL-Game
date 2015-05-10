@@ -71,6 +71,7 @@ struct MouseInfo
 	bool isLeftButtonDown;
 	bool isMiddleButtonDown;
 	bool isRightButtonDown;
+	bool isClicked;
 	Point currPos;
 };
 
@@ -187,8 +188,13 @@ public:
 	/** Checks if the middle Mouse Button is currently released **/
 	static bool isMiddleButtonUp();
 
+	/** Checks if the a MouseButton has recently been clicked **/
+	static bool IsMouseClicked(float timeDelta);
+
 	/** Returns the current position of the mouse **/
 	static Point GetMousePos();
+
+	static void Update();
 
 private:
 	static KeyInfo* keySpecialStates;
