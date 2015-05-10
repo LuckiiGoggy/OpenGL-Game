@@ -26,22 +26,32 @@ void GroupObject::Update(float timeDelta){
 	UpdateMembers(timeDelta);
 }
 
-void GroupObject::Move(glm::vec3 moveDelta)
+void GroupObject::Move(float dX, float dY, float dZ, Space transformSpace)
 {
-#ifdef DEBUG
-	std::cout << "\nGroup Object Moving..";
-	std::cout << "(x: " << moveDelta.x;
-	std::cout << ", y: ";
-	std::cout << y << ", z: ";
-	std::cout << z << ")";
-#endif
-	position += moveDelta;
+	glm::vec3 moveDelta = glm::vec3(dX, dY, dZ);
+	Transform::Move(moveDelta, transformSpace);
+	MoveMembers(moveDelta);
+}
 
+void GroupObject::Move(glm::vec3 moveDelta, Space transformSpace)
+{
+	Transform::Move(moveDelta, transformSpace);
 	MoveMembers(moveDelta);
 }
 
 
-void GroupObject::RotateY(float angle)
-{
-
+void GroupObject::Rotate(float axisX, float axisY, float axisZ, float angle, glm::vec3 rotPoint, Space transformSpace){
+	switch (transformSpace)
+	{
+	case Transform::Local:
+		Transform::Rotate(axisX, axisY, axisZ, angle);
+		RotateMembers(axisX, axisY, axisZ, angle, position, Transform::Global);
+		break;
+	case Transform::Global:
+		Transform::Rotate(axisX, axisY, axisZ, angle, position, transformSpace);
+		RotateMembers(axisX, axisY, axisZ, angle, position, transformSpace);
+		break;
+	default:
+		break;
+	}
 }

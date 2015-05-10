@@ -5,7 +5,7 @@
 #include "InputManager.h"
 #include "WorldEngine.h"
 
-static class GLUIManager {
+class GLUIManager {
 public:
 	enum FileManagement{SAVE, LOAD, NEW};
 	static void reshape(int x, int y);

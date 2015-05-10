@@ -69,6 +69,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AnimatedObject.cpp" />
     <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CharacterStat.cpp" />
@@ -79,10 +80,9 @@
     <ClCompile Include="GLUIManager.cpp" />
     <ClCompile Include="LocationRect.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="RigidBody.cpp" />
     <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="Spawner.cpp" />
+    <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Velocity.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="CharacterController.cpp" />
@@ -104,6 +104,7 @@
     <ClCompile Include="WorldSquare.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimatedObject.h" />
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CharacterStat.h" />
@@ -114,10 +115,9 @@
     <ClInclude Include="GLUIManager.h" />
     <ClInclude Include="LocationRect.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="Projectile.h" />
     <ClInclude Include="RigidBody.h" />
     <ClInclude Include="Scene.h" />
-    <ClInclude Include="Spawner.h" />
+    <ClInclude Include="Transform.h" />
     <ClInclude Include="Velocity.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="CharacterController.h" />
