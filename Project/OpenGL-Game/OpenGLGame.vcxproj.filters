@@ -114,9 +114,6 @@
     <ClCompile Include="shader_utils.cpp">
       <Filter>Source Files\GameEngine\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="GLUIManager.cpp">
-      <Filter>Source Files\GameEngine</Filter>
-    </ClCompile>
     <ClCompile Include="BoundingBox.cpp">
       <Filter>Source Files\GameEngine</Filter>
     </ClCompile>
@@ -227,9 +224,6 @@
     </ClInclude>
     <ClInclude Include="shader_utils.h">
       <Filter>Header Files\GameEngine\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="GLUIManager.h">
-      <Filter>Header Files\GameEngine</Filter>
     </ClInclude>
     <ClInclude Include="BoundingBox.h">
       <Filter>Header Files\GameEngine</Filter>

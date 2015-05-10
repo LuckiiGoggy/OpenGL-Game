@@ -8,7 +8,7 @@ Player::Player(void)
 {
 	GroupObject *group = new GroupObject();
 	Camera *camera = new Camera();
-	MeshObject *mesh = new MeshObject();
+	mesh = new MeshObject();
 	MeshObject *mesh2 = new MeshObject();
 	chara = new Character();
 	controller = new CharacterController(chara);

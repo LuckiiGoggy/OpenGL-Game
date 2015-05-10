@@ -34,12 +34,14 @@ public:
 	
 	virtual void Move(glm::vec3);
 	virtual void Move(float x, float y, float z);
+	virtual void MoveTo(float x, float y, float z);
 	virtual void Rotate(glm::vec3, float);
 	virtual void Scale(glm::vec3);
 	virtual void Scale(float x, float y, float z);
 	void returnBB(glm::vec3, glm::vec3);
 	
 
+	glm::mat4 sumTranslation;
 	GLuint program;
 
 
@@ -55,7 +57,6 @@ private:
 	glm::mat4 object2world;
 
 	glm::mat4 sumRotation;
-	glm::mat4 sumTranslation;
 	glm::mat4 sumScale;
 
 	BoundingBox boundingBox;

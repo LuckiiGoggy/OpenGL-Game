@@ -1,32 +1,53 @@
 #include "Spawner.h"
 
 Spawner::Spawner() {
+
+}
+
+Spawner::Spawner(std::vector<WorldSquare> squares, std::vector<MeshObject> players) {
 	//getting collection of spawn points from currently loaded map
-	for (int i = 0; i < GLUIManager::engine.squares.size(); i++) {
-		if (GLUIManager::engine.squares[i].type == 3) {
-			spawnPoints.push_back(GLUIManager::engine.squares[i]);
+	for (size_t i = 0; i < squares.size(); i++) {
+		if (squares[i].type == 3) {
+			spawnPoints.push_back(squares[i]);
 		}
 	}
-	/*for all players {
-		set position to a spawn point
+	for (size_t j = 0; j < players.size(); j++) {
+		players[j].Move(squares[j].x, 0.0f, squares[j].y);
 	}
-	*/
 }
 
-void Spawner::SpawnPlayer() {
-	/*for all players {
-		add/average/apply heuristic to player's positions
-	}
-	for all spawnPoints {
-		compare place to spawn player to spawnPoint coordinates
-	}
-	move player to spawnPoint
-	*/
+void Spawner::InitialSpawn() {
+
 }
 
-void Spawner::SpawnProjectile() {
-	/*Create a new projectile with 
-		direction and position based 
-		on player that spawned it
-	*/
+void Spawner::SpawnPlayer(MeshObject &player, std::vector<MeshObject> players) {
+	float dist = std::numeric_limits<float>::max();
+	float temp = 0;
+	float posx = 0;
+	float posy = 0;
+	int pos = 0;
+	for (size_t i = 0; i < players.size(); i++) {
+		posx += players[i].sumTranslation[0][3];
+		posy += players[i].sumTranslation[1][3];
+	}
+	posx /= players.size();
+	posy /= players.size();
+	for (size_t j = 0; j < spawnPoints.size(); j++) {
+		temp = glm::sqrt(glm::pow(spawnPoints[j].x - posx, 2) +
+		glm::pow(spawnPoints[j].y - posy, 2));
+		if (temp > dist) {
+			dist = temp;
+			pos = j;
+		}
+	}
+	player.MoveTo(spawnPoints[pos].x, 0.0f, spawnPoints[pos].y);
+}
+
+void Spawner::SpawnProjectile(Player* player) {
+	/*Create a new projectile with
+	direction and position based
+	on player that spawned it*/
+	glm::vec4 v = glm::vec4();
+	
+	projectiles.push_back(Projectile(glm::vec3(), glm::vec3(player->mesh->sumTranslation * v)));
 }

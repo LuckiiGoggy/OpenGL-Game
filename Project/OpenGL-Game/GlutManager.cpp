@@ -3,7 +3,6 @@
 #include "GlutManager.h"
 #include "IRenderable.h"
 #include "InputManager.h"
-#include "GLUIManager.h"
 
 std::map<std::string, IObject *> GlutManager::members;
 Camera *GlutManager::mainCamera = NULL;
@@ -43,7 +42,7 @@ void GlutManager::Init(bool editor)
 
 	mainCamera = new Camera();
 
-	if (editor)	GLUIManager::initGLUI(GlutManager::mainWindow, GlutManager::IdleFunc);
+	//if (editor)	GLUIManager::initGLUI(GlutManager::mainWindow, GlutManager::IdleFunc);
 	//else glutFullScreen();
 
 
@@ -83,11 +82,6 @@ void GlutManager::RenderScene(void){
 		}
 	}
 
-	if (GLUIManager::engine.loaded == true) {
-		GLUIManager::engine.renderWorld();
-	}
-
-
 	glutSwapBuffers();
 }
 
@@ -111,7 +105,6 @@ void GlutManager::IdleFunc(void){
 	//if (InputManager::isSpecialKeyDown(GLUT_KEY_SHIFT_L)) mainCamera->Move(glm::vec3(0.0f, -currDelta * 10.0f, 0.0f));
 
 	if (InputManager::isKeyDown(KeyCodes::m)) mainCamera->ClearRotation();
-
 
 	//std::cout << "\n In IdleFunc";
 

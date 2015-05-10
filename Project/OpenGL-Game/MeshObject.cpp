@@ -301,6 +301,11 @@ void MeshObject::Move(float x, float y, float z){
 	Move(glm::vec3(x, y, z));
 }
 
+void MeshObject::MoveTo(float x, float y, float z){
+	sumTranslation = glm::fmat4();
+	Move(glm::vec3(x, y, z));
+}
+
 void MeshObject::Rotate(glm::vec3 rotateAxis, float angle){
 	sumRotation = glm::rotate(sumRotation, angle, rotateAxis); // where x, y, z is axis of rotation (e.g. 0 1 0)
 }

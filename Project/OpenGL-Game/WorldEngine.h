@@ -25,7 +25,6 @@ public:
 	int h;
 	int currentsectionx;
 	int currentsectiony;
-
 	bool loaded;
 
 	WorldEngine();
