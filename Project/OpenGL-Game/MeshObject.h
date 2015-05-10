@@ -36,6 +36,7 @@ public:
 	void returnBB(glm::vec3, glm::vec3);
 	
 
+	glm::mat4 sumTranslation;
 	GLuint program;
 
 
@@ -50,7 +51,6 @@ private:
 	std::vector<GLushort> elements;
 
 	glm::mat4 sumRotation;
-	glm::mat4 sumTranslation;
 	glm::mat4 sumScale;
 
 	BoundingBox boundingBox;

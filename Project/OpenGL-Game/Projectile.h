@@ -4,7 +4,7 @@
 #include "Velocity.h"
 #include "MeshObject.h"
 
-class Projectile:private MeshObject {
+class Projectile:public MeshObject {
 public:
 	Projectile();
 	Projectile(glm::vec3 dir, glm::vec3 pos);

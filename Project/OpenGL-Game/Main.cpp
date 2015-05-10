@@ -8,7 +8,6 @@
 #include "GroupObject.h"
 #include "TestObject.h"
 #include "MeshObject.h"
-#include "GLUIManager.h"
 #include "GlutManager.h"
 #include "GameScene.h"
 #include "Player.h"

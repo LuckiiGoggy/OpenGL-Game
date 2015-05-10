@@ -3,6 +3,7 @@
 
 #include "IObject.h"
 #include "Camera.h"
+#include "GameScene.h"
 #include <string>
 #include <map>
 
