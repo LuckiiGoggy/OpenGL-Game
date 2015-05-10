@@ -31,6 +31,8 @@ void GroupObject::Move(float dX, float dY, float dZ, Space transformSpace)
 	glm::vec3 moveDelta = glm::vec3(dX, dY, dZ);
 	Transform::Move(moveDelta, transformSpace);
 	MoveMembers(moveDelta);
+
+	
 }
 
 void GroupObject::Move(glm::vec3 moveDelta, Space transformSpace)

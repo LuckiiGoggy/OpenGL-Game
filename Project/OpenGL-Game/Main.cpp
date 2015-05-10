@@ -20,7 +20,6 @@ void renderScene(void);
 GroupObject test;
 
 int main(int argc, char **argv) {
-	int menu;
 	glutInit(&argc, argv);
 	GlutManager::Init(false);
 	InputManager::Init();	

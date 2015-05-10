@@ -1,6 +1,14 @@
 #include "CharacterStat.h"
 #include <utility>
 
+CharacterStat::CharacterStat(void)
+{
+	statName = "Stat";
+	defaultVal = 0;
+	statValue = 0;
+	minValue = INT_MIN;
+	maxValue = INT_MAX;
+}
 
 CharacterStat::CharacterStat(std::string name, int defVal, int minVal, int maxVal)
 {
@@ -115,4 +123,14 @@ CharacterStat& CharacterStat::operator--(void){
 	CheckBounds();
 
 	return *this;
+}
+
+
+std::string CharacterStat::GetName(void){
+	return statName;
+}
+
+
+void CharacterStat::Reset(void){
+	statValue = defaultVal;
 }

@@ -9,7 +9,6 @@ Player::Player(void)
 {
 	GroupObject *group = new GroupObject();
 	Camera *camera = new Camera();
-
 	AnimatedObject *boxman = new AnimatedObject();
 	chara = new Character();
 	controller = new CharacterController(chara);
@@ -24,9 +23,12 @@ Player::Player(void)
 
 	
 
-	chara->AddMember("Sonic", group);
+	chara->AddMember("BoxMan", group);
 
 	GlutManager::SetMainCamera(camera);
+
+	chara->AddStat(CharacterStat("Health", 3, 0, 3));
+	chara->AddStat(CharacterStat("Ammo", 3, 0, 3));
 }
 
 
@@ -56,4 +58,18 @@ void Player::Update(float timeDelta){
 
 void Player::Render(void){
 	chara->Render();
+}
+
+glm::vec3 Player::Position(void)
+{
+	GroupObject * group = dynamic_cast<GroupObject *>(chara->GetMember("BoxMan"));
+	
+	if (group != 0) return group->Position();
+
+	return glm::vec3(0.0f);
+}
+
+Character * Player::Chara(void)
+{
+	return chara;
 }

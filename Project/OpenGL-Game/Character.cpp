@@ -5,7 +5,6 @@ Character::Character()
 {
 	movementSpeed = 1;
 	moveDelta = glm::vec3(0.0);
-	position = glm::vec3(0.0);
 
 	baseActions["MoveUp"]		= &Character::MoveUp;
 	baseActions["MoveDown"]		= &Character::MoveDown;
@@ -23,7 +22,6 @@ Character::~Character()
 void Character::Update(float timeDelta){
 	MoveMembers(moveDelta * timeDelta);
 	UpdateMembers(timeDelta);
-	position += moveDelta *  timeDelta;
 
 	moveDelta = glm::vec3(0.0f);
 }
@@ -71,4 +69,34 @@ void Character::RotateY(float angle){
 }
 void Character::RotateZ(float angle){
 	RotateMembers(0.0f, 0.0f, 1.0f, angle);
+}
+
+
+void Character::AddStat(CharacterStat newStat){
+	charaStats[newStat.GetName()] = newStat;
+}
+void Character::RemoveStat(std::string statName){
+	charaStats.erase(statName);
+
+}
+int  Character::GetStatValue(std::string statName){
+	std::map<std::string, CharacterStat>::iterator it = charaStats.find(statName);
+	if (it != charaStats.end()) return (it->second).GetValue();
+
+	return -1;
+}
+void Character::IncStat(std::string statName){
+	std::map<std::string, CharacterStat>::iterator it = charaStats.find(statName);
+	if (it != charaStats.end()) (it->second)+= 1;
+}
+void Character::DecStat(std::string statName){
+	std::map<std::string, CharacterStat>::iterator it = charaStats.find(statName);
+	if (it != charaStats.end()) (it->second)-= 1;
+}
+void Character::ResetStats(void){
+	std::map<std::string, CharacterStat>::iterator it;
+
+	for (it = charaStats.begin(); it != charaStats.end(); ++it){
+		(it->second).Reset();
+	}
 }

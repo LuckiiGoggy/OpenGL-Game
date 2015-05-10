@@ -70,7 +70,7 @@ void CharacterController::ApplyAllInputs(std::vector<std::string> inputs){
 }
 */
 void CharacterController::ApplyAllInputs(std::vector<std::string> inputs){
-	for (int i = 0; i < inputs.size(); i++){
+	for (unsigned int i = 0; i < inputs.size(); i++){
 		control->Act(inputs[i]);
 	}
 }
