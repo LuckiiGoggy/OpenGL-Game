@@ -29,6 +29,8 @@ Player::Player(void)
 
 	chara->AddStat(CharacterStat("Health", 3, 0, 3));
 	chara->AddStat(CharacterStat("Ammo", 3, 0, 3));
+
+	lastMouseX = lastMouseY = -1;
 }
 
 
@@ -39,17 +41,18 @@ Player::~Player(void)
 }
 
 void Player::Update(float timeDelta){
-	
-	if (InputManager::isSpecialKeyDown(GLUT_KEY_LEFT))  chara->RotateY(1.0f  * timeDelta);
-	if (InputManager::isSpecialKeyDown(GLUT_KEY_RIGHT)) chara->RotateY(-1.0f * timeDelta);
-	if (InputManager::isSpecialKeyDown(GLUT_KEY_UP))
-	{
-		chara->RotateX(1.0f  * timeDelta);
-		delta++;
+	int currMouseXDelta = 0;
+	int currMouseYDelta = 0;
+
+	if (lastMouseX != -1 && lastMouseY != -1){
+		currMouseXDelta = InputManager::GetMousePos().x - lastMouseX;
+		currMouseYDelta = InputManager::GetMousePos().y - lastMouseY;
 	}
-	if (InputManager::isSpecialKeyDown(GLUT_KEY_DOWN))	chara->RotateX(-1.0f * timeDelta);
-	if (InputManager::isKeyDown(','))					chara->RotateZ(0.1f  * timeDelta);
-	if (InputManager::isKeyDown('.'))					chara->RotateZ(-0.1f * timeDelta);
+
+	lastMouseX = InputManager::GetMousePos().x;
+	lastMouseY = InputManager::GetMousePos().y;
+
+	chara->RotateY((float)currMouseXDelta * timeDelta);
 
 
 	controller->Update(timeDelta);

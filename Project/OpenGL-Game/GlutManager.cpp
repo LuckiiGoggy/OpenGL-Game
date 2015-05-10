@@ -36,7 +36,7 @@ void GlutManager::Init(bool editor)
 
 	InputManager::Init();
 
-	//glutSetCursor(GLUT_CURSOR_NONE);
+	glutSetCursor(GLUT_CURSOR_NONE);
 
 	lastTime = glutGet(GLUT_ELAPSED_TIME) / 1000.0f;
 
