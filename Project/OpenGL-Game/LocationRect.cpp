@@ -1,7 +1,7 @@
 
 #include "LocationRect.h"
 
-LocationRect::LocationRect(void)
+LocationRect::LocationRect()
 {
 	sx = 0;
 	sy = 0;
@@ -15,7 +15,7 @@ LocationRect::LocationRect(void)
 
 	id = -1;
 }
-LocationRect::LocationRect(int xs, int ys, int xe, int ye)
+LocationRect::LocationRect(float xs, float ys, float xe, float ye)
 {
 	sx = xs;
 	sy = ys;
@@ -29,7 +29,7 @@ LocationRect::LocationRect(int xs, int ys, int xe, int ye)
 
 	id = -1;
 }
-LocationRect::LocationRect(int xs, int ys, int xe, int ye, glm::vec3 c)
+LocationRect::LocationRect(float xs, float ys, float xe, float ye, glm::vec3 c)
 {
 	sx = xs;
 	sy = ys;
@@ -43,7 +43,7 @@ LocationRect::LocationRect(int xs, int ys, int xe, int ye, glm::vec3 c)
 
 	id = -1;
 }
-LocationRect::LocationRect(int xs, int ys, int xe, int ye, int id_)
+LocationRect::LocationRect(float xs, float ys, float xe, float ye, int id_)
 {
 	sx = xs;
 	sy = ys;
@@ -61,7 +61,7 @@ LocationRect::LocationRect(int xs, int ys, int xe, int ye, int id_)
 	id_c = (const unsigned char *)intStr;
 
 }
-LocationRect::LocationRect(int xs, int ys, int xe, int ye, glm::vec3 c, int id_)
+LocationRect::LocationRect(float xs, float ys, float xe, float ye, glm::vec3 c, int id_)
 {
 	sx = xs;
 	sy = ys;
@@ -79,7 +79,7 @@ LocationRect::LocationRect(int xs, int ys, int xe, int ye, glm::vec3 c, int id_)
 	id_c = (const unsigned char *)intStr;
 
 }
-LocationRect::LocationRect(int xs, int ys, int xe, int ye, float r_, float g_, float b_, int id_)
+LocationRect::LocationRect(float xs, float ys, float xe, float ye, float r_, float g_, float b_, int id_)
 {
 	sx = xs;
 	sy = ys;
@@ -99,14 +99,14 @@ LocationRect::LocationRect(int xs, int ys, int xe, int ye, float r_, float g_, f
 
 }
 
-void LocationRect::move(int x, int y)
+void LocationRect::move(float x, float y)
 {
 	sx += x;
 	sy += y;
 	ex += x;
 	ey += y;
 }
-void LocationRect::move(int x, int y, int z)
+void LocationRect::move(float x, float y, float z)
 {
 	sx += x;
 	sy += y;
@@ -128,14 +128,14 @@ void LocationRect::setColor(glm::vec3 c)
 	b = c.z;
 	color = c;
 }
-int LocationRect::getWidth()
+float LocationRect::getWidth()
 {
-	int w = (ex - sx);
+	float w = (ex - sx);
 	return abs(w);
 }
-int LocationRect::getHeight()
+float LocationRect::getHeight()
 {
-	int h = (ey - sy);
+	float h = (ey - sy);
 	return abs(h);
 }
 

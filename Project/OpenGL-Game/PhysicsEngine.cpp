@@ -172,16 +172,6 @@ void PhysicsEngine::triggerImpact(RigidBody* A, RigidBody* B)
 	float Bex = B->pMesh->bottomFace.ex;
 	float Bez = B->pMesh->bottomFace.ey;//*/
 
-	/*
-	float qAsx = bottomFace_A[0];
-	float qAsz = bottomFace_A[1];
-	float qAex = bottomFace_A[4];
-	float qAez = bottomFace_A[5];
-	float qBsx = bottomFace_B[0];
-	float qBsz = bottomFace_B[1];
-	float qBex = bottomFace_B[4];
-	float qBez = bottomFace_B[5];//*/
-
 	float Asy = leftFace_A[0];
 	float Aey = leftFace_A[4];
 	float Bsy = leftFace_B[0];
