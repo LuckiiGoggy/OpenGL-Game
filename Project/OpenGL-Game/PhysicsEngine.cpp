@@ -655,6 +655,25 @@ void PhysicsEngine::registerRigidBody(char* obj_filename, char* v_shader_filenam
 	//rigidObjects.insert(std::pair<std::string, RigidBody*>(nameId, new RigidBody(object, mass, nameId, id)));
 	rigidObjects.push_back(new RigidBody(object, mass, nameId, id));
 }
+void PhysicsEngine::registerRigidBody(char* obj_filename, char* v_shader_filename, char* f_shader_filename, Transform* trans, std::string nameId, int id, float mass)
+{
+	MeshObject* object = new MeshObject();
+	object->Init(obj_filename, v_shader_filename, f_shader_filename);
+
+	//RigidBody(MeshObject* mesh, float mass_, std::string nameID_, int id_);
+	//rigidObjects.insert(std::pair<std::string, RigidBody*>(nameId, new RigidBody(object, mass, nameId, id)));
+	rigidObjects.push_back(new RigidBody(object, trans, mass, nameId, id));
+}
+void PhysicsEngine::registerRigidBody(char* obj_filename, char* v_shader_filename, char* f_shader_filename, Transform* trans, std::string nameId, float mass)
+{
+	MeshObject* object = new MeshObject();
+	object->Init(obj_filename, v_shader_filename, f_shader_filename);
+
+	int id = rigidObjects.size();
+	//RigidBody(MeshObject* mesh, float mass_, std::string nameID_, int id_);
+	//rigidObjects.insert(std::pair<std::string, RigidBody*>(nameId, new RigidBody(object, mass, nameId, id)));
+	rigidObjects.push_back(new RigidBody(object, trans, mass, nameId, id));
+}
 void PhysicsEngine::registerRigidBody(MeshObject* object, std::string nameId, int id, float mass)
 {
 	//RigidBody(MeshObject* mesh, float mass_, std::string nameID_, int id_);
@@ -667,6 +686,19 @@ void PhysicsEngine::registerRigidBody(MeshObject* object, std::string nameId, fl
 	//RigidBody(MeshObject* mesh, float mass_, std::string nameID_, int id_);
 	//rigidObjects.insert(std::pair<std::string, RigidBody*>(nameId, new RigidBody(object, mass, nameId, id)));
 	rigidObjects.push_back(new RigidBody(object, mass, nameId, id));
+}
+void PhysicsEngine::registerRigidBody(MeshObject* object, Transform* trans, std::string nameId, int id, float mass)
+{
+	//RigidBody(MeshObject* mesh, float mass_, std::string nameID_, int id_);
+	//rigidObjects.insert(std::pair<std::string, RigidBody*>(nameId, new RigidBody(object, mass, nameId, id)));
+	rigidObjects.push_back(new RigidBody(object, trans, mass, nameId, id));
+}
+void PhysicsEngine::registerRigidBody(MeshObject* object, Transform* trans, std::string nameId, float mass)
+{
+	int id = rigidObjects.size();
+	//RigidBody(MeshObject* mesh, float mass_, std::string nameID_, int id_);
+	//rigidObjects.insert(std::pair<std::string, RigidBody*>(nameId, new RigidBody(object, mass, nameId, id)));
+	rigidObjects.push_back(new RigidBody(object, trans, mass, nameId, id));
 }
 void PhysicsEngine::unregisterRigidBody(std::string nameId)
 {

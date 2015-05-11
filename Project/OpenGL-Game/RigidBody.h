@@ -21,9 +21,11 @@ public:
 	RigidBody(MeshObject* mesh, int id_);
 	RigidBody(MeshObject* mesh, float mass_, int id_);
 	RigidBody(MeshObject* mesh, float mass_, std::string nameID_, int id_);
+	RigidBody(MeshObject* mesh, Transform* trans, float mass_, std::string nameID_, int id_);
 	RigidBody(char* obj_filename, char* v_shader_filename, char* f_shader_filename, int id_);
 	RigidBody(char* obj_filename, char* v_shader_filename, char* f_shader_filename, float mass_, int id_);
 	RigidBody(char* obj_filename, char* v_shader_filename, char* f_shader_filename, float mass_, std::string nameID_, int id_);
+	RigidBody(char* obj_filename, char* v_shader_filename, char* f_shader_filename, float mass_, Transform* trans, std::string nameID_, int id_);
 
 	~RigidBody();
 
@@ -86,6 +88,7 @@ public:
 	//Mesh
 	void positionMesh();
 	MeshObject* pMesh;
+	Transform* pTrans;
 
 private:
 
