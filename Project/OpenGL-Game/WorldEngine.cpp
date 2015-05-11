@@ -70,31 +70,31 @@ void WorldEngine::readWorld(std::string filename) {
 				case WALL:
 				{
 					p = new MeshObject(*wall);
-					p->Move(glm::vec3(j, 1.0f, i));
+					p->Move(glm::vec3(j * 2, 1.0f, i * 2));
 					break;
 				}
 				case FLOOR:
 				{
 					p = new MeshObject(*floor);
-					p->Move(glm::vec3(j, 0.0f, i));
+					p->Move(glm::vec3(j * 2, 0.0f, i * 2));
 					break;
 				}
 				case MOVEWALL:
 				{
 					p = new MeshObject(*wall);
-					p->Move(glm::vec3(j, 1.0f, i));
+					p->Move(glm::vec3(j * 2, 1.0f, i * 2));
 					break;
 				}
 				case SPAWN:
 				{
 					p = new MeshObject(*floor);
-					p->Move(glm::vec3(j, 0.0f, i));
+					p->Move(glm::vec3(j * 2, 0.0f, i * 2));
 					break;
 				}
 				default:
 				{
 					p = new MeshObject(*wall);
-					p->Move(glm::vec3(j, 1.0f, i));
+					p->Move(glm::vec3(j * 2, 1.0f, i * 2));
 					break;
 				}
 				}
@@ -161,12 +161,12 @@ bool WorldEngine::newWorld(std::string filename, std::string sW, std::string sH)
 				if (i == 0 || j == 0 || i == h - 1 || j == w - 1) {
 					block = WALL;
 					p = new MeshObject(*wall);
-					p->Move(glm::vec3(j, 1.0f, i));
+					p->Move(glm::vec3(j * 2, 1.0f, i * 2));
 				}
 				else {
 					block = FLOOR;
 					p = new MeshObject(*floor);
-					p->Move(glm::vec3(j, 1.0f, i));
+					p->Move(glm::vec3(j * 2, 1.0f, i * 2));
 				}
 				squares.push_back(WorldSquare((int)i, (int)j, block));
 				meshes.push_back(p);

@@ -36,7 +36,7 @@ void GameScene::Render() {
 void GameScene::Update(float timedelta) {
 	Scene::Update(timedelta);
 	if (InputManager::IsMouseClicked(timedelta)) {
-		spawn->SpawnProjectile((Player*)members.at("Player"), this);
+		//spawn->SpawnProjectile((Player*)members.at("Player"), this);
 	}
 
 	for (size_t i = 0; i < spawn->projectiles.size(); i++){
