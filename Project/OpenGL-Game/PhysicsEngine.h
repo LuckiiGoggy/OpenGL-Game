@@ -83,8 +83,12 @@ public:
 
 	void registerRigidBody(char* obj_filename, char* v_shader_filename, char* f_shader_filename, std::string nameId, int id, float mass = 1);
 	void registerRigidBody(char* obj_filename, char* v_shader_filename, char* f_shader_filename, std::string nameId, float mass = 1);
+	void registerRigidBody(char* obj_filename, char* v_shader_filename, char* f_shader_filename, Transform* trans, std::string nameId, int id, float mass = 1);
+	void registerRigidBody(char* obj_filename, char* v_shader_filename, char* f_shader_filename, Transform* trans, std::string nameId, float mass = 1);
 	void registerRigidBody(MeshObject* object, std::string nameId, int id, float mass = 1);
 	void registerRigidBody(MeshObject* object, std::string nameId, float mass = 1);
+	void registerRigidBody(MeshObject* object, Transform* trans, std::string nameId, float mass = 1);
+	void registerRigidBody(MeshObject* object, Transform* trans, std::string nameId, int id, float mass = 1);
 	void unregisterRigidBody(std::string nameId);
 	void swapRigidBodyMesh(std::string nameId, MeshObject* pMesh_);
 

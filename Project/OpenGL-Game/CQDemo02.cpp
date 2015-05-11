@@ -60,10 +60,16 @@ void CQDemo02::initObjects()
 	mesh2->Init(floorCube_obj_filename, v_shader_filename1, f_shader_filename1);
 	mesh3->Init(spear_obj_filename, v_shader_filename1, f_shader_filename1);
 	
+/*
 	physicsEngine.registerRigidBody(mesh0, "spear0", 1.0f);
 	physicsEngine.registerRigidBody(mesh1, "spear1", 1.0f);
 	physicsEngine.registerRigidBody(mesh2, "floorCube2", 3.0f);
-	physicsEngine.registerRigidBody(mesh3, "spear3", 1.0f);
+	physicsEngine.registerRigidBody(mesh3, "spear3", 1.0f);*/
+
+	physicsEngine.registerRigidBody(mesh0, mesh0, "spear0", 1.0f);
+	physicsEngine.registerRigidBody(mesh1, mesh1, "spear1", 1.0f);
+	physicsEngine.registerRigidBody(mesh2, mesh2, "floorCube2", 3.0f);
+	physicsEngine.registerRigidBody(mesh3, mesh3, "spear3", 1.0f);
 
 	physicsEngine.rigidObjects[0]->SetPosition(0, 0, 0);
 	physicsEngine.rigidObjects[1]->SetPosition(0, 0, 3);

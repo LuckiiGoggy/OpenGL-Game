@@ -7,6 +7,7 @@ RigidBody::RigidBody()
 	id = -1;
 	mass = 1;
 	pMesh = new MeshObject();
+	pTrans = new Transform();
 }
 RigidBody::RigidBody(int id_)
 {
@@ -14,6 +15,8 @@ RigidBody::RigidBody(int id_)
 	mass = 1;
 
 	pMesh = new MeshObject();
+
+	pTrans = new Transform();
 
 	char *intStr = new char;
 	_itoa_s(id, intStr, 3, 10);
@@ -27,6 +30,8 @@ RigidBody::RigidBody(float mass_, int id_)
 	mass = mass_;
 
 	pMesh = new MeshObject();
+
+	pTrans = new Transform();
 
 	char *intStr = new char;
 	_itoa_s(id, intStr, 3, 10);
@@ -42,6 +47,8 @@ RigidBody::RigidBody(float mass_, std::string nameID_, int id_)
 
 	pMesh = new MeshObject();
 
+	pTrans = new Transform();
+
 	char *intStr = new char;
 	_itoa_s(id, intStr, 3, 10);
 	id_c = (const unsigned char *)intStr;
@@ -53,6 +60,8 @@ RigidBody::RigidBody(MeshObject* mesh, int id_)
 
 	pMesh = new MeshObject();
 	pMesh = mesh;
+
+	pTrans = new Transform();
 
 	char *intStr = new char;
 	_itoa_s(id, intStr, 3, 10);
@@ -67,6 +76,8 @@ RigidBody::RigidBody(MeshObject* mesh, float mass_, int id_)
 
 	pMesh = new MeshObject();
 	pMesh = mesh;
+
+	pTrans = new Transform();
 
 	char *intStr = new char;
 	_itoa_s(id, intStr, 3, 10);
@@ -83,6 +94,8 @@ RigidBody::RigidBody(MeshObject* mesh, float mass_, std::string nameID_, int id_
 	pMesh = new MeshObject();
 	pMesh = mesh;
 
+	pTrans = new Transform();
+
 	char *intStr = new char;
 	_itoa_s(id, intStr, 3, 10);
 	id_c = (const unsigned char *)intStr;
@@ -94,6 +107,8 @@ RigidBody::RigidBody(char* obj_filename, char* v_shader_filename, char* f_shader
 
 	pMesh = new MeshObject();
 	pMesh->Init(obj_filename, v_shader_filename, f_shader_filename);
+
+	pTrans = new Transform();
 
 	char *intStr = new char;
 	_itoa_s(id, intStr, 3, 10);
@@ -109,6 +124,8 @@ RigidBody::RigidBody(char* obj_filename, char* v_shader_filename, char* f_shader
 	pMesh = new MeshObject();
 	pMesh->Init(obj_filename, v_shader_filename, f_shader_filename);
 
+	pTrans = new Transform();
+
 	char *intStr = new char;
 	_itoa_s(id, intStr, 3, 10);
 	id_c = (const unsigned char *)intStr;
@@ -123,6 +140,41 @@ RigidBody::RigidBody(char* obj_filename, char* v_shader_filename, char* f_shader
 
 	pMesh = new MeshObject();
 	pMesh->Init(obj_filename, v_shader_filename, f_shader_filename);
+
+	pTrans = new Transform();
+
+	char *intStr = new char;
+	_itoa_s(id, intStr, 3, 10);
+	id_c = (const unsigned char *)intStr;
+}
+
+RigidBody::RigidBody(MeshObject* mesh, Transform* trans, float mass_, std::string nameID_, int id_)
+{
+	id = id_;
+	mass = mass_;
+	nameId = nameID_;
+
+	pMesh = new MeshObject();
+	pMesh = mesh;
+
+	pTrans = new Transform();
+	pTrans = trans;
+
+	char *intStr = new char;
+	_itoa_s(id, intStr, 3, 10);
+	id_c = (const unsigned char *)intStr;
+}
+RigidBody::RigidBody(char* obj_filename, char* v_shader_filename, char* f_shader_filename, float mass_, Transform* trans, std::string nameID_, int id_)
+{
+	id = id_;
+	mass = mass_;
+	nameId = nameID_;
+
+	pMesh = new MeshObject();
+	pMesh->Init(obj_filename, v_shader_filename, f_shader_filename);
+
+	pTrans = new Transform();
+	pTrans = trans;
 
 	char *intStr = new char;
 	_itoa_s(id, intStr, 3, 10);
@@ -319,7 +371,8 @@ LocationRect* RigidBody::GetRect(void){
 }
 void RigidBody::positionMesh()
 {
-	pMesh->Move(position.x, position.y, position.z);
+	//pMesh->Move(position.x, position.y, position.z);
+	pTrans->Move(position.x, position.y, position.z);
 
 	pMesh->bottomFace.move(position.x, position.z);
 
@@ -336,7 +389,8 @@ void RigidBody::move(glm::vec3 v)
 	position.y += y_;// y;
 	position.z += z_;// z;
 
-	pMesh->Move(x_, y_, z_);
+	//pMesh->Move(x_, y_, z_);
+	pTrans->Move(x_, y_, z_);
 
 	pMesh->bottomFace.move(x_, z_);
 
@@ -352,7 +406,8 @@ void RigidBody::move(float x, float y, float z)
 	position.y += y_;// y;
 	position.z += z_;// z;
 
-	pMesh->Move(x_, y_, z_);
+	//pMesh->Move(x_, y_, z_);
+	pTrans->Move(x_, y_, z_);
 
 	pMesh->bottomFace.move(x_, z_);
 
@@ -368,7 +423,8 @@ void RigidBody::move(float x, float y, float z, bool noChange)
 	position.y += y_;// y;
 	position.z += z_;// z;
 
-	pMesh->Move(x_, y_, z_);
+	//pMesh->Move(x_, y_, z_);
+	pTrans->Move(x_, y_, z_);
 
 	pMesh->bottomFace.move(x_, z_);
 
