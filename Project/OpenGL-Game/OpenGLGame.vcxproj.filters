@@ -114,25 +114,13 @@
     <ClCompile Include="shader_utils.cpp">
       <Filter>Source Files\GameEngine\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="BoundingBox.cpp">
-      <Filter>Source Files\GameEngine</Filter>
-    </ClCompile>
     <ClCompile Include="GameObjectContainer.cpp">
-      <Filter>Source Files\GameEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="PhysicsEngine.cpp">
       <Filter>Source Files\GameEngine</Filter>
     </ClCompile>
     <ClCompile Include="RectObject.cpp">
       <Filter>Source Files\GameEngine</Filter>
     </ClCompile>
-    <ClCompile Include="RigidBody.cpp">
-      <Filter>Source Files\GameEngine</Filter>
-    </ClCompile>
     <ClCompile Include="Scene.cpp">
-      <Filter>Source Files\GameEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="Velocity.cpp">
       <Filter>Source Files\GameEngine</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
@@ -146,10 +134,6 @@
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LocationRect.cpp">
-      <Filter>Source Files\GameEngine\Physics</Filter>
-      <Filter>Source Files\GameEngine</Filter>
     </ClCompile>
     <ClCompile Include="CharacterStat.cpp">
       <Filter>Source Files</Filter>
@@ -168,6 +152,24 @@
     </ClCompile>
     <ClCompile Include="Overlay2D.cpp">
       <Filter>Source Files\GameEngine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="BoundingBox.cpp">
+      <Filter>Source Files\GameEngine\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="LocationRect.cpp">
+      <Filter>Source Files\GameEngine\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsEngine.cpp">
+      <Filter>Source Files\GameEngine\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidBody.cpp">
+      <Filter>Source Files\GameEngine\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Velocity.cpp">
+      <Filter>Source Files\GameEngine\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="CQDemo02.cpp">
+      <Filter>Source Files\GameEngine\Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -231,25 +233,13 @@
     <ClInclude Include="shader_utils.h">
       <Filter>Header Files\GameEngine\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="BoundingBox.h">
-      <Filter>Header Files\GameEngine</Filter>
-    </ClInclude>
     <ClInclude Include="GameObjectContainer.h">
-      <Filter>Header Files\GameEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysicsEngine.h">
       <Filter>Header Files\GameEngine</Filter>
     </ClInclude>
     <ClInclude Include="RectObject.h">
       <Filter>Header Files\GameEngine</Filter>
     </ClInclude>
-    <ClInclude Include="RigidBody.h">
-      <Filter>Header Files\GameEngine</Filter>
-    </ClInclude>
     <ClInclude Include="Scene.h">
-      <Filter>Header Files\GameEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="Velocity.h">
       <Filter>Header Files\GameEngine</Filter>
     </ClInclude>
     <ClInclude Include="GameScene.h">
@@ -260,10 +250,6 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LocationRect.h">
-      <Filter>Header Files\GameEngine\Physics</Filter>
-      <Filter>Header Files\GameEngine</Filter>
     </ClInclude>
     <ClInclude Include="CharacterStat.h">
       <Filter>Header Files</Filter>
@@ -282,6 +268,24 @@
     </ClInclude>
     <ClInclude Include="Overlay2D.h">
       <Filter>Header Files\GameEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="LocationRect.h">
+      <Filter>Header Files\GameEngine\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBody.h">
+      <Filter>Header Files\GameEngine\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Velocity.h">
+      <Filter>Header Files\GameEngine\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsEngine.h">
+      <Filter>Header Files\GameEngine\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="BoundingBox.h">
+      <Filter>Header Files\GameEngine\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="CQDemo02.h">
+      <Filter>Header Files\GameEngine\Physics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
