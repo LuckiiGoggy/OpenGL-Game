@@ -2,7 +2,7 @@
 #define LOCATIONRECT_H
 
 #include "Math.h"
-#include "Dependencies\glm\glm\glm.hpp";
+#include "Dependencies\glm\glm\glm.hpp"
 
 class LocationRect
 {

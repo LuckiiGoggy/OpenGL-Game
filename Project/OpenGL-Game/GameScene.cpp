@@ -29,13 +29,18 @@ void GameScene::Render() {
 	Scene::Render();
 	engine->renderWorld();
 	for (size_t i = 0; i < spawn->projectiles.size(); i++) {
-		spawn->projectiles[i].Render();
-	}
+		(spawn->projectiles[i])->Render();
+	}	
 }
 
 void GameScene::Update(float timedelta) {
 	Scene::Update(timedelta);
-	if (InputManager::isLeftButtonDown()) {
-		spawn->SpawnProjectile((Player*)members.at("Player"));
+	if (InputManager::IsMouseClicked(timedelta)) {
+		spawn->SpawnProjectile((Player*)members.at("Player"), this);
 	}
+
+	for (size_t i = 0; i < spawn->projectiles.size(); i++){
+		(spawn->projectiles[i])->Update(timedelta);
+	}
+
 }

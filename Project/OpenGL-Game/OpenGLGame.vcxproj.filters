@@ -169,6 +169,9 @@
     <ClCompile Include="Projectile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Overlay2D.cpp">
+      <Filter>Source Files\GameEngine\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MeshObject.h">
@@ -282,6 +285,9 @@
     </ClInclude>
     <ClInclude Include="Projectile.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Overlay2D.h">
+      <Filter>Header Files\GameEngine\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -6,6 +6,7 @@
 class CharacterStat
 {
 public:
+	CharacterStat(void);
 	CharacterStat(std::string name, int defaultVal, int minVal = INT_MIN, int maxVal = INT_MAX);
 	
 	/**Resets the stat to the default value.**/
@@ -40,6 +41,8 @@ public:
 		the min and max are the lower and higher 
 		ends of the spectrum respectively.**/
 	void ValidateMinMax(void);
+
+	std::string GetName(void);
 	
 	/**Operator overloads for the stat, allows the stat to be treated
 		like an integer or only as its value

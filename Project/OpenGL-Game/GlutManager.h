@@ -20,8 +20,7 @@ public:
 
 	static Camera *GetMainCamera(void);
 	static void SetMainCamera(Camera *camera);
-
-
+	
 	static void AddMember(std::string name, IObject *object);
 
 

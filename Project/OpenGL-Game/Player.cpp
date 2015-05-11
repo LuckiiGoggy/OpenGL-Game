@@ -9,7 +9,6 @@ Player::Player(void)
 {
 	GroupObject *group = new GroupObject();
 	Camera *camera = new Camera();
-
 	AnimatedObject *boxman = new AnimatedObject();
 	chara = new Character();
 	controller = new CharacterController(chara);
@@ -24,9 +23,14 @@ Player::Player(void)
 
 	
 
-	chara->AddMember("Sonic", group);
+	chara->AddMember("BoxMan", group);
 
 	GlutManager::SetMainCamera(camera);
+
+	chara->AddStat(CharacterStat("Health", 3, 0, 3));
+	chara->AddStat(CharacterStat("Ammo", 3, 0, 3));
+
+	lastMouseX = lastMouseY = -1;
 }
 
 
@@ -37,17 +41,18 @@ Player::~Player(void)
 }
 
 void Player::Update(float timeDelta){
-	
-	if (InputManager::isSpecialKeyDown(GLUT_KEY_LEFT))  chara->RotateY(1.0f  * timeDelta);
-	if (InputManager::isSpecialKeyDown(GLUT_KEY_RIGHT)) chara->RotateY(-1.0f * timeDelta);
-	if (InputManager::isSpecialKeyDown(GLUT_KEY_UP))
-	{
-		chara->RotateX(1.0f  * timeDelta);
-		delta++;
+	int currMouseXDelta = 0;
+	int currMouseYDelta = 0;
+
+	if (lastMouseX != -1 && lastMouseY != -1){
+		currMouseXDelta = InputManager::GetMousePos().x - lastMouseX;
+		currMouseYDelta = InputManager::GetMousePos().y - lastMouseY;
 	}
-	if (InputManager::isSpecialKeyDown(GLUT_KEY_DOWN))	chara->RotateX(-1.0f * timeDelta);
-	if (InputManager::isKeyDown(','))					chara->RotateZ(0.1f  * timeDelta);
-	if (InputManager::isKeyDown('.'))					chara->RotateZ(-0.1f * timeDelta);
+
+	lastMouseX = InputManager::GetMousePos().x;
+	lastMouseY = InputManager::GetMousePos().y;
+
+	chara->RotateY((float)currMouseXDelta * timeDelta);
 
 
 	controller->Update(timeDelta);
@@ -56,4 +61,18 @@ void Player::Update(float timeDelta){
 
 void Player::Render(void){
 	chara->Render();
+}
+
+glm::vec3 Player::Position(void)
+{
+	GroupObject * group = dynamic_cast<GroupObject *>(chara->GetMember("BoxMan"));
+	
+	if (group != 0) return group->Position();
+
+	return glm::vec3(0.0f);
+}
+
+Character * Player::Chara(void)
+{
+	return chara;
 }

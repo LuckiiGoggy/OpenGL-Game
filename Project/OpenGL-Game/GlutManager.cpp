@@ -3,12 +3,13 @@
 #include "GlutManager.h"
 #include "IRenderable.h"
 #include "InputManager.h"
+#include "Overlay2D.h"
 
 std::map<std::string, IObject *> GlutManager::members;
 Camera *GlutManager::mainCamera = NULL;
 GLint GlutManager::mainWindow;
 float GlutManager::lastTime;
-
+Overlay2D HUD;
 
 void GlutManager::Init(bool editor)
 {
@@ -36,12 +37,12 @@ void GlutManager::Init(bool editor)
 
 	InputManager::Init();
 
-	//glutSetCursor(GLUT_CURSOR_NONE);
+	glutSetCursor(GLUT_CURSOR_NONE);
 
 	lastTime = glutGet(GLUT_ELAPSED_TIME) / 1000.0f;
 
 	mainCamera = new Camera();
-
+	
 	//if (editor)	GLUIManager::initGLUI(GlutManager::mainWindow, GlutManager::IdleFunc);
 	//else glutFullScreen();
 
@@ -81,6 +82,8 @@ void GlutManager::RenderScene(void){
 			renderable->Render();
 		}
 	}
+	HUD.prepare2D();
+	HUD.Render();
 
 	glutSwapBuffers();
 }
@@ -122,6 +125,8 @@ void GlutManager::IdleFunc(void){
 	if (InputManager::isKeyDown(KeyCodes::Space)) myMesh.Move(glm::vec3(0.0f, 0.01f, 0.0f));
 	*/
 	
+
+	InputManager::Update();
 
 	glutSetWindow(mainWindow);
 
