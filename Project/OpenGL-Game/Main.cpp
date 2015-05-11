@@ -1,60 +1,58 @@
 #include <iostream>
-//#include "openGL.h"
+#include "openGL.h"
+#include <gl/GLU.h>
 
-//Santo Tallarico COMP4900 World Builder/Editor
 #include "WorldEngine.h"
 #include "InputManager.h"
+#include "IGameObject.h"
+#include "GroupObject.h"
+#include "TestObject.h"
+#include "MeshObject.h"
+#include "GlutManager.h"
+#include "GameScene.h"
+#include "Player.h"
 
-WorldEngine engine;
+WorldEngine engine = WorldEngine();
+void updateGame();
+void menuEvents(int choice);
 void renderScene(void);
+
+GroupObject test;
 
 int main(int argc, char **argv) {
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-	glutInitWindowPosition(200, 200);//optional
-	glutInitWindowSize(400, 400); //optional
-	glutCreateWindow("OpenGL First Window");
+	GlutManager::Init(false);
+	InputManager::Init();	
 
-	glewInit();
-	if (glewIsSupported("GL_VERSION_3_3")) {
-		std::cout << " GLEW Version is 3.3\n ";
-	}
-	else {
-		std::cout << "GLEW 3.3 not supported\n ";
-	}
+	
+	GameScene *gS = new GameScene();
 
-	glEnable(GL_DEPTH_TEST);
+	gS->Init();
 
-	glutDisplayFunc(renderScene);
+	
+	Player *player = new Player();
+	gS->AddMember("Player", player);
 
+	GlutManager::AddMember("Derp", gS);
+
+	
 
 
-	glutKeyboardFunc(InputManager::KeyPress);
-	glutKeyboardUpFunc(InputManager::KeyUp);
-	glutSpecialFunc(InputManager::SpecialKeyPress);
-	glutSpecialUpFunc(InputManager::SpecialKeyUp);
 
-	glutMouseFunc(InputManager::MouseInput);
-
-	glutMotionFunc(InputManager::MouseMotion);
-	glutPassiveMotionFunc(InputManager::MouseMotion);
-
-	glutMainLoop();
+	GlutManager::StartLoop();
 
 	return 0;
 }
 
+
 void renderScene(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(1.0, 1.0, 1.0, 1.0);
+	glClearColor(0.5, 0.5, 0.5, 1.0);
 
+	if (engine.loaded == true) {
+		engine.renderWorld();
+	}
 
-
-
-
-	engine.readWorld();
-	engine.writeWorld();
 
 	glutSwapBuffers();
 }
-
