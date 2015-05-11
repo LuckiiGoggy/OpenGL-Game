@@ -35,6 +35,7 @@ void Camera::Update(float timeDelta){
 	cameraMat = glm::lookAt(position, origLookAtPos, resUpDir);
 
 	perspMat = glm::perspective(45.0f, 1.0f*glutGet(GLUT_WINDOW_WIDTH) / glutGet(GLUT_WINDOW_HEIGHT), 0.1f, 100.0f);
+
 }
 
 glm::mat4 Camera::GetPerspective(){

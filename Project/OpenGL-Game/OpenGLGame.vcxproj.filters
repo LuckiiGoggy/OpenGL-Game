@@ -172,6 +172,15 @@
     <ClCompile Include="Overlay2D.cpp">
       <Filter>Source Files\GameEngine\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Image.cpp">
+      <Filter>Source Files\GameEngine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files\GameEngine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureManager.cpp">
+      <Filter>Source Files\GameEngine\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MeshObject.h">
@@ -287,6 +296,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Overlay2D.h">
+      <Filter>Header Files\GameEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Image.h">
+      <Filter>Header Files\GameEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Rectangle.h">
+      <Filter>Header Files\GameEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Files\GameEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="SmartPtr.h">
+      <Filter>Header Files\GameEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureManager.h">
+      <Filter>Header Files\GameEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Exception.h">
       <Filter>Header Files\GameEngine\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
