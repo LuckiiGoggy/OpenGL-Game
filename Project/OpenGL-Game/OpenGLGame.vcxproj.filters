@@ -117,9 +117,6 @@
     <ClCompile Include="BoundingBox.cpp">
       <Filter>Source Files\GameEngine</Filter>
     </ClCompile>
-    <ClCompile Include="CQDemo01.cpp">
-      <Filter>Source Files\GameEngine</Filter>
-    </ClCompile>
     <ClCompile Include="GameObjectContainer.cpp">
       <Filter>Source Files\GameEngine</Filter>
     </ClCompile>
@@ -235,9 +232,6 @@
       <Filter>Header Files\GameEngine\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="BoundingBox.h">
-      <Filter>Header Files\GameEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="CQDemo01.h">
       <Filter>Header Files\GameEngine</Filter>
     </ClInclude>
     <ClInclude Include="GameObjectContainer.h">
