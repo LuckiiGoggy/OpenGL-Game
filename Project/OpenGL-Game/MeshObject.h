@@ -35,8 +35,13 @@ public:
 	
 	void returnBB(glm::vec3, glm::vec3);
 
+	void updateBoundingBox();
+	void calculateBottomFace();
+
 	GLuint program;
 
+	BoundingBox boundingBox;
+	LocationRect bottomFace;
 
 private:
 	virtual void SetUpCamera(void);
@@ -48,8 +53,7 @@ private:
 	std::vector<glm::vec3> normals;
 	std::vector<GLushort> elements;
 
-	BoundingBox boundingBox;
-	LocationRect bottomFace;
+	
 
 	GLint attribute_v_coord;
 	GLint attribute_v_normal;
