@@ -2,23 +2,23 @@
 #define LOCATIONRECT_H
 
 #include "Math.h"
-#include "Dependencies\glm\glm\glm.hpp"
+#include "Dependencies\glm\glm\glm.hpp";
 
 class LocationRect
 {
 public:
-	LocationRect(void);
-	LocationRect(int sx, int sy, int ex, int ey);
-	LocationRect(int sx, int sy, int ex, int ey, int id_);
-	LocationRect(int sx, int sy, int ex, int ey, glm::vec3 color);
-	LocationRect(int sx, int sy, int ex, int ey, glm::vec3 color, int id_);
-	LocationRect(int xs, int ys, int xe, int ye, float r_, float g_, float b_, int id_);
+	LocationRect();
+	LocationRect(float sx, float sy, float ex, float ey);
+	LocationRect(float sx, float sy, float ex, float ey, int id_);
+	LocationRect(float sx, float sy, float ex, float ey, glm::vec3 color);
+	LocationRect(float sx, float sy, float ex, float ey, glm::vec3 color, int id_);
+	LocationRect(float xs, float ys, float xe, float ye, float r_, float g_, float b_, int id_);
 
-	void move(int x, int y);
-	void move(int x, int y, int z);
+	void move(float x, float y);
+	void move(float x, float y, float z);
 
-	int getWidth();
-	int getHeight();
+	float getWidth();
+	float getHeight();
 
 	void setColor(glm::vec3 color);
 	void setColor(float r, float g, float b);
@@ -26,10 +26,10 @@ public:
 	int id;
 	const unsigned char * id_c;
 
-	int sx;
-	int sy;
-	int ex;
-	int ey;
+	float sx;
+	float sy;
+	float ex;
+	float ey;
 
 	float r;
 	float g;

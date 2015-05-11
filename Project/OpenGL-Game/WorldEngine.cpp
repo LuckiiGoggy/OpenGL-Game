@@ -10,6 +10,8 @@ WorldEngine::WorldEngine() {
 	loaded = false;
 	filetype = ".lvl";
 	path = "../Assets/Levels/";
+	wall = new MeshObject();
+	floor = new MeshObject();
 }
 
 void WorldEngine::loadDirectory() {
@@ -38,6 +40,8 @@ void WorldEngine::loadDirectory() {
 void WorldEngine::readWorld(std::string filename) {
 	std::ifstream file;
 	file.open(path + filename + filetype);
+	wall->Init(wall_filename, v_shader_filename, f_shader_filename);
+	floor->Init(floor_filename, v_shader_filename, f_shader_filename);
 
 	if (file.is_open()) {
 		int index;
@@ -61,36 +65,36 @@ void WorldEngine::readWorld(std::string filename) {
 			for (float j = 0; j < w; j++) {
 				block = (int)(s.at(index) - '0');
 				squares.push_back(WorldSquare((int)i, (int)j, block));
-				MeshObject* p = new MeshObject();
+				MeshObject* p;
 				switch (block) {
 				case WALL:
 				{
-					p->Init(wall_filename, v_shader_filename, f_shader_filename);
-					p->Move(glm::vec3(j, 1.0f, i));
+					p = new MeshObject(*wall);
+					p->Move(glm::vec3(j * 2, 1.0f, i * 2));
 					break;
 				}
 				case FLOOR:
 				{
-					p->Init(floor_filename, v_shader_filename, f_shader_filename);
-					p->Move(glm::vec3(j, 0.0f, i));
+					p = new MeshObject(*floor);
+					p->Move(glm::vec3(j * 2, 0.0f, i * 2));
 					break;
 				}
 				case MOVEWALL:
 				{
-					p->Init(wall_filename, v_shader_filename, f_shader_filename);
-					p->Move(glm::vec3(j, 1.0f, i));
+					p = new MeshObject(*wall);
+					p->Move(glm::vec3(j * 2, 1.0f, i * 2));
 					break;
 				}
 				case SPAWN:
 				{
-					p->Init(floor_filename, v_shader_filename, f_shader_filename);
-					p->Move(glm::vec3(j, 0.0f, i));
+					p = new MeshObject(*floor);
+					p->Move(glm::vec3(j * 2, 0.0f, i * 2));
 					break;
 				}
 				default:
 				{
-					p->Init(wall_filename, v_shader_filename, f_shader_filename);
-					p->Move(glm::vec3(j, 1.0f, i));
+					p = new MeshObject(*wall);
+					p->Move(glm::vec3(j * 2, 1.0f, i * 2));
 					break;
 				}
 				}
@@ -156,13 +160,13 @@ bool WorldEngine::newWorld(std::string filename, std::string sW, std::string sH)
 				MeshObject* p = new MeshObject();
 				if (i == 0 || j == 0 || i == h - 1 || j == w - 1) {
 					block = WALL;
-					p->Init(wall_filename, v_shader_filename, f_shader_filename);
-					p->Move(glm::vec3(j, 1.0f, i));
+					p = new MeshObject(*wall);
+					p->Move(glm::vec3(j * 2, 1.0f, i * 2));
 				}
 				else {
 					block = FLOOR;
-					p->Init(floor_filename, v_shader_filename, f_shader_filename);
-					p->Move(glm::vec3(j, 1.0f, i));
+					p = new MeshObject(*floor);
+					p->Move(glm::vec3(j * 2, 1.0f, i * 2));
 				}
 				squares.push_back(WorldSquare((int)i, (int)j, block));
 				meshes.push_back(p);

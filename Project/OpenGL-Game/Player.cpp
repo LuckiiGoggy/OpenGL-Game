@@ -52,7 +52,7 @@ void Player::Update(float timeDelta){
 	lastMouseX = InputManager::GetMousePos().x;
 	lastMouseY = InputManager::GetMousePos().y;
 
-	chara->RotateY((float)currMouseXDelta * timeDelta);
+	chara->RotateY((float)currMouseXDelta * timeDelta * 0.4f);
 
 
 	controller->Update(timeDelta);

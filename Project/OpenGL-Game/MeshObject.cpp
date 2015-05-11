@@ -253,19 +253,99 @@ void MeshObject::RenderBoundingBox() {
 	glDeleteBuffers(1, &vbo_vertices);
 	glDeleteBuffers(1, &ibo_elements);
 }
+void MeshObject::calculateBottomFace()
+{
+	bottomFace = LocationRect(boundingBox.v1.x, boundingBox.v1.z, boundingBox.v8.x, boundingBox.v8.z);
+	//bottomFace = LocationRect(v1_world.x, v1_world.z, v8_world.x, v8_world.z);
+	//bottomFace = LocationRect(startPoint.x, startPoint.z, endPoint.x, endPoint.z);
 
+	//v2
+	//bottomFace = LocationRect(boundingBox.v1.x, boundingBox.v8.z, boundingBox.v8.x, boundingBox.v1.z);
+	//bottomFace = LocationRect(v1_world.x, v8_world.z, v8_world.x, v1_world.z);
+	//bottomFace = LocationRect(startPoint.x, endPoint.z, endPoint.x, startPoint.z);
+}
+void MeshObject::updateBoundingBox()
+{
+	//Append world transformations
+	netTransformations = glm::mat4(1.0);
+	netTransformations *= (netScale * netRotation * netTranslation);
+
+	//Apply world transformation to bounding box
+	//*
+	glm::vec4 v1_world = (this->netTransformations * glm::vec4(boundingBox.v1.x, boundingBox.v1.y, boundingBox.v1.z, 1));
+	glm::vec4 v2_world = (this->netTransformations * glm::vec4(boundingBox.v2.x, boundingBox.v2.y, boundingBox.v2.z, 1));
+	glm::vec4 v3_world = (this->netTransformations * glm::vec4(boundingBox.v3.x, boundingBox.v3.y, boundingBox.v3.z, 1));
+	glm::vec4 v4_world = (this->netTransformations * glm::vec4(boundingBox.v4.x, boundingBox.v4.y, boundingBox.v4.z, 1));
+	glm::vec4 v5_world = (this->netTransformations * glm::vec4(boundingBox.v5.x, boundingBox.v5.y, boundingBox.v5.z, 1));
+	glm::vec4 v6_world = (this->netTransformations * glm::vec4(boundingBox.v6.x, boundingBox.v6.y, boundingBox.v6.z, 1));
+	glm::vec4 v7_world = (this->netTransformations * glm::vec4(boundingBox.v7.x, boundingBox.v7.y, boundingBox.v7.z, 1));
+	glm::vec4 v8_world = (this->netTransformations * glm::vec4(boundingBox.v8.x, boundingBox.v8.y, boundingBox.v8.z, 1));
+	//*/
+
+	//*
+	boundingBox.v1 = glm::vec3(v1_world);
+	boundingBox.v2 = glm::vec3(v2_world);
+	boundingBox.v3 = glm::vec3(v3_world);
+	boundingBox.v4 = glm::vec3(v4_world);
+	boundingBox.v5 = glm::vec3(v5_world);
+	boundingBox.v6 = glm::vec3(v6_world);
+	boundingBox.v7 = glm::vec3(v7_world);
+	boundingBox.v8 = glm::vec3(v8_world);//*/
+
+	//Calculate the updated bottomFace of the bounding box
+	calculateBottomFace();
+
+	//Recalculate the directional radius of the bounding box
+	boundingBox.refresh();
+}
 void MeshObject::returnBB(glm::vec3 startPoint, glm::vec3 endPoint)
 {
-	bottomFace = LocationRect(startPoint.x, startPoint.z, endPoint.x, endPoint.z);
+	//This function is called every time this object is rendered
+
+	//start point is the closest vertex on the bottom left of a cube
+	//the end point is the furthest vertex on the top right of the cube
+
+	//Setup raw bounding box
+	//*
+	//startPoint = v2 Bottom Left Front
+	//endPoint = v8 Top Right Back
+	boundingBox = BoundingBox(true);
 	boundingBox.v1 = glm::vec3(startPoint.x, endPoint.y, startPoint.z);
 	boundingBox.v2 = glm::vec3(startPoint.x, startPoint.y, startPoint.z);
 	boundingBox.v3 = glm::vec3(endPoint.x, startPoint.y, startPoint.z);
 	boundingBox.v4 = glm::vec3(endPoint.x, endPoint.y, startPoint.z);
-	boundingBox.v1 = glm::vec3(startPoint.x, endPoint.y, endPoint.z);
-	boundingBox.v2 = glm::vec3(startPoint.x, startPoint.y, endPoint.z);
-	boundingBox.v3 = glm::vec3(endPoint.x, startPoint.y, endPoint.z);
-	boundingBox.v4 = glm::vec3(endPoint.x, endPoint.y, endPoint.z);
+	boundingBox.v5 = glm::vec3(startPoint.x, endPoint.y, endPoint.z);
+	boundingBox.v6 = glm::vec3(startPoint.x, startPoint.y, endPoint.z);
+	boundingBox.v7 = glm::vec3(endPoint.x, startPoint.y, endPoint.z);
+	boundingBox.v8 = glm::vec3(endPoint.x, endPoint.y, endPoint.z);//*/
 
+	//Apply world transformation to bounding box
+	//*
+	glm::vec4 v1_world = (this->netTransformations * glm::vec4(boundingBox.v1.x, boundingBox.v1.y, boundingBox.v1.z, 1));
+	glm::vec4 v2_world = (this->netTransformations * glm::vec4(boundingBox.v2.x, boundingBox.v2.y, boundingBox.v2.z, 1));
+	glm::vec4 v3_world = (this->netTransformations * glm::vec4(boundingBox.v3.x, boundingBox.v3.y, boundingBox.v3.z, 1));
+	glm::vec4 v4_world = (this->netTransformations * glm::vec4(boundingBox.v4.x, boundingBox.v4.y, boundingBox.v4.z, 1));
+	glm::vec4 v5_world = (this->netTransformations * glm::vec4(boundingBox.v5.x, boundingBox.v5.y, boundingBox.v5.z, 1));
+	glm::vec4 v6_world = (this->netTransformations * glm::vec4(boundingBox.v6.x, boundingBox.v6.y, boundingBox.v6.z, 1));
+	glm::vec4 v7_world = (this->netTransformations * glm::vec4(boundingBox.v7.x, boundingBox.v7.y, boundingBox.v7.z, 1));
+	glm::vec4 v8_world = (this->netTransformations * glm::vec4(boundingBox.v8.x, boundingBox.v8.y, boundingBox.v8.z, 1));
+	//*/
+
+	//*
+	boundingBox.v1 = glm::vec3(v1_world);
+	boundingBox.v2 = glm::vec3(v2_world);
+	boundingBox.v3 = glm::vec3(v3_world);
+	boundingBox.v4 = glm::vec3(v4_world);
+	boundingBox.v5 = glm::vec3(v5_world);
+	boundingBox.v6 = glm::vec3(v6_world);
+	boundingBox.v7 = glm::vec3(v7_world);
+	boundingBox.v8 = glm::vec3(v8_world);//*/
+
+	//Calculate the updated bottomFace of the bounding box
+	calculateBottomFace();
+
+	//Recalculate the directional radius of the bounding box
+	boundingBox.refresh();
 }
 
 void MeshObject::Update(float timeDelta){

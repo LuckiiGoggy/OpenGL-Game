@@ -26,6 +26,8 @@ public:
 	int currentsectionx;
 	int currentsectiony;
 	bool loaded;
+	MeshObject* wall;
+	MeshObject* floor;
 
 	WorldEngine();
 	void loadDirectory();
