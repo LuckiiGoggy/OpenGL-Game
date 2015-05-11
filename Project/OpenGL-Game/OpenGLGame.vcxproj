@@ -45,11 +45,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>Dependencies\freeglut;Dependencies\glui;Dependencies\glew;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>GLU32.lib;opengl32.lib;freeglut.lib;glew32.lib;glui32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>Dependencies\soil;Dependencies\freeglut;Dependencies\glui;Dependencies\glew;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>GLU32.lib;opengl32.lib;freeglut.lib;glew32.lib;glui32.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -78,6 +79,7 @@
     <ClCompile Include="GameObjectContainer.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="LocationRect.cpp" />
+    <ClCompile Include="Overlay2D.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="RigidBody.cpp" />
@@ -114,6 +116,7 @@
     <ClInclude Include="GameObjectContainer.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="LocationRect.h" />
+    <ClInclude Include="Overlay2D.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="RigidBody.h" />

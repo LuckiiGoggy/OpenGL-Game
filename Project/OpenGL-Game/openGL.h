@@ -7,5 +7,4 @@
 #include "Dependencies\freeglut\freeglut.h"
 #include "Dependencies\glm\glm\glm.hpp"
 #include "Dependencies\glui\glui.h"
-
 #endif
