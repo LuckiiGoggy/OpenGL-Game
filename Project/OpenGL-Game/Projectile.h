@@ -7,7 +7,7 @@
 class Projectile:public MeshObject {
 public:
 	Projectile();
-	Projectile(glm::vec3 dir, glm::vec3 pos);
+	Projectile(glm::mat4 &dir, glm::vec3 pos);
 	Velocity v;
 };
 
