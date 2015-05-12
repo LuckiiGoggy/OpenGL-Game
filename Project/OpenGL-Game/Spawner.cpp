@@ -54,8 +54,8 @@ void Spawner::SpawnProjectile(Player* player, GameObjectContainer *scene) {
 	direction and position based
 	on player that spawned it*/
 
-	glm::vec3 v = (dynamic_cast<Transform *>(player->Chara()->GetMember("BoxMan")))->Position();
-	glm::mat4 m = (dynamic_cast<Transform *>(player->Chara()->GetMember("BoxMan")))->NetRotation();
+	glm::vec3 v = (dynamic_cast<Transform *>(player->GroupObject::GetMember("BoxMan")))->Position();
+	glm::mat4 m = (dynamic_cast<Transform *>(player->GroupObject::GetMember("BoxMan")))->NetRotation();
 	Projectile *newProj = new Projectile(m, v);
 	glm::vec3 vdir = Transform::ApplyTransVec3(glm::vec3(0.0f, 0.0f, -1.0f), m);
 	Velocity* vel = new Velocity(vdir.x, vdir.y, vdir.z, 1, 10);
