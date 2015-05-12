@@ -41,6 +41,8 @@ public:
 	//void applyVelocity(RigidBody* object, Velocity* f);
 	//void applyVelocity(RigidBody* object, float x_, float y_, float z_, int type_, int duration_ = 10);
 
+	void ApplyVelocities();
+	void ApplyVelocities(float timeDelta);
 
 	/*
 	PhysicsEngine::updateVelocitys(std::vector<ObjectType*> objects)

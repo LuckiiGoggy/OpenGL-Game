@@ -12,7 +12,7 @@ GameScene::~GameScene()
 }
 
 void GameScene::Init(void){
-	char* obj_filename = (char*) "../Assets/Models/suzanne.obj";
+	char* obj_filename = (char*) "../Assets/Models/floorCube.obj";
 	char* v_shader_filename = (char*) "../Assets/Shaders/phong-shading.v.glsl";
 	char* f_shader_filename = (char*) "../Assets/Shaders/phong-shading.f.glsl";
 
@@ -25,12 +25,12 @@ void GameScene::Init(void){
 
 	GlutManager::SetPhysEngi(new PhysicsEngine());
 
-	myMesh->Move(0.0f, 0.0f, -5.0f);
+	myMesh->Move(0.0f, 0.0f, -8.0f);
 
 	GlutManager::GetPhysEngi()->registerRigidBody(myMesh, myMesh, "Suzanne");
 
 	engine = new WorldEngine();
-	//engine->readWorld("level");
+	engine->readWorld("level");
 
 	spawn = new Spawner(engine->squares, players);
 
@@ -40,14 +40,21 @@ void GameScene::Init(void){
 
 void GameScene::Render() {
 	Scene::Render();
-	//engine->renderWorld();
+	engine->renderWorld();
 	for (size_t i = 0; i < spawn->projectiles.size(); i++) {
 		(spawn->projectiles[i])->Render();
 	}	
 }
 
 void GameScene::Update(float timedelta) {
+	GlutManager::GetPhysEngi()->updateQuadTree();
+	GlutManager::GetPhysEngi()->ApplyVelocities(timedelta);
+	GlutManager::GetPhysEngi()->bruteCollision();
+	GlutManager::GetPhysEngi()->updateVelocities();
+	GlutManager::GetPhysEngi()->ApplyVelocities(timedelta);
+	GlutManager::GetPhysEngi()->updateVelocities();
 	Scene::Update(timedelta);
+
 	if (InputManager::IsMouseClicked(timedelta)) {
 		spawn->SpawnProjectile((Player*)members.at("Player"), this);
 	}
@@ -55,9 +62,6 @@ void GameScene::Update(float timedelta) {
 	for (size_t i = 0; i < spawn->projectiles.size(); i++){
 		(spawn->projectiles[i])->Update(timedelta);
 	}
+	
 
-
-	GlutManager::GetPhysEngi()->updateQuadTree();
-	GlutManager::GetPhysEngi()->quadTreeCollision();
-	GlutManager::GetPhysEngi()->updateVelocities();
 }

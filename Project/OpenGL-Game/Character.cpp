@@ -3,7 +3,7 @@
 
 Character::Character()
 {
-	movementSpeed = 1;
+	movementSpeed = 5;
 	moveDelta = glm::vec3(0.0);
 
 	baseActions["MoveUp"]		= &Character::MoveUp;
@@ -20,7 +20,8 @@ Character::~Character()
 }
 
 void Character::Update(float timeDelta){
-	MoveMembers(moveDelta * timeDelta);
+	GlutManager::GetPhysEngi()->addVelocityTo("BoxMan", new Velocity(moveDelta.x, moveDelta.y, moveDelta.z, 2, 1));
+	//MoveMembers(moveDelta * timeDelta);
 	UpdateMembers(timeDelta);
 
 	moveDelta = glm::vec3(0.0f);
@@ -39,11 +40,11 @@ void Character::MoveRight(void){
 	moveDelta.x += movementSpeed;
 }
 void Character::MoveForward(void){
-	GlutManager::GetPhysEngi()->addVelocityTo("BoxMan", new Velocity(0.0f, 0.0f, -4.0f, 2, 1));
-	//moveDelta.z -= movementSpeed;
+	//GlutManager::GetPhysEngi()->addVelocityTo("BoxMan", new Velocity(0.0f, 0.0f, -2.5f, 2, 1));
+	moveDelta.z -= movementSpeed;
 }
 void Character::MoveBackward(void){
-	//moveDelta.z += movementSpeed;
+	moveDelta.z += movementSpeed;
 }
 
 void Character::SetMovementSpeed(int speed){

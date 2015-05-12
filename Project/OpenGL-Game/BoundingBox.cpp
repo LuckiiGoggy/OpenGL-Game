@@ -1,5 +1,7 @@
 
 #include "BoundingBox.h"
+#include <math.h>
+#include <cfloat>
 
 float* BoundingBox::returnFrontFaceXY()
 {
@@ -188,9 +190,12 @@ void BoundingBox::refresh()
 	center.z = (v1.z + v7.z) / 2;
 
 	//calculate lengths from center to each direction X, Y, Z
-	yHeight = abs(v1.y - v2.y);
-	xWidth = abs(v4.x - v1.x);
-	zDepth = abs(v5.z - v1.z);
+	yHeight = abs(v1.y - v6.y);
+	//xWidth = abs(MinVertex(v5.x, v1.x, v4.x, v8.x) - MaxVertex(v5.x, v1.x, v4.x, v8.x));
+	//zDepth = abs(MinVertex(v5.z, v1.z, v4.z, v8.z) - MaxVertex(v5.z, v1.z, v4.z, v8.z));
+
+	xWidth = abs(v5.x - v4.x);
+	zDepth = abs(v5.z - v4.z);
 
 	xRadius = xWidth / 2;
 	yRadius = yHeight / 2;
@@ -227,4 +232,28 @@ void BoundingBox::refresh()
 	Width  = |v4 - v1|
 	Depth  = |v5 - v1|
 	//*/
+}
+
+float BoundingBox::MinVertex(float v1, float v2, float v3, float v4)
+{
+	float vertices[4] = { v1, v2, v3, v4 };
+	float min = FLT_MAX;
+
+	for (int i = 0; i < 4; i++){
+		if (vertices[i] < min) min = vertices[i];
+	}
+
+	return min;
+}
+
+float BoundingBox::MaxVertex(float v1, float v2, float v3, float v4)
+{
+	float vertices[4] = { v1, v2, v3, v4 };
+	float max = -FLT_MAX;
+
+	for (int i = 0; i < 4; i++){
+		if (vertices[i] > max) max = vertices[i];
+	}
+
+	return max;
 }
