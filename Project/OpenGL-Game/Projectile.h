@@ -3,7 +3,6 @@
 #include "openGL.h"
 #include "Velocity.h"
 #include "MeshObject.h"
-#include "RigidBody.h"
 
 class Projectile:public MeshObject {
 public:

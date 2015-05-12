@@ -5,6 +5,7 @@ char* floor_filename = (char*) "../Assets/Models/floorPlane.obj";
 char* wall_filename = (char*) "../Assets/Models/wallCube.obj";
 char* v_shader_filename = (char*) "../Assets/Shaders/gouraud-shading.v.glsl";
 char* f_shader_filename = (char*) "../Assets/Shaders/gouraud-shading.f.glsl";
+float tileLength = 8;
 
 WorldEngine::WorldEngine() {
 	loaded = false;
@@ -70,31 +71,31 @@ void WorldEngine::readWorld(std::string filename) {
 				case WALL:
 				{
 					p = new MeshObject(*wall);
-					p->Move(glm::vec3(j * 2, 1.0f, i * 2));
+					p->Move(glm::vec3(j * tileLength, 1.0f, i * tileLength));
 					break;
 				}
 				case FLOOR:
 				{
 					p = new MeshObject(*floor);
-					p->Move(glm::vec3(j * 2, 0.0f, i * 2));
+					p->Move(glm::vec3(j * tileLength, 0.0f, i * tileLength));
 					break;
 				}
 				case MOVEWALL:
 				{
 					p = new MeshObject(*wall);
-					p->Move(glm::vec3(j * 2, 1.0f, i * 2));
+					p->Move(glm::vec3(j * tileLength, 1.0f, i * tileLength));
 					break;
 				}
 				case SPAWN:
 				{
 					p = new MeshObject(*floor);
-					p->Move(glm::vec3(j * 2, 0.0f, i * 2));
+					p->Move(glm::vec3(j * tileLength, 0.0f, i * tileLength));
 					break;
 				}
 				default:
 				{
 					p = new MeshObject(*wall);
-					p->Move(glm::vec3(j * 2, 1.0f, i * 2));
+					p->Move(glm::vec3(j * tileLength, 1.0f, i * tileLength));
 					break;
 				}
 				}
@@ -161,12 +162,12 @@ bool WorldEngine::newWorld(std::string filename, std::string sW, std::string sH)
 				if (i == 0 || j == 0 || i == h - 1 || j == w - 1) {
 					block = WALL;
 					p = new MeshObject(*wall);
-					p->Move(glm::vec3(j * 2, 1.0f, i * 2));
+					p->Move(glm::vec3(j * tileLength, 1.0f, i * tileLength));
 				}
 				else {
 					block = FLOOR;
 					p = new MeshObject(*floor);
-					p->Move(glm::vec3(j * 2, 1.0f, i * 2));
+					p->Move(glm::vec3(j * tileLength, 1.0f, i * tileLength));
 				}
 				squares.push_back(WorldSquare((int)i, (int)j, block));
 				meshes.push_back(p);
