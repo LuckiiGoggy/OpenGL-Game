@@ -21,6 +21,8 @@ Player::Player(void)
 
 	group->AddMember("Camera", camera);
 
+
+	GlutManager::GetPhysEngi()->registerRigidBody((MeshObject *)boxman->GetMember("Idle"), group, "BoxMan");
 	
 
 	chara->AddMember("BoxMan", group);

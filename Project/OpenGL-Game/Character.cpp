@@ -1,5 +1,5 @@
 #include "Character.h"
-
+#include "GlutManager.h"
 
 Character::Character()
 {
@@ -39,10 +39,11 @@ void Character::MoveRight(void){
 	moveDelta.x += movementSpeed;
 }
 void Character::MoveForward(void){
-	moveDelta.z -= movementSpeed;
+	GlutManager::GetPhysEngi()->addVelocityTo("BoxMan", new Velocity(0.0f, 0.0f, -4.0f, 2, 1));
+	//moveDelta.z -= movementSpeed;
 }
 void Character::MoveBackward(void){
-	moveDelta.z += movementSpeed;
+	//moveDelta.z += movementSpeed;
 }
 
 void Character::SetMovementSpeed(int speed){

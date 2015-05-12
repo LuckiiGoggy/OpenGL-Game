@@ -75,7 +75,6 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CharacterStat.cpp" />
     <ClCompile Include="Collisions.cpp" />
-    <ClCompile Include="CQDemo01.cpp" />
     <ClCompile Include="GameObjectContainer.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Image.cpp" />
@@ -115,7 +114,6 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CharacterStat.h" />
     <ClInclude Include="Collisions.h" />
-    <ClInclude Include="CQDemo01.h" />
     <ClInclude Include="Exception.h" />
     <ClInclude Include="GameObjectContainer.h" />
     <ClInclude Include="GameScene.h" />

@@ -20,6 +20,9 @@ public:
 
 	static Camera *GetMainCamera(void);
 	static void SetMainCamera(Camera *camera);
+
+	static PhysicsEngine *GetPhysEngi(void);
+	static void SetPhysEngi(PhysicsEngine *);
 	
 	static void AddMember(std::string name, IObject *object);
 
@@ -38,6 +41,7 @@ private:
 	static std::map<std::string, IObject *> members;
 	static Camera *mainCamera;
 	static glm::vec3 position;
+	static PhysicsEngine *physEngi;
 	static float lastTime;
 
 	
