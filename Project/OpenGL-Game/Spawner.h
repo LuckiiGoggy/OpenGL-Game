@@ -21,7 +21,7 @@ public:
 	std::vector<WorldSquare> spawnPoints;
 	std::vector<Projectile *> projectiles;
 	static int projCount;
-	Projectile projectile;
+	MeshObject* projectileMesh;
 };
 
 #endif
