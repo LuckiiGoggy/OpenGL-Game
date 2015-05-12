@@ -40,7 +40,7 @@ void Spawner::SpawnPlayer(MeshObject &player, std::vector<MeshObject *> players)
 	posy /= players.size();
 	for (size_t j = 0; j < spawnPoints.size(); j++) {
 		temp = glm::sqrt(glm::pow(spawnPoints[j].x - posx, 2) +
-		glm::pow(spawnPoints[j].y - posy, 2));
+			glm::pow(spawnPoints[j].y - posy, 2));
 		if (temp > dist) {
 			dist = temp;
 			pos = j;
@@ -54,14 +54,14 @@ void Spawner::SpawnProjectile(Player* player, GameObjectContainer *scene) {
 	direction and position based
 	on player that spawned it*/
 
-
-
 	glm::vec3 v = (dynamic_cast<Transform *>(player->Chara()->GetMember("BoxMan")))->Position();
 	glm::mat4 m = (dynamic_cast<Transform *>(player->Chara()->GetMember("BoxMan")))->NetRotation();
 	Projectile *newProj = new Projectile(m, v);
-	//scene->AddMember("projectile", newProj);
-	Velocity* vel = new Velocity(0.0f, 0.0f, 1.0f, 1, 10);
-	GlutManager::GetPhysEngi()->registerRigidBody(newProj, "projectile" + projCount);
-	GlutManager::GetPhysEngi()->addVelocityTo("projectile" + projCount, vel);
+	glm::vec3 vdir = Transform::ApplyTransVec3(glm::vec3(0.0f, 0.0f, -1.0f), m);
+	Velocity* vel = new Velocity(vdir.x, vdir.y, vdir.z, 1, 10);
+	projCount++;
+	std::string name = "projectile" + std::to_string(projCount);
+	GlutManager::GetPhysEngi()->registerRigidBody(newProj, newProj, name, 1, projCount);
+	GlutManager::GetPhysEngi()->addVelocityTo(name, vel);
 	projectiles.push_back(newProj);
 }

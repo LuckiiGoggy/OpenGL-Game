@@ -428,7 +428,7 @@ void RigidBody::move(float x, float y, float z, bool noChange)
 	pTrans->Move(x_, y_, z_);
 
 	//pMesh->bottomFace.move(x_, z_);
-	
+
 	pMesh->UpdateBoundingBox(0.0f);
 	//pMesh->calculateBottomFace();
 	//pMesh->boundingBox.translate(x_, y_, z_);

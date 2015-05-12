@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Projectile.h"
 #include <limits>
+#include <string>
 #include "GameObjectContainer.h"
 
 class Spawner {
