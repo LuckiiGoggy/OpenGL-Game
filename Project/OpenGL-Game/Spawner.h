@@ -9,6 +9,7 @@
 #include <limits>
 #include <string>
 #include "GameObjectContainer.h"
+#include "GroupObject.h"
 
 class Spawner {
 public:
