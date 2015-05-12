@@ -3,12 +3,12 @@
 #include "openGL.h"
 #include "Velocity.h"
 #include "MeshObject.h"
+#include "RigidBody.h"
 
 class Projectile:public MeshObject {
 public:
 	Projectile();
 	Projectile(glm::mat4 &dir, glm::vec3 pos);
-	Velocity v;
 };
 
 #endif
