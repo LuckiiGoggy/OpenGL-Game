@@ -20,10 +20,8 @@ Character::~Character()
 }
 
 void Character::Update(float timeDelta){
+	GroupObject::Update(timeDelta);
 	GlutManager::GetPhysEngi()->addVelocityTo("BoxMan", new Velocity(moveDelta.x, moveDelta.y, moveDelta.z, 2, 1));
-	//MoveMembers(moveDelta * timeDelta);
-	UpdateMembers(timeDelta);
-
 	moveDelta = glm::vec3(0.0f);
 }
 
@@ -40,7 +38,6 @@ void Character::MoveRight(void){
 	moveDelta.x += movementSpeed;
 }
 void Character::MoveForward(void){
-	//GlutManager::GetPhysEngi()->addVelocityTo("BoxMan", new Velocity(0.0f, 0.0f, -2.5f, 2, 1));
 	moveDelta.z -= movementSpeed;
 }
 void Character::MoveBackward(void){
@@ -59,18 +56,14 @@ void Character::Act(std::string funcName){
 	if (it != baseActions.end()) (this->*(it->second))();
 }
 
-void Character::Render(void){
-	RenderMembers();
-}
-
 void Character::RotateX(float angle){
-	RotateMembers(1.0f, 0.0f, 0.0f, angle);
+	GroupObject::Rotate(1.0f, 0.0f, 0.0f, angle);
 }
 void Character::RotateY(float angle){
-	RotateMembers(0.0f, 1.0f, 0.0f, angle);
+	GroupObject::Rotate(0.0f, 1.0f, 0.0f, angle);
 }
 void Character::RotateZ(float angle){
-	RotateMembers(0.0f, 0.0f, 1.0f, angle);
+	GroupObject::Rotate(0.0f, 0.0f, 1.0f, angle);
 }
 
 

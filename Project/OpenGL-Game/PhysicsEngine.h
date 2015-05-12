@@ -33,14 +33,6 @@ public:
 	PhysicsEngine(int screenWidth_, int screenHeight_); // 2D
 	PhysicsEngine(int screenWidth_, int screenHeight_, int screenDepth_); // 3D
 
-
-	void applyVelocity(RectObject* object, Velocity f);
-	void applyVelocity(RectObject* object, Velocity* f);
-	void applyVelocity(RectObject* object, float x_, float y_, float z_, int type_, int duration_ = 10);
-	//void applyVelocity(RigidBody* object, Velocity f);
-	//void applyVelocity(RigidBody* object, Velocity* f);
-	//void applyVelocity(RigidBody* object, float x_, float y_, float z_, int type_, int duration_ = 10);
-
 	void ApplyVelocities();
 	void ApplyVelocities(float timeDelta);
 

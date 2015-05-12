@@ -7,9 +7,10 @@
 #include "Character.h"
 #include "IUpdateable.h"
 #include "InputManager.h"
+#include "IGameObject.h"
 
 
-class CharacterController: public IUpdateable
+class CharacterController: public IGameObject
 {
 public:
 	CharacterController(Character *chara);
@@ -21,7 +22,7 @@ public:
 	virtual void Update(float timeDelta);
 
 protected:
-	Character *control;
+	Character *chara;
 	//Temporarily removing for simplification
 	//std::map<std::string, Character *> controls; 
 	std::map<KeyCodes, std::string> keyMapping;

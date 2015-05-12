@@ -3,7 +3,7 @@
 
 CharacterController::CharacterController(Character *chara)
 {
-	control = chara;
+	this->chara = chara;
 	/**Default KeyMapping**/
 	keyMapping[KeyCodes::w] = "MoveForward";
 	keyMapping[KeyCodes::s] = "MoveBackward";
@@ -16,7 +16,7 @@ CharacterController::CharacterController(Character *chara)
 
 CharacterController::~CharacterController()
 {
-	if (control) delete control;
+	if (chara) delete chara;
 	/*
 	std::map<std::string, Character *>::iterator iter;
 
@@ -71,6 +71,6 @@ void CharacterController::ApplyAllInputs(std::vector<std::string> inputs){
 */
 void CharacterController::ApplyAllInputs(std::vector<std::string> inputs){
 	for (unsigned int i = 0; i < inputs.size(); i++){
-		control->Act(inputs[i]);
+		chara->Act(inputs[i]);
 	}
 }

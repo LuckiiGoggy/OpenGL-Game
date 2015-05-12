@@ -56,8 +56,8 @@ void Spawner::SpawnProjectile(Player* player, GameObjectContainer *scene) {
 
 
 
-	glm::vec3 v = (dynamic_cast<Transform *>(player->Chara()->GetMember("BoxMan")))->Position();
-	glm::mat4 m = (dynamic_cast<Transform *>(player->Chara()->GetMember("BoxMan")))->NetRotation();
+	glm::vec3 v = (dynamic_cast<Transform *>(player->GroupObject::GetMember("BoxMan")))->Position();
+	glm::mat4 m = (dynamic_cast<Transform *>(player->GroupObject::GetMember("BoxMan")))->NetRotation();
 	Projectile *newProj = new Projectile(m, v);
 	//scene->AddMember("projectile", newProj);
 	Velocity* vel = new Velocity(0.0f, 0.0f, 1.0f, 1, 10);
