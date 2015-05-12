@@ -12,208 +12,133 @@ Collisions::Collisions()
 Collisions::~Collisions()
 {
 }
-int Collisions::checkForSelect(float mousePointX,
-							   float mousePointY,
-							   float shapePointSX,
-							   float shapePointSY,
-							   float shapePointEX,
-							   float shapePointEY) {
-
-							  int i;
-							  float centerX = (shapePointSX + shapePointEX) / 2;
-							  float centerY = (shapePointSY + shapePointEY) / 2;
-
-							  if ( abs( (int)mousePointX - shapePointSX)  <= radius )
-							  {
-								  if ( abs( (int)mousePointY - shapePointSY)  <= radius )
-								  {
-									  return STARTPOINTS;
-								  }
-							  }
-							  if ( abs( (int)mousePointX - shapePointEX)  <= radius )
-							  {
-								  if ( abs( (int)mousePointY - shapePointEY)  <= radius )
-								  {
-									  return ENDPOINTS;
-								  }
-							  }
-							  for (i = (-radius); i <= radius; i++) {
-								  //first point in line
-								  if (((int)mousePointX + i) == (int)shapePointSX)//check X within radius
-								  {
-									  for (i = (-radius); i <= radius; i++)//check Y within radius
-									  {
-										  if ((int)(mousePointY + i) == (int)shapePointSY) {
-											  return STARTPOINTS;
-										  }
-									  }
-								  }
-								  //second point in line
-								  if ((int)(mousePointX + i) == (int)shapePointEX)//check X within radius
-								  {
-									  for (i = (-radius); i <= radius; i++)//check Y within radius
-									  {
-										  if ((int)(mousePointY + i) == (int)shapePointEY) {
-											  return ENDPOINTS;
-										  }
-									  }
-								  }
-								  //center point in line
-								  if ((int)(mousePointX + i) == (int)centerX)//check X within radius
-								  {
-									  for (i = (-radius); i <= radius; i++)//check Y within radius
-									  {
-										  if ((int)(mousePointY + i) == (int)centerY) {
-											  return CENTERPOINT;
-										  }
-									  }
-								  }
-							  }
-
-							  return 0;
-}
-
+//*
 /*
-public class SelectionMath
+aX, aY aZ are the center points x,y,z respectively for bounding box 'A'
+aXsize is the length from the center X point to the outside edge of the box
+aYsize is the length from the center Y point to the outside edge of the box
+aZsize is the length from the center Z point to the outside edge of the box
+*/
+bool Collisions::checkCollisionAAB(int aX, int aY, int aZ, int aXsize, int aYsize, int aZsize,
+	int bX, int bY, int bZ, int bXsize, int bYsize, int bZsize)
 {
-    
+	{
+		//check the Y axis
+		if (abs(aY - bY) < aYsize + bYsize)
+		{
+			//check the X axis
+			if (abs(aX - bX) < aXsize + bXsize)
+			{
+				//check the Z axis
+				if (abs(aZ - bZ) < aZsize + bZsize)
+				{
+					return true;
+				}
+			}
+		}
 
-    SelectionMath(){
-    }
-    SelectionMath(int radiusGiven){
-        radius = radiusGiven;
-    }
-    public void setRadius(int radiusGiven){
-        radius = radiusGiven;
-    }
-    
-    public int checkForSelect(int mousePointX,
-                              int mousePointY,
-                              int shapePointSX,
-                              int shapePointSY,
-                              int shapePointEX,
-                              int shapePointEY) {
-        int i;
-        float centerX = (shapePointSX + shapePointEX) / 2;
-        float centerY = (shapePointSY + shapePointEY) / 2;
+		return false;
+	}
+}//*/
+bool Collisions::checkCollisionAAB(float aX, float aY, float aZ, float aXsize, float aYsize, float aZsize,
+	float bX, float bY, float bZ, float bXsize, float bYsize, float bZsize)
+{
+	{
+		//check the Y axis
+		if (abs(aY - bY) < aYsize + bYsize)
+		{
+			//check the X axis
+			if (abs(aX - bX) < aXsize + bXsize)
+			{
+				//check the Z axis
+				if (abs(aZ - bZ) < aZsize + bZsize)
+				{
+					return true;
+				}
+			}
+		}
 
-        if ( Math.abs( mousePointX - shapePointSX)  <= radius )
-        {
-            if ( Math.abs( mousePointY - shapePointSY)  <= radius )
-            {
-                return STARTPOINTS;
-            }
-        }
-        if ( Math.abs( mousePointX - shapePointEX)  <= radius )
-        {
-            if ( Math.abs( mousePointY - shapePointEY)  <= radius )
-            {
-                return ENDPOINTS;
-            }
-        }
-        for (i = (-radius); i <= radius; i++) {
-            //first point in line
-            if ((mousePointX + i) == shapePointSX)//check X within radius
-            {
-                for (i = (-radius); i <= radius; i++)//check Y within radius
-                {
-                    if ((mousePointY + i) == shapePointSY) {
-                        return STARTPOINTS;
-                    }
-                }
-            }
-            //second point in line
-            if ((mousePointX + i) == shapePointEX)//check X within radius
-            {
-                for (i = (-radius); i <= radius; i++)//check Y within radius
-                {
-                    if ((mousePointY + i) == shapePointEY) {
-                        return ENDPOINTS;
-                    }
-                }
-            }
-            //center point in line
-            if ((mousePointX + i) == (int)centerX)//check X within radius
-            {
-                for (i = (-radius); i <= radius; i++)//check Y within radius
-                {
-                    if ((mousePointY + i) == (int)centerY) {
-                        return CENTERPOINT;
-                    }
-                }
-            }
-        }
-
-        return 0;
-    }
-    public int checkForSelect(PointF mousePoint, PointF[] shapePoints) {
-        int i;
-        PointF center = new PointF();
-        center.x = (shapePoints[0].x + shapePoints[1].x) / 2;
-        center.y = (shapePoints[0].y + shapePoints[1].y) / 2;
-
-        /*boolean horizontal = false;
-        boolean vertical = false;
-        if (Math.abs(shapePoints[0].x - shapePoints[1].x) <= VERTRANGE)
-        {
-            vertical = true;
-        }
-        if (Math.abs(shapePoints[0].y - shapePoints[1].y) <= HORIZRANGE)
-        {
-            horizontal = true;
-        }*//*
-
-        if ( Math.abs( (int)mousePoint.x - shapePoints[0].x)  <= radius )
-        {
-            if ( Math.abs( (int)mousePoint.y - shapePoints[0].y)  <= radius )
-            {
-                return STARTPOINTS;
-            }
-        }
-        if ( Math.abs( (int)mousePoint.x - shapePoints[1].x)  <= radius )
-        {
-            if ( Math.abs( (int)mousePoint.y - shapePoints[1].y)  <= radius )
-            {
-                return ENDPOINTS;
-            }
-        }
-        for (i = (-radius); i <= radius; i++) {
-            //first point in line
-            if (((int)mousePoint.x + i) == (int)shapePoints[0].x)//check X within radius
-            {
-                for (i = (-radius); i <= radius; i++)//check Y within radius
-                {
-                    if ((int)(mousePoint.y + i) == (int)shapePoints[0].y) {
-                        return STARTPOINTS;
-                    }
-                }
-            }
-            //second point in line
-            if ((int)(mousePoint.x + i) == (int)shapePoints[1].x)//check X within radius
-            {
-                for (i = (-radius); i <= radius; i++)//check Y within radius
-                {
-                    if ((int)(mousePoint.y + i) == (int)shapePoints[1].y) {
-                        return ENDPOINTS;
-                    }
-                }
-            }
-            //center point in line
-            if ((int)(mousePoint.x + i) == (int)center.x)//check X within radius
-            {
-                for (i = (-radius); i <= radius; i++)//check Y within radius
-                {
-                    if ((int)(mousePoint.y + i) == (int)center.y) {
-                        return CENTERPOINT;
-                    }
-                }
-            }
-        }
-
-        return 0;
-    }
-
+		return false;
+	}
+}//*/
+/*
+bool Collisions::checkCollisionAAB(ObjectBox a, ObjectBox b)
+{
+{
+//check the Y axis
+if(abs(a.getY() - b.getY()) < a.getSizeY() + b.getSizeY())
+{
+//check the X axis
+if(abs(a.getX() - b.getX()) < a.getSizeX() + b.getSizeX())
+{
+//check the Z axis
+if(abs(a.getZ() - b.getZ()) < a.getSizeZ() + b.getSizeZ())
+{
+return true;
+}
+}
 }
 
+return false;
+}
+}//*/
+int Collisions::checkForSelect(float mousePointX,
+	float mousePointY,
+	float shapePointSX,
+	float shapePointSY,
+	float shapePointEX,
+	float shapePointEY) {
 
-*/
+	int i;
+	float centerX = (shapePointSX + shapePointEX) / 2;
+	float centerY = (shapePointSY + shapePointEY) / 2;
+
+	if (abs((int)mousePointX - shapePointSX) <= radius)
+	{
+		if (abs((int)mousePointY - shapePointSY) <= radius)
+		{
+			return STARTPOINTS;
+		}
+	}
+	if (abs((int)mousePointX - shapePointEX) <= radius)
+	{
+		if (abs((int)mousePointY - shapePointEY) <= radius)
+		{
+			return ENDPOINTS;
+		}
+	}
+	for (i = (-radius); i <= radius; i++) {
+		//first point in line
+		if (((int)mousePointX + i) == (int)shapePointSX)//check X within radius
+		{
+			for (i = (-radius); i <= radius; i++)//check Y within radius
+			{
+				if ((int)(mousePointY + i) == (int)shapePointSY) {
+					return STARTPOINTS;
+				}
+			}
+		}
+		//second point in line
+		if ((int)(mousePointX + i) == (int)shapePointEX)//check X within radius
+		{
+			for (i = (-radius); i <= radius; i++)//check Y within radius
+			{
+				if ((int)(mousePointY + i) == (int)shapePointEY) {
+					return ENDPOINTS;
+				}
+			}
+		}
+		//center point in line
+		if ((int)(mousePointX + i) == (int)centerX)//check X within radius
+		{
+			for (i = (-radius); i <= radius; i++)//check Y within radius
+			{
+				if ((int)(mousePointY + i) == (int)centerY) {
+					return CENTERPOINT;
+				}
+			}
+		}
+	}
+
+	return 0;
+}

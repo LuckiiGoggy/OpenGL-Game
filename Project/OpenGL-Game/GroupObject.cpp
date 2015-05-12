@@ -1,53 +1,59 @@
 #include "GroupObject.h"
+#include <iostream>
+#include <typeinfo>
 
 
 GroupObject::GroupObject()
 {
 }
 
-
 GroupObject::~GroupObject()
 {
+	EmptyMembers();
 }
-
-
 
 void GroupObject::Render()
 {
+	#ifdef DEBUG
+		std::cout << "\nGroup Object Rendering..";
+	#endif
+	
+	RenderMembers();
 
 }
 
-void GroupObject::Move(int x, int y, int z)
-{
-
+void GroupObject::Update(float timeDelta){
+	UpdateMembers(timeDelta);
 }
 
-void GroupObject::MoveUp(int delta)
+void GroupObject::Move(float dX, float dY, float dZ, Space transformSpace)
 {
+	glm::vec3 moveDelta = glm::vec3(dX, dY, dZ);
+	Transform::Move(moveDelta, transformSpace);
+	MoveMembers(moveDelta);
+
 	
 }
 
-void GroupObject::MoveDown(int delta)
+void GroupObject::Move(glm::vec3 moveDelta, Space transformSpace)
 {
-
+	Transform::Move(moveDelta, transformSpace);
+	MoveMembers(moveDelta);
 }
 
-void GroupObject::MoveLeft(int delta)
-{
 
-}
-
-void GroupObject::MoveRight(int delta)
-{
-
-}
-
-void GroupObject::MoveForward(int delta)
-{
-
-}
-
-void GroupObject::MoveBackward(int delta)
-{
-
+void GroupObject::Rotate(float axisX, float axisY, float axisZ, float angle, glm::vec3 rotPoint, Space transformSpace){
+	switch (transformSpace)
+	{
+	case Transform::Local:
+		Transform::Rotate(axisX, axisY, axisZ, angle);
+		RotateMembers(axisX, axisY, axisZ, angle, position, Transform::Global);
+		break;
+	case Transform::Global:
+		Transform::Rotate(axisX, axisY, axisZ, angle, position, transformSpace);
+		RotateMembers(axisX, axisY, axisZ, angle, position, transformSpace);
+		break;
+	default:
+		break;
+	}
 }
