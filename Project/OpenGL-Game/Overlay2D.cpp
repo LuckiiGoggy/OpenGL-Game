@@ -40,7 +40,12 @@ void Overlay2D::Render()
 		glVertex2f(3.0, 3.0);
 		glVertex2f(-3.0, 3.0);
 	glEnd();
+	/*m_pFont = new CGameFont;
+	m_pFont->CreateFont("Verdana", 30, FW_NORMAL);
 
+	m_pNewGameText = new CTextControl(m_pFont, TRectanglei(150, 207, 209, 591));
+	m_pNewGameText->SetAlignement(CTextControl::TACenter);
+	m_pNewGameText->SetText("New game");*/
 
 
 

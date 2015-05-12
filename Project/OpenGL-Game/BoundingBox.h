@@ -51,6 +51,9 @@ public:
 	float xRadius;
 	float yRadius;
 	float zRadius;
+
+	float MinVertex(float, float, float, float);
+	float MaxVertex(float, float, float, float);
 };
 
 
