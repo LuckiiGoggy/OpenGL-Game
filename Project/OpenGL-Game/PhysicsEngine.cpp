@@ -36,36 +36,6 @@ PhysicsEngine::PhysicsEngine(int screenWidth_, int screenHeight_, int screenDept
 	rigidObjects = vector<RigidBody*>();
 }
 
-
-///NOT IN USE
-void PhysicsEngine::applyVelocity(RectObject* object, Velocity f)
-{
-	object->move(
-		(int)((f.strength) * (f.x)),
-		(int)((f.strength) * (f.y))
-		);
-}
-void PhysicsEngine::applyVelocity(RectObject* object, Velocity* f)
-{
-	object->move(
-		(int)((f->strength) * (f->x)),
-		(int)((f->strength) * (f->y))
-		);
-}
-void PhysicsEngine::applyVelocity(RectObject* object, float x_, float y_, float z_, int type_, int duration_ /* = 10 */)
-{
-	Velocity* f = new Velocity(x_, y_, z_, type_, duration_);
-	object->addVelocity(f);
-	object->move(
-		(int)((f->strength) * (f->x)),
-		(int)((f->strength) * (f->y))
-		);
-}
-///NOT IN USE
-
-
-
-
 void PhysicsEngine::triggerImpact(RigidBody *A, RigidBody *B)
 {
 	int numOfVelocities_A = A->velocities.size();

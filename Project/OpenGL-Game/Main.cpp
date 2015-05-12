@@ -29,10 +29,6 @@ int main(int argc, char **argv) {
 
 	gS->Init();
 
-	
-	Player *player = new Player();
-	gS->AddMember("Player", player);
-
 	GlutManager::AddMember("Derp", gS);
 
 	

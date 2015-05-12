@@ -1,6 +1,7 @@
 #include "GameScene.h"
 #include "MeshObject.h"
 #include "GlutManager.h"
+#include "PlayerController.h"
 
 GameScene::GameScene()
 {
@@ -18,6 +19,7 @@ void GameScene::Init(void){
 
 	MeshObject *myMesh = new MeshObject();
 	MeshObject *myMesh2 = new MeshObject();
+	PlayerController *pC;
 	myMesh->Init(obj_filename, v_shader_filename, f_shader_filename);
 	myMesh2->Init(obj_filename, v_shader_filename, f_shader_filename);
 	AddMember("MyMesh", myMesh);
@@ -28,6 +30,15 @@ void GameScene::Init(void){
 	myMesh->Move(0.0f, 0.0f, -8.0f);
 
 	GlutManager::GetPhysEngi()->registerRigidBody(myMesh, myMesh, "Suzanne");
+
+	Player *player = new Player();
+	AddMember("Player", player);
+
+	pC = new PlayerController(player);
+
+	AddMember("Controller", pC);
+
+
 
 	engine = new WorldEngine();
 	engine->readWorld("level");
