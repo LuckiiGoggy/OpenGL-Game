@@ -3,7 +3,7 @@
 
 Character::Character()
 {
-	movementSpeed = 2;
+	movementSpeed = 5;
 	moveDelta = glm::vec3(0.0);
 
 	baseActions["MoveUp"]		= &Character::MoveUp;
@@ -20,7 +20,6 @@ Character::~Character()
 }
 
 void Character::Update(float timeDelta){
-	moveDelta *= timeDelta;
 	GlutManager::GetPhysEngi()->addVelocityTo("BoxMan", new Velocity(moveDelta.x, moveDelta.y, moveDelta.z, 2, 1));
 	//MoveMembers(moveDelta * timeDelta);
 	UpdateMembers(timeDelta);

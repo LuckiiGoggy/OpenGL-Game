@@ -7,7 +7,7 @@
 
 PhysicsEngine::PhysicsEngine()
 {
-	screenWidth = 400;
+	screenWidth = 566;
 	screenHeight = 400;
 	screenDepth = 400;
 
@@ -90,9 +90,9 @@ void PhysicsEngine::triggerImpact(RigidBody *A, RigidBody *B)
 	//Sum all of the velocities to get the total influence for object A
 	glm::vec3 netVeloA = A->NetVelocity();
 
-	xTotal_A += netVeloA.x; //- abs((A->pMesh->boundingBox.xRadius + A->pMesh->boundingBox.center.x) - (B->pMesh->boundingBox.xRadius + B->pMesh->boundingBox.center.x));
+	xTotal_A += netVeloA.x;// -abs((A->pMesh->boundingBox.xRadius + A->pMesh->boundingBox.center.x) - (B->pMesh->boundingBox.xRadius + B->pMesh->boundingBox.center.x));
 	yTotal_A += netVeloA.y;
-	zTotal_A += netVeloA.z; //- abs((A->pMesh->boundingBox.zDepth + A->pMesh->boundingBox.center.z) - (B->pMesh->boundingBox.zDepth + B->pMesh->boundingBox.center.z));
+	zTotal_A += netVeloA.z;// -abs((A->pMesh->boundingBox.zDepth + A->pMesh->boundingBox.center.z) - (B->pMesh->boundingBox.zDepth + B->pMesh->boundingBox.center.z));
 
 	//Sum all of the velocities to get the total influence for object A
 	glm::vec3 netVeloB = A->NetVelocityX();
@@ -102,7 +102,7 @@ void PhysicsEngine::triggerImpact(RigidBody *A, RigidBody *B)
 	zTotal_B += netVeloB.z;
 
 	//Impact = velocity * mass
-	xImpact_A = xTotal_A * (A->mass/B->mass); //PA
+	xImpact_A = xTotal_A * (A->mass / B->mass); //PA
 	yImpact_A = yTotal_A * (A->mass / B->mass);
 	zImpact_A = zTotal_A * (A->mass / B->mass);
 
@@ -113,11 +113,11 @@ void PhysicsEngine::triggerImpact(RigidBody *A, RigidBody *B)
 
 
 	//resulting velocities from collision
-	Velocity* impact_From_A = new Velocity(xImpact_A, yImpact_A, zImpact_A, 3, 2);
+	Velocity* impact_From_A = new Velocity(xImpact_A, yImpact_A, zImpact_A, 3, 3);
 	Velocity* impact_From_B = new Velocity(-xImpact_B, -yImpact_B, -zImpact_B, 3, 2);
 
 
-	A->addVelocity(new Velocity(*impact_From_B));
+	//A->addVelocity(new Velocity(*impact_From_B));
 	B->addVelocity(new Velocity(*impact_From_A));
 }
 /*
@@ -160,8 +160,9 @@ check to see if this Velocity has no timeLeft, if so erase it from that object
 	}
 }
 
+void PhysicsEngine::ApplyVelocities(){}
 
-void PhysicsEngine::ApplyVelocities(){
+void PhysicsEngine::ApplyVelocities(float timeDelta){
 	int i = 0;
 	int numOfObjects = rigidObjects.size();
 
@@ -183,9 +184,9 @@ void PhysicsEngine::ApplyVelocities(){
 			{
 				//Apply translation to object through Velocity
 				rigidObjects[i]->move(
-					((curVelocity)* (rigidObjects[i]->velocities[j]->x)),
-					((curVelocity)* (rigidObjects[i]->velocities[j]->y)),
-					((curVelocity)* (rigidObjects[i]->velocities[j]->z))
+					((curVelocity)* (rigidObjects[i]->velocities[j]->x) * timeDelta),
+					((curVelocity)* (rigidObjects[i]->velocities[j]->y) * timeDelta),
+					((curVelocity)* (rigidObjects[i]->velocities[j]->z) * timeDelta)
 					);
 			}
 		}
