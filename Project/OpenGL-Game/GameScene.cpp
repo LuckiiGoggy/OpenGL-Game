@@ -20,14 +20,14 @@ void GameScene::Init(void){
 	AddMember("MyMesh", myMesh);
 
 	engine = new WorldEngine();
-	engine->readWorld("level");
+	//engine->readWorld("level");
 
 	spawn = new Spawner(engine->squares, players);
 }
 
 void GameScene::Render() {
 	Scene::Render();
-	engine->renderWorld();
+	//engine->renderWorld();
 	for (size_t i = 0; i < spawn->projectiles.size(); i++) {
 		(spawn->projectiles[i])->Render();
 	}	

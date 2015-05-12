@@ -37,7 +37,7 @@ void GlutManager::Init(bool editor)
 
 	InputManager::Init();
 
-	glutSetCursor(GLUT_CURSOR_NONE);
+	//glutSetCursor(GLUT_CURSOR_NONE);
 
 	lastTime = glutGet(GLUT_ELAPSED_TIME) / 1000.0f;
 
@@ -82,8 +82,10 @@ void GlutManager::RenderScene(void){
 			renderable->Render();
 		}
 	}
-	HUD.prepare2D();
-	HUD.Render();
+	GLint m_viewport[4];
+	glGetIntegerv(GL_VIEWPORT, m_viewport);
+	HUD.prepare2D(m_viewport[0], m_viewport[1], m_viewport[2], m_viewport[3]); \
+		HUD.Render();
 
 	glutSwapBuffers();
 }
