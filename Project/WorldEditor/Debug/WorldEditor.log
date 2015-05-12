@@ -1,0 +1,21 @@
+﻿Build started 5/11/2015 3:07:10 PM.
+     1>Project "C:\Users\a00897447\Documents\GitHub\OpenGL-Game\Project\WorldEditor\WorldEditor.vcxproj" on node 3 (Build target(s)).
+     1>Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\a00897447\Documents\GitHub\OpenGL-Game\Project\Debug\WorldEditor.exe" /INCREMENTAL /NOLOGO /LIBPATH:Dependencies\freeglut /LIBPATH:Dependencies\glui /LIBPATH:Dependencies\glew GLU32.lib opengl32.lib freeglut.lib glew32.lib glui32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\a00897447\Documents\GitHub\OpenGL-Game\Project\Debug\WorldEditor.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\a00897447\Documents\GitHub\OpenGL-Game\Project\Debug\WorldEditor.lib" /MACHINE:X86 Debug\GLUIManager.obj
+         Debug\GlutManager.obj
+         Debug\InputManager.obj
+         Debug\Main.obj
+         Debug\WorldEngine.obj
+         Debug\WorldSquare.obj
+     1>WorldSquare.obj : warning LNK4099: PDB 'vc120.pdb' was not found with 'WorldSquare.obj' or at 'C:\Users\a00897447\Documents\GitHub\OpenGL-Game\Project\Debug\vc120.pdb'; linking object as if no debug info
+     1>WorldEngine.obj : warning LNK4099: PDB 'vc120.pdb' was not found with 'WorldEngine.obj' or at 'C:\Users\a00897447\Documents\GitHub\OpenGL-Game\Project\Debug\vc120.pdb'; linking object as if no debug info
+     1>Main.obj : warning LNK4099: PDB 'vc120.pdb' was not found with 'Main.obj' or at 'C:\Users\a00897447\Documents\GitHub\OpenGL-Game\Project\Debug\vc120.pdb'; linking object as if no debug info
+     1>InputManager.obj : warning LNK4099: PDB 'vc120.pdb' was not found with 'InputManager.obj' or at 'C:\Users\a00897447\Documents\GitHub\OpenGL-Game\Project\Debug\vc120.pdb'; linking object as if no debug info
+     1>GlutManager.obj : warning LNK4099: PDB 'vc120.pdb' was not found with 'GlutManager.obj' or at 'C:\Users\a00897447\Documents\GitHub\OpenGL-Game\Project\Debug\vc120.pdb'; linking object as if no debug info
+     1>GLUIManager.obj : warning LNK4099: PDB 'vc120.pdb' was not found with 'GLUIManager.obj' or at 'C:\Users\a00897447\Documents\GitHub\OpenGL-Game\Project\Debug\vc120.pdb'; linking object as if no debug info
+         WorldEditor.vcxproj -> C:\Users\a00897447\Documents\GitHub\OpenGL-Game\Project\Debug\WorldEditor.exe
+     1>Done Building Project "C:\Users\a00897447\Documents\GitHub\OpenGL-Game\Project\WorldEditor\WorldEditor.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.27

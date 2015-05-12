@@ -13,52 +13,46 @@ Overlay2D::~Overlay2D()
 {
 }
 
-void Overlay2D::prepare2D()
+void Overlay2D::prepare2D(int left, int top, int right, int bottom)
 {
 	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
 	glLoadIdentity();
 
-	gluOrtho2D(0.0f, 800, 600, 0.0f);
+	glOrtho(0, 0, bottom, top, 0, 1);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glTranslatef(0.375, 0.375, 0.0);
-
-	glDisable(GL_DEPTH_TEST);
 }
 
 void Overlay2D::Render() 
 {
+	glDisable(GL_DEPTH_TEST);
+	glBlendFunc(GL_DST_COLOR, GL_ZERO);
+	glEnable(GL_BLEND);
+	//Render Your Images Here---------------------------------------------------------------------------
+
 	glBegin(GL_QUADS);
-	glColor3f(1.0f, 0.0f, 0.0);
-	glVertex2f(0.0, 0.0);
-	glVertex2f(10.0, 0.0);
-	glVertex2f(10.0, 10.0);
-	glVertex2f(0.0, 10.0);
+		glColor3f(1.0f, 0.0f, 0.0);
 
+		glVertex2f(-3.0, -3.0);
+		glVertex2f(3.0, -3.0);
+		glVertex2f(3.0, 3.0);
+		glVertex2f(-3.0, 3.0);
 	glEnd();
-	GLuint	texture[1];
-	texture[0] = SOIL_load_OGL_texture
-		(
-		"../Assets/Images/NeHe.bmp",
-		SOIL_LOAD_AUTO,
-		SOIL_CREATE_NEW_ID,
-		SOIL_FLAG_INVERT_Y
-		);
 
 
 
-	// Typical Texture Generation Using Data From The Bitmap
-	glBindTexture(GL_TEXTURE_2D, texture[0]);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glEnable(GL_TEXTURE_2D);							// Enable Texture Mapping ( NEW )
-	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
-	glClearDepth(1.0f);									// Depth Buffer Setup
-	glEnable(GL_DEPTH_TEST);							// Enables Depth Testing
-	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
 
+
+
+
+
+
+
+	//Stop rendering images here--------------------------------------------------------------------------
+	glDisable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
 	unprepare2D();
 }
 
