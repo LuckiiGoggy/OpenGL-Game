@@ -82,8 +82,8 @@ void GlutManager::RenderScene(void){
 			renderable->Render();
 		}
 	}
-	HUD.prepare2D();
-	HUD.Render();
+	//HUD.prepare2D();
+	//HUD.Render();
 
 	glutSwapBuffers();
 }
@@ -169,3 +169,15 @@ void GlutManager::UpdateMembers(float timeDelta){
 	}
 
 }
+
+void GlutManager::SetPhysEngi(PhysicsEngine *phys)
+{
+	physEngi = phys;
+}
+
+PhysicsEngine * GlutManager::GetPhysEngi(void)
+{
+	return physEngi;
+}
+
+PhysicsEngine * GlutManager::physEngi;

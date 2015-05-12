@@ -3,7 +3,7 @@
 
 //#define DEBUG_SCRIPT
 #define DEBUG_SCRIPT_DISPLACEMENT
-//#define PRINT_COLLISION
+#define PRINT_COLLISION
 
 PhysicsEngine::PhysicsEngine()
 {
