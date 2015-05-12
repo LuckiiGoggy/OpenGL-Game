@@ -13,11 +13,8 @@ Projectile::Projectile(glm::mat4 &dir, glm::vec3 pos) {
 	char* f_shader_filename = (char*) "../Assets/Shaders/gouraud-shading.f.glsl";
 	Init(spear_filename, v_shader_filename, f_shader_filename);
 
+	NetRotation() = dir;
 	Move(pos);
-	glm::mat4 reflectDir;
-	reflectDir = dir * glm::mat4(1,0,0,0,
-								0,1,0,0,
-								0,0,-1,0,
-								0,0,0,1);
-	netRotation = reflectDir;
+	glm::vec3 offset(0.0f, 0.1f, -0.5f);
+	Move(offset, Transform::Space::Local);
 }
