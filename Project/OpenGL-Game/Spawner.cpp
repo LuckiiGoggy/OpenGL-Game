@@ -1,6 +1,8 @@
 #include "Spawner.h"
 #include "GlutManager.h"
 
+int Spawner::projCount;
+
 Spawner::Spawner() {
 
 }
@@ -16,7 +18,7 @@ Spawner::Spawner(std::vector<WorldSquare> squares, std::vector<MeshObject *> pla
 		players[j]->Move(squares[j].x, 0.0f, squares[j].y);
 	}
 
-
+	projCount = 0;
 	projectile;
 }
 
@@ -57,7 +59,9 @@ void Spawner::SpawnProjectile(Player* player, GameObjectContainer *scene) {
 	glm::vec3 v = (dynamic_cast<Transform *>(player->Chara()->GetMember("BoxMan")))->Position();
 	glm::mat4 m = (dynamic_cast<Transform *>(player->Chara()->GetMember("BoxMan")))->NetRotation();
 	Projectile *newProj = new Projectile(m, v);
-	newProj->Move(v);
 	//scene->AddMember("projectile", newProj);
+	Velocity* vel = new Velocity(0.0f, 0.0f, 1.0f, 1, 10);
+	GlutManager::GetPhysEngi()->registerRigidBody(newProj, "projectile" + projCount);
+	GlutManager::GetPhysEngi()->addVelocityTo("projectile" + projCount, vel);
 	projectiles.push_back(newProj);
 }
