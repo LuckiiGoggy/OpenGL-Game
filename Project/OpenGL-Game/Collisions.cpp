@@ -142,5 +142,3 @@ int Collisions::checkForSelect(float mousePointX,
 
 	return 0;
 }
-
-

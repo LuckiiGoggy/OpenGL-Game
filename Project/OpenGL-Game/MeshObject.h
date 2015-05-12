@@ -27,6 +27,7 @@ public:
 	~MeshObject();
 
 	virtual void Update(float timeDelta);
+	virtual void UpdateBoundingBox(float timeDelta);
 
 	virtual bool Init(char* model_filename, char* vshader_filename, char* fshader_filename);
 

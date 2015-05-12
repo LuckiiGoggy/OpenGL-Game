@@ -2,7 +2,7 @@
 #include "InputManager.h"
 #include <iostream>
 
-#define DEBUG
+//#define DEBUG
 
 Point::Point(){
 	x = 0;

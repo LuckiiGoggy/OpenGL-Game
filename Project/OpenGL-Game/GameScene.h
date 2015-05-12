@@ -8,6 +8,7 @@
 #include "Projectile.h"
 #include <map>
 #include <string>
+#include "PhysicsEngine.h"
 
 class GameScene : public Scene
 {
@@ -18,6 +19,8 @@ public:
 	std::vector<Projectile *> projectiles;
 	GameScene();
 	~GameScene();
+	PhysicsEngine physEngi;
+
 
 	void Init(void);
 	void Render();
