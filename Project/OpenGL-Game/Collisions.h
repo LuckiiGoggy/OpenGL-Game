@@ -20,7 +20,6 @@ public:
 		float shapePointSY,
 		float shapePointEX,
 		float shapePointEY);
-
 	int ENDPOINTS;
 	int STARTPOINTS;
 	int CENTERPOINT;

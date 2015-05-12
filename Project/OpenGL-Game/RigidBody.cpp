@@ -390,28 +390,29 @@ void RigidBody::move(glm::vec3 v)
 	position.z += z_;// z;
 
 	//pMesh->Move(x_, y_, z_);
-	pTrans->Move(x_, y_, z_);
+	pTrans->Move(x_, y_, z_, Transform::Local);
 
-	pMesh->bottomFace.move(x_, z_);
+	//pMesh->bottomFace.move(x_, z_);
 
-	pMesh->updateBoundingBox();
+	//pMesh->updateBoundingBox();
 	//pMesh->boundingBox.translate(x_, y_, z_);
 }
 void RigidBody::move(float x, float y, float z)
 {
-	float x_ = ((float)x / (float)400);
-	float y_ = ((float)y / (float)400);
-	float z_ = ((float)z / (float)400);
-	position.x += x_;// x;
-	position.y += y_;// y;
-	position.z += z_;// z;
+	float x_ = ((float)x);
+	float y_ = ((float)y);
+	float z_ = ((float)z);
+	//position.x += x_;// x;
+	//position.y += y_;// y;
+	//position.z += z_;// z;
 
 	//pMesh->Move(x_, y_, z_);
-	pTrans->Move(x_, y_, z_);
+	pTrans->Move(x_, y_, z_, Transform::Local);
 
-	pMesh->bottomFace.move(x_, z_);
+	//pMesh->bottomFace.move(x_, z_);
 
-	pMesh->updateBoundingBox();
+	pMesh->UpdateBoundingBox(0.0f);
+	//pMesh->calculateBottomFace();
 	//pMesh->boundingBox.translate(x_, y_, z_);
 }
 void RigidBody::move(float x, float y, float z, bool noChange)
@@ -419,15 +420,56 @@ void RigidBody::move(float x, float y, float z, bool noChange)
 	float x_ = x;
 	float y_ = y;
 	float z_ = z;
-	position.x += x_;// x;
-	position.y += y_;// y;
-	position.z += z_;// z;
+	//position.x += x_;// x;
+	//position.y += y_;// y;
+	//position.z += z_;// z;
 
 	//pMesh->Move(x_, y_, z_);
 	pTrans->Move(x_, y_, z_);
 
-	pMesh->bottomFace.move(x_, z_);
-
-	pMesh->updateBoundingBox();
+	//pMesh->bottomFace.move(x_, z_);
+	
+	pMesh->UpdateBoundingBox(0.0f);
+	//pMesh->calculateBottomFace();
 	//pMesh->boundingBox.translate(x_, y_, z_);
+}
+
+glm::vec3 RigidBody::NetVelocity(void)
+{
+	glm::vec3 netVelocity(0.0f);
+	for (size_t i = 0; i < velocities.size(); i++)
+	{
+		Velocity *velo = velocities[i];
+		if (velo->velocityType != 3)
+		{
+			glm::vec3 vel(velo->x, velo->y, velo->z);
+
+			vel = Transform::ApplyTransVec3(vel, pMesh->NetRotation());
+
+			netVelocity += vel;
+		}
+	}
+
+	std::cout << "\nNETVELOCITY: " << netVelocity.x << "," << netVelocity.y << "," << netVelocity.z;
+	return netVelocity;
+}
+
+glm::vec3 RigidBody::NetVelocityX(void)
+{
+	glm::vec3 netVelocity(0.0f);
+	for (size_t i = 0; i < velocities.size(); i++)
+	{
+		Velocity *velo = velocities[i];
+		if (velo->velocityType != 3)
+		{
+			glm::vec3 vel(velo->x, velo->y, velo->z);
+
+			//vel = Transform::ApplyTransVec3(vel, pMesh->NetRotation());
+
+			netVelocity += vel;
+		}
+	}
+
+	std::cout << "\nNETVELOCITY: " << netVelocity.x << "," << netVelocity.y << "," << netVelocity.z;
+	return netVelocity;
 }

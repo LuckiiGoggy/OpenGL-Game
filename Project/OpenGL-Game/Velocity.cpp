@@ -37,7 +37,7 @@ void Velocity::update()
 		timeLeft--;
 		if (timeLeft > 0)
 		{
-			strength = (float)timeLeft / (float)duration;
+			//strength = (float)timeLeft / (float)duration;
 		}
 		else
 		{

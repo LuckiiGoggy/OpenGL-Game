@@ -42,7 +42,7 @@ void GlutManager::Init(bool editor)
 	lastTime = glutGet(GLUT_ELAPSED_TIME) / 1000.0f;
 
 	mainCamera = new Camera();
-	glutFullScreen();
+	//glutFullScreen();
 	//if (editor)	GLUIManager::initGLUI(GlutManager::mainWindow, GlutManager::IdleFunc);
 	//else glutFullScreen();
 
@@ -82,10 +82,10 @@ void GlutManager::RenderScene(void){
 			renderable->Render();
 		}
 	}
-	GLint m_viewport[4];
-	glGetIntegerv(GL_VIEWPORT, m_viewport);
-	HUD.prepare2D(m_viewport[0], m_viewport[1], m_viewport[2], m_viewport[3]);
-	HUD.Render();
+	//GLint m_viewport[4];
+	//glGetIntegerv(GL_VIEWPORT, m_viewport);
+	//HUD.prepare2D(m_viewport[0], m_viewport[1], m_viewport[2], m_viewport[3]);
+	//HUD.Render();
 
 	glutSwapBuffers();
 }
