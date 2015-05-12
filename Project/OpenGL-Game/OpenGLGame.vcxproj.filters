@@ -178,6 +178,12 @@
     <ClCompile Include="TextureManager.cpp">
       <Filter>Source Files\GameEngine\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="TextControl.cpp">
+      <Filter>Source Files\GameEngine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFont.cpp">
+      <Filter>Source Files\GameEngine\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MeshObject.h">
@@ -308,6 +314,12 @@
       <Filter>Header Files\GameEngine\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Exception.h">
+      <Filter>Header Files\GameEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="TextControl.h">
+      <Filter>Header Files\GameEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFont.h">
       <Filter>Header Files\GameEngine\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
