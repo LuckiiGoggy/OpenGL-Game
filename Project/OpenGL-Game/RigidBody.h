@@ -79,6 +79,9 @@ public:
 	BoundingBox* GetBoundingBox(void);					//returns &Bbox
 	std::vector<glm::vec3> GetBoundingBox_vector(void); //returns a vector of Bbox's verticies
 
+	glm::vec3 NetVelocity(void);
+	glm::vec3 NetVelocityX(void);
+
 	//Physics and Collisions 
 	std::vector<Velocity*> velocities;					//list of velocities effecting this object
 	float mass;

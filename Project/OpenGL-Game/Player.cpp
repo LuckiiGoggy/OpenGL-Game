@@ -21,6 +21,8 @@ Player::Player(void)
 
 	group->AddMember("Camera", camera);
 
+
+	GlutManager::GetPhysEngi()->registerRigidBody((MeshObject *)boxman->GetMember("Idle"), group, "BoxMan");
 	
 
 	chara->AddMember("BoxMan", group);
@@ -52,7 +54,7 @@ void Player::Update(float timeDelta){
 	lastMouseX = InputManager::GetMousePos().x;
 	lastMouseY = InputManager::GetMousePos().y;
 
-	chara->RotateY((float)currMouseXDelta * timeDelta * 0.4f);
+	chara->RotateY((float)currMouseXDelta * timeDelta);
 
 
 	controller->Update(timeDelta);

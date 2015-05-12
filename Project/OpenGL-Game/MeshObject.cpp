@@ -266,10 +266,6 @@ void MeshObject::calculateBottomFace()
 }
 void MeshObject::updateBoundingBox()
 {
-	//Append world transformations
-	netTransformations = glm::mat4(1.0);
-	netTransformations *= (netScale * netRotation * netTranslation);
-
 	//Apply world transformation to bounding box
 	//*
 	glm::vec4 v1_world = (this->netTransformations * glm::vec4(boundingBox.v1.x, boundingBox.v1.y, boundingBox.v1.z, 1));
@@ -300,6 +296,7 @@ void MeshObject::updateBoundingBox()
 }
 void MeshObject::returnBB(glm::vec3 startPoint, glm::vec3 endPoint)
 {
+	UpdateNetTransformations();
 	//This function is called every time this object is rendered
 
 	//start point is the closest vertex on the bottom left of a cube
@@ -341,15 +338,17 @@ void MeshObject::returnBB(glm::vec3 startPoint, glm::vec3 endPoint)
 	boundingBox.v7 = glm::vec3(v7_world);
 	boundingBox.v8 = glm::vec3(v8_world);//*/
 
-	//Calculate the updated bottomFace of the bounding box
-	calculateBottomFace();
 
 	//Recalculate the directional radius of the bounding box
 	boundingBox.refresh();
+
+	//Calculate the updated bottomFace of the bounding box
+	calculateBottomFace();
 }
 
 void MeshObject::Update(float timeDelta){
-	UpdateNetTransformations();
+	UpdateNetTransformations(); 
+	UpdateBoundingBox(timeDelta);
 	// Projection
 	glm::mat4 camera2screen = glm::perspective(45.0f, 1.0f*glutGet(GLUT_WINDOW_WIDTH) / glutGet(GLUT_WINDOW_HEIGHT), 0.1f, 100.0f);
 
@@ -499,5 +498,60 @@ bool MeshObject::Init(char* model_filename, char* vshader_filename, char* fshade
 	glEnable(GL_LIGHT0);
 	glEnable(GL_DEPTH_TEST);
 	return 1;
+}
+
+void MeshObject::UpdateBoundingBox(float timeDelta)
+{
+	// Cube 1x1x1, centered on origin
+	GLfloat vertices[] = {
+		-0.5, -0.5, -0.5, 1.0,
+		0.5, -0.5, -0.5, 1.0,
+		0.5, 0.5, -0.5, 1.0,
+		-0.5, 0.5, -0.5, 1.0,
+		-0.5, -0.5, 0.5, 1.0,
+		0.5, -0.5, 0.5, 1.0,
+		0.5, 0.5, 0.5, 1.0,
+		-0.5, 0.5, 0.5, 1.0,
+	};
+	GLuint vbo_vertices;
+	glGenBuffers(1, &vbo_vertices);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	GLushort elements[] = {
+		0, 1, 2, 3,
+		4, 5, 6, 7,
+		0, 4, 1, 5, 
+		2, 6, 3, 7
+	};
+	GLuint ibo_elements;
+	glGenBuffers(1, &ibo_elements);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	GLfloat
+		min_x, max_x,
+		min_y, max_y,
+		min_z, max_z;
+	min_x = max_x = this->vertices[0].x;
+	min_y = max_y = this->vertices[0].y;
+	min_z = max_z = this->vertices[0].z;
+	for (unsigned int i = 0; i < this->vertices.size(); i++) {
+		if (this->vertices[i].x < min_x) min_x = this->vertices[i].x;
+		if (this->vertices[i].x > max_x) max_x = this->vertices[i].x;
+		if (this->vertices[i].y < min_y) min_y = this->vertices[i].y;
+		if (this->vertices[i].y > max_y) max_y = this->vertices[i].y;
+		if (this->vertices[i].z < min_z) min_z = this->vertices[i].z;
+		if (this->vertices[i].z > max_z) max_z = this->vertices[i].z;
+	}
+
+	returnBB(glm::vec3(min_x, min_y, min_z), glm::vec3(max_x, max_y, max_z));	
+
+	glDeleteBuffers(1, &vbo_vertices);
+	glDeleteBuffers(1, &ibo_elements);
+	calculateBottomFace();
+
 }
 

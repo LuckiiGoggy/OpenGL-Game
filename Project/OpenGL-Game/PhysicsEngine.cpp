@@ -3,11 +3,11 @@
 
 //#define DEBUG_SCRIPT
 #define DEBUG_SCRIPT_DISPLACEMENT
-//#define PRINT_COLLISION
+#define PRINT_COLLISION
 
 PhysicsEngine::PhysicsEngine()
 {
-	screenWidth = 400;
+	screenWidth = 566;
 	screenHeight = 400;
 	screenDepth = 400;
 
@@ -66,7 +66,7 @@ void PhysicsEngine::applyVelocity(RectObject* object, float x_, float y_, float 
 
 
 
-void PhysicsEngine::triggerImpact(RigidBody* A, RigidBody* B)
+void PhysicsEngine::triggerImpact(RigidBody *A, RigidBody *B)
 {
 	int numOfVelocities_A = A->velocities.size();
 	int numOfVelocities_B = B->velocities.size();
@@ -75,282 +75,50 @@ void PhysicsEngine::triggerImpact(RigidBody* A, RigidBody* B)
 	float yTotal_A = 0;//total y influence for object A
 	float zTotal_A = 0;//total z influence for object A
 
-	float xTotal_B = 0;//total x influence for object B
-	float yTotal_B = 0;//total y influence for object B
-	float zTotal_B = 0;//total z influence for object B
-
 	float xImpact_A = 0;//resulting x impact influence created from object A
 	float yImpact_A = 0;//resulting y impact influence created from object A
 	float zImpact_A = 0;//resulting z impact influence created from object A
 
-	float xImpact_B = 0;//resulting x impact influence created from object B
-	float yImpact_B = 0;//resulting y impact influence created from object B
-	float zImpact_B = 0;//resulting z impact influence created from object B
+	float xTotal_B = 0;//total x influence (total velocity in the x direction) for object A
+	float yTotal_B = 0;//total y influence for object A
+	float zTotal_B = 0;//total z influence for object A
+
+	float xImpact_B = 0;//resulting x impact influence created from object A
+	float yImpact_B = 0;//resulting y impact influence created from object A
+	float zImpact_B = 0;//resulting z impact influence created from object A
 
 	//Sum all of the velocities to get the total influence for object A
-	for (int i = 0; i < numOfVelocities_A; i++)
-	{
-		if (A->velocities[i]->timeLeft > 0)
-		{
-			xTotal_A += A->velocities[i]->x;
-			yTotal_A += A->velocities[i]->y;
-			zTotal_A += A->velocities[i]->z;
-		}
-	}
-	//Sum all of the velocities to get the total influence for object B
-	for (int i = 0; i < numOfVelocities_B; i++)
-	{
-		if (B->velocities[i]->timeLeft > 0)
-		{
-			xTotal_B += B->velocities[i]->x;
-			yTotal_B += B->velocities[i]->y;
-			zTotal_B += B->velocities[i]->z;
-		}
-	}
+	glm::vec3 netVeloA = A->NetVelocity();
+
+	xTotal_A += netVeloA.x;// -abs((A->pMesh->boundingBox.xRadius + A->pMesh->boundingBox.center.x) - (B->pMesh->boundingBox.xRadius + B->pMesh->boundingBox.center.x));
+	yTotal_A += netVeloA.y;
+	zTotal_A += netVeloA.z;// -abs((A->pMesh->boundingBox.zDepth + A->pMesh->boundingBox.center.z) - (B->pMesh->boundingBox.zDepth + B->pMesh->boundingBox.center.z));
+
+	//Sum all of the velocities to get the total influence for object A
+	glm::vec3 netVeloB = A->NetVelocityX();
+
+	xTotal_B += netVeloB.x;
+	yTotal_B += netVeloB.y;
+	zTotal_B += netVeloB.z;
 
 	//Impact = velocity * mass
-	xImpact_A = xTotal_A * A->mass; //PA
-	yImpact_A = yTotal_A * A->mass;
-	zImpact_A = zTotal_A * A->mass;
+	xImpact_A = xTotal_A * (A->mass / B->mass); //PA
+	yImpact_A = yTotal_A * (A->mass / B->mass);
+	zImpact_A = zTotal_A * (A->mass / B->mass);
 
-	xImpact_B = xTotal_B * B->mass; //PB
-	yImpact_B = yTotal_B * B->mass;
-	zImpact_B = zTotal_B * B->mass;
-
-	//        PA              +          PB             =                  PAB
-	//(A->mass * A->Velocity) + (B->mass * B->Velocity) = (A->mass + B->mass)(A->Velocity + B->Velocity)
-	//  Velocity AB = (PA + PB) / (mass A + mass B)
-
-	float totalMass = A->mass + B->mass;//PAB mass
-
-	float xImpact_Total = (xImpact_A + xImpact_B);
-	float yImpact_Total = (yImpact_A + yImpact_B);
-	float zImpact_Total = (zImpact_A + zImpact_B);
-
-	/*
-	xImpact_A = xImpact_Total / A->mass;
-	yImpact_A = yImpact_Total / A->mass;
-	zImpact_A = zImpact_Total / A->mass;
-
-	xImpact_B = xImpact_Total / B->mass;
-	yImpact_B = yImpact_Total / B->mass;
-	zImpact_B = zImpact_Total / B->mass;//*/
+	//Impact = velocity * mass
+	xImpact_B = xTotal_B * (B->mass / A->mass); //PA
+	yImpact_B = yTotal_B * (B->mass / A->mass);
+	zImpact_B = zTotal_B * (B->mass / A->mass);
 
 
 	//resulting velocities from collision
-	Velocity* impact_From_A = new Velocity(xImpact_A, yImpact_A, zImpact_A, 3, 10);
-	Velocity* impact_From_B = new Velocity(xImpact_B, yImpact_B, zImpact_B, 3, 10);
-
-	//Get how much they overlap by, divide by the sum of the velocities
-	//Multiply by velocities of A to get how much A needs to be moved back
-	/*
-	AreaOfIntersection = Max(0, Max(this.UpRt.x, other.UpRt.x)  - Min(this.LowLt.x, other.LowLt.x)) *
-	Max(0, Max(this.UpRt.y, other.UpRt.y) - Min(this.LowLt.y, other.LowLt.y))
-
-	AreaOfOverlap = AreaOfObjectA + AreaOfObjectB - AreaOfIntersection
-	*/
-
-	float* bottomFace_A = A->pMesh->boundingBox.returnBottomFaceXZ();
-	float* bottomFace_B = B->pMesh->boundingBox.returnBottomFaceXZ();
-	float* leftFace_A = A->pMesh->boundingBox.returnLeftFaceYZ();
-	float* leftFace_B = B->pMesh->boundingBox.returnLeftFaceYZ();
-
-	// in terms of sx and ex, startX and endX, 
-	// start refers to top left and end refers to bottom right
-	//sx,sy_____         Y
-	//	   |\  |         ^
-	//	   | \ |         |__>X
-	//	   ==== ex,ey
-
-	//*
-	float Asx = A->pMesh->bottomFace.sx;
-	float Asz = A->pMesh->bottomFace.sy;
-	float Aex = A->pMesh->bottomFace.ex;
-	float Aez = A->pMesh->bottomFace.ey;
-	float Bsx = B->pMesh->bottomFace.sx;
-	float Bsz = B->pMesh->bottomFace.sy;
-	float Bex = B->pMesh->bottomFace.ex;
-	float Bez = B->pMesh->bottomFace.ey;//*/
-
-	float Asy = leftFace_A[0];
-	float Aey = leftFace_A[4];
-	float Bsy = leftFace_B[0];
-	float Bey = leftFace_B[4];
-
-	float xIntersect = std::fmax(0, (std::fmax(Aex, Bex) - std::fmin(Asx, Bsx)));
-	float yIntersect = std::fmax(0, (std::fmax(Aey, Bey) - std::fmin(Asy, Bsy)));
-	float zIntersect = std::fmax(0, (std::fmax(Aez, Bez) - std::fmin(Asz, Bsz)));
-
-	float xOverlap = abs((Aex - Asx) + (Bex - Bsx) - xIntersect) / 2;
-	float yOverlap = abs((Aey - Asy) + (Bey - Bsy) - yIntersect) / 2;
-	float zOverlap = abs((Aez - Asz) + (Bez - Bsz) - zIntersect) / 2;
+	Velocity* impact_From_A = new Velocity(xImpact_A, yImpact_A, zImpact_A, 3, 3);
+	Velocity* impact_From_B = new Velocity(-xImpact_B, -yImpact_B, -zImpact_B, 3, 2);
 
 
-
-	/*
-	x+ = Left
-	x- = Right
-	y+ = Up
-	y- = Down
-	z+ = into screen away from user
-	z- = out of screen towards user
-	*/
-
-	//*
-
-	//Calculate displacement of colliding objects in the X
-	if (impact_From_A->x > impact_From_B->x)
-	{
-		//	[B]   <- [A]		X<-
-		//if A is pushing B left more than B is pushing A left
-		//Move B left and A right
-		A->move(-xOverlap, 0, 0, true);
-		B->move(xOverlap, 0, 0, true);
-	}
-	else if (impact_From_A->x < impact_From_B->x)
-	{
-		//	[A]   <- [B]		X<-
-		//if B is pushing A left more than A is pushing B left
-		//Move A left and B right
-		A->move(xOverlap, 0, 0, true);
-		B->move(-xOverlap, 0, 0, true);
-	}
-
-
-	//Calculate displacement of colliding objects in the Z
-	if (impact_From_A->z < impact_From_B->z)
-	{
-		// screen| [B]   <- [A]		-Z<- ->+Z
-		//if A is pushing B towards user more than B is pushing A towards user
-		//AND B is closer to user than A
-		//Move B towards user and A into the screen
-		A->move(0, 0, zOverlap, true);
-		B->move(0, 0, -zOverlap, true);
-	}
-	else if (impact_From_A->z > impact_From_B->z)
-	{
-		// screen| [A]   <- [B]		-Z<- ->+Z
-		//if B is pushing A towards user more than A is pushing B towards user
-		//AND A is closer to user than B
-		//Move A towards user and B into the screen
-		A->move(0, 0, -zOverlap, true);
-		B->move(0, 0, zOverlap, true);
-	}
-
-
-	//Calculate displacement of colliding objects in the Y 
-	if (impact_From_A->y > impact_From_B->y && (Asy < Bsy))
-	{
-		//if A is pushing B up more than B is pushing A up
-		//AND B is higher than A
-		//Move B up and A down
-		A->move(0, -yOverlap, 0, true);
-		B->move(0, yOverlap, 0, true);
-	}
-	else if (impact_From_A->y < impact_From_B->y && (Asy > Bsy))
-	{
-		//if B is pushing A up more than A is pushing B up
-		//AND A is higher than B
-		//Move A up and B down
-		A->move(0, yOverlap, 0, true);
-		B->move(0, -yOverlap, 0, true);
-	}
-
-	//if they are the same, then you have to calculate which one is on either side of the world
-	if (forcesAreEqual(impact_From_B, impact_From_A))//(impact_From_B == impact_From_A)
-	{
-		//Calculate Z
-		if (Asz < Bsz)
-		{
-			//if A is closer to the user than B
-			//Move A towards user and B away from user
-			A->move(0, 0, -zOverlap, true);
-			B->move(0, 0, zOverlap, true);
-#ifdef DEBUG_SCRIPT_DISPLACEMENT
-			std::cout << "\n Object " << A->id_c << " displaced Z: " << -zOverlap;
-			std::cout << "\n Object " << B->id_c << " displaced Z: " << zOverlap;
-#endif
-
-		}
-		else if (Asz > Bsz)
-		{
-			//if B is closer to the user than A
-			//Move B towards user and A away from user
-			A->move(0, 0, zOverlap, true);
-			B->move(0, 0, -zOverlap, true);
-#ifdef DEBUG_SCRIPT_DISPLACEMENT
-			std::cout << "\n Object " << A->id_c << " displaced Z: " << zOverlap;
-			std::cout << "\n Object " << B->id_c << " displaced Z: " << -zOverlap;
-#endif
-		}
-
-
-
-		//Calculate X
-		if (Asx < Bsx)
-		{
-			//if A is more to the Right than B
-			//Move A right and B left
-			A->move(-xOverlap, 0, 0, true);
-			B->move(xOverlap, 0, 0, true);
-#ifdef DEBUG_SCRIPT_DISPLACEMENT
-			std::cout << "\n Object " << A->id_c << " displaced X: " << -xOverlap;
-			std::cout << "\n Object " << B->id_c << " displaced X: " << xOverlap;
-#endif
-		}
-		else if (Asx > Bsx)
-		{
-			//if B is more to the Right than A
-			//Move B right and A left
-			A->move(xOverlap, 0, 0, true);
-			B->move(-xOverlap, 0, 0, true);
-#ifdef DEBUG_SCRIPT_DISPLACEMENT
-			std::cout << "\n Object " << A->id_c << " displaced X: " << xOverlap;
-			std::cout << "\n Object " << B->id_c << " displaced X: " << -xOverlap;
-#endif
-		}
-
-		/*
-		//Calculate Y
-		if (Asy < Bsy)
-		{
-		//if A is above B
-		//Move A up and B down
-		A->move(0, yOverlap, 0);
-		B->move(0, -yOverlap, 0);
-
-		}
-		else if (Asy > Bsy)
-		{
-		//if B is above A
-		//Move B up and A down
-		A->move(0, -yOverlap, 0);
-		B->move(0, yOverlap, 0);
-		}//*/
-
-	}
-
-	//Remove all forces related to projectiles. Projectiles are destroyed on impact
-	for (int i = 0; i < numOfVelocities_A; i++)
-	{
-		if (A->velocities[i]->velocityType == 1)
-		{
-			delete(A->velocities[i]);
-			A->velocities.erase(A->velocities.begin() + i);
-		}
-	}
-	for (int i = 0; i < numOfVelocities_B; i++)
-	{
-		if (B->velocities[i]->velocityType == 1)
-		{
-			delete(B->velocities[i]);
-			B->velocities.erase(B->velocities.begin() + i);
-		}
-	}
-
-	//Add impact velocities to the objects
-	//A->addVelocity(impact_From_B);
-	//B->addVelocity(impact_From_A);
+	//A->addVelocity(new Velocity(*impact_From_B));
+	B->addVelocity(new Velocity(*impact_From_A));
 }
 /*
 PhysicsEngine::updateVelocitys(std::vector<ObjectType*> objects)
@@ -364,6 +132,37 @@ check to see if this Velocity has no timeLeft, if so erase it from that object
 */
 /*IN USE*/void PhysicsEngine::updateVelocities()
 {
+	int numOfObjects = rigidObjects.size();
+
+	float curVelocity = 0.0f;
+
+	for (int i = 0; i < numOfObjects; i++)
+	{
+
+		for (int j = 0; j < rigidObjects[i]->velocities.size(); j++)
+		{
+
+			/*Velocity::update() decrements the timeLeft counter, then
+			recalculates the strength by taking timeLeft / duration
+
+			This function should be called on every Velocity once per frame*/
+
+			rigidObjects[i]->velocities[j]->update();
+
+			//check to see if this Velocity has died
+			if (rigidObjects[i]->velocities[j]->isDead())//if (objects[i]->Velocitys[j]->timeLeft < 1)
+			{
+				//if the Velocity's time is up, then delete it from the vector
+				delete(rigidObjects[i]->velocities[j]);
+				rigidObjects[i]->velocities.erase(rigidObjects[i]->velocities.begin() + j);
+			}
+		}
+	}
+}
+
+void PhysicsEngine::ApplyVelocities(){}
+
+void PhysicsEngine::ApplyVelocities(float timeDelta){
 	int i = 0;
 	int numOfObjects = rigidObjects.size();
 
@@ -374,19 +173,6 @@ check to see if this Velocity has no timeLeft, if so erase it from that object
 
 	for (i = 0; i < numOfObjects; i++)
 	{
-		numOfVelocitys = rigidObjects[i]->velocities.size();//get initial number of velocities before removing dead ones
-
-		for (j = numOfVelocitys - 1; j >= 0; j--)
-		{
-			//check to see if this Velocity has died
-			if (rigidObjects[i]->velocities[j]->isDead())//if (objects[i]->Velocitys[j]->timeLeft < 1)
-			{
-				//if the Velocity's time is up, then delete it from the vector
-				delete(rigidObjects[i]->velocities[j]);
-				rigidObjects[i]->velocities.erase(rigidObjects[i]->velocities.begin() + j);
-			}
-		}
-
 		numOfVelocitys = rigidObjects[i]->velocities.size();//get the number of velocities left alive
 
 		for (j = 0; j < numOfVelocitys; j++)
@@ -398,37 +184,18 @@ check to see if this Velocity has no timeLeft, if so erase it from that object
 			{
 				//Apply translation to object through Velocity
 				rigidObjects[i]->move(
-					((curVelocity)* (rigidObjects[i]->velocities[j]->x)),
-					((curVelocity)* (rigidObjects[i]->velocities[j]->y)),
-					((curVelocity)* (rigidObjects[i]->velocities[j]->z))
+					((curVelocity)* (rigidObjects[i]->velocities[j]->x) * timeDelta),
+					((curVelocity)* (rigidObjects[i]->velocities[j]->y) * timeDelta),
+					((curVelocity)* (rigidObjects[i]->velocities[j]->z) * timeDelta)
 					);
-			}
-
-			/*Velocity::update() decrements the timeLeft counter, then
-			recalculates the strength by taking timeLeft / duration
-
-			This function should be called on every Velocity once per frame*/
-
-			rigidObjects[i]->velocities[j]->update();
-
-			//check to see if the object has moved out of bounds, if so move it to the edge
-			//checkScreenBounds(objects[i], true);
-		}
-
-		numOfVelocitys = rigidObjects[i]->velocities.size();
-
-		for (j = numOfVelocitys - 1; j > 0; j--)
-		{
-			//check to see if this Velocity has died
-			if (rigidObjects[i]->velocities[j]->isDead())//if (objects[i]->Velocitys[j]->timeLeft < 1)
-			{
-				//if the Velocity's time is up, then delete it from the vector
-				delete(rigidObjects[i]->velocities[j]);
-				rigidObjects[i]->velocities.erase(rigidObjects[i]->velocities.begin() + j);
 			}
 		}
 	}
 }
+
+
+
+
 void PhysicsEngine::updateVelocities(std::vector<RigidBody*> objects, bool revamp)
 {
 	int i = 0;
@@ -757,6 +524,7 @@ void PhysicsEngine::addVelocityTo(std::string nameId, Velocity* velocity)
 	{
 		if (rigidObjects[i]->GetName() == nameId)
 		{
+
 			rigidObjects[i]->addVelocity(velocity);
 			break;//unless you want multiple things with the same name
 		}
