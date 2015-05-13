@@ -7,7 +7,9 @@
 #include "Player.h"
 #include "Projectile.h"
 #include <limits>
+#include <string>
 #include "GameObjectContainer.h"
+#include "GroupObject.h"
 
 class Spawner {
 public:
@@ -18,8 +20,8 @@ public:
 	void SpawnProjectile(Player* player, GameObjectContainer *scene);
 	std::vector<WorldSquare> spawnPoints;
 	std::vector<Projectile *> projectiles;
-
-	Projectile projectile;
+	static int projCount;
+	MeshObject* projectileMesh;
 };
 
 #endif

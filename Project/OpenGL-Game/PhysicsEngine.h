@@ -33,14 +33,6 @@ public:
 	PhysicsEngine(int screenWidth_, int screenHeight_); // 2D
 	PhysicsEngine(int screenWidth_, int screenHeight_, int screenDepth_); // 3D
 
-
-	void applyVelocity(RectObject* object, Velocity f);
-	void applyVelocity(RectObject* object, Velocity* f);
-	void applyVelocity(RectObject* object, float x_, float y_, float z_, int type_, int duration_ = 10);
-	//void applyVelocity(RigidBody* object, Velocity f);
-	//void applyVelocity(RigidBody* object, Velocity* f);
-	//void applyVelocity(RigidBody* object, float x_, float y_, float z_, int type_, int duration_ = 10);
-
 	void ApplyVelocities();
 	void ApplyVelocities(float timeDelta);
 
@@ -91,6 +83,7 @@ public:
 	void registerRigidBody(MeshObject* object, std::string nameId, float mass = 1);
 	void registerRigidBody(MeshObject* object, Transform* trans, std::string nameId, float mass = 1);
 	void registerRigidBody(MeshObject* object, Transform* trans, std::string nameId, int id, float mass = 1);
+	void registerRigidBody(MeshObject* object, Transform* trans, std::string nameId, int type, int id, float mass = 1);
 	void unregisterRigidBody(std::string nameId);
 	void swapRigidBodyMesh(std::string nameId, MeshObject* pMesh_);
 

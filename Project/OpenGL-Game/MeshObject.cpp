@@ -110,6 +110,7 @@ void MeshObject::BindBuffers() {
 * Draw the object
 */
 void MeshObject::Render() {
+	glUseProgram(program);
 	if (vbo_vertices != 0) {
 		glEnableVertexAttribArray(attribute_v_coord);
 		glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
@@ -161,7 +162,7 @@ void MeshObject::Render() {
 	if (vbo_vertices != 0)
 		glDisableVertexAttribArray(attribute_v_coord);
 
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void MeshObject::SetUpCamera(){

@@ -14,7 +14,7 @@
 /**Character Class is a container for the GroupObject that makes up
 	a character.
 	It provides the interface for interacting with a character.**/
-class Character: public IGameObject, public IRenderable, public GameObjectContainer
+class Character: public GroupObject, public GameObjectContainer
 {
 public:
 	Character();
@@ -43,7 +43,6 @@ public:
 	virtual void ResetStats(void);
 
 	virtual void Update(float timeDelta);
-	virtual void Render(void);
 
 protected:
 	/**Collection of actions available to all characters.**/
