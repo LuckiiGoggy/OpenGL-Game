@@ -22,6 +22,7 @@ void Overlay2D::prepare2D(int left, int top, int right, int bottom)
 	glOrtho(0, 0, bottom, top, 0, 1);
 
 	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
 	glLoadIdentity();
 }
 
@@ -32,13 +33,15 @@ void Overlay2D::Render()
 	glEnable(GL_BLEND);
 	//Render Your Images Here---------------------------------------------------------------------------
 
+	
+
 	glBegin(GL_QUADS);
 		glColor3f(1.0f, 0.0f, 0.0);
 
-		glVertex2f(-3.0, -3.0);
-		glVertex2f(3.0, -3.0);
-		glVertex2f(3.0, 3.0);
-		glVertex2f(-3.0, 3.0);
+		glVertex2f(-10.0, -10.0);
+		glVertex2f(10.0, -10.0);
+		glVertex2f(10.0, 10.0);
+		glVertex2f(-10.0, 10.0);
 	glEnd();
 
 
