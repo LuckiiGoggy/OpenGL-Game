@@ -148,23 +148,23 @@ void PhysicsEngine::ApplyVelocities(float timeDelta){
 		for (j = 0; j < numOfVelocitys; j++)
 		{
 			//Keep track of current Velocity strength (timeLeft / duration)
-			curVelocity = rigidObjects[i]->velocities[j]->strength;
+			curVelocity = rigidObjects[i]->velocities[j]->strength * timeDelta;
 
 			if (curVelocity > 0.0f)
 			{
 				//Apply translation to object through Velocity
 				if (rigidObjects[i]->isProjectile()) {
 					rigidObjects[i]->move(
-						((curVelocity)* (rigidObjects[i]->velocities[j]->x) * timeDelta),
-						((curVelocity)* (rigidObjects[i]->velocities[j]->y) * timeDelta),
-						((curVelocity)* (rigidObjects[i]->velocities[j]->z) * timeDelta),
+						((curVelocity)* (rigidObjects[i]->velocities[j]->x)),
+						((curVelocity)* (rigidObjects[i]->velocities[j]->y)),
+						((curVelocity)* (rigidObjects[i]->velocities[j]->z)),
 						true);
 				}
 				else {
 					rigidObjects[i]->move(
-						((curVelocity)* (rigidObjects[i]->velocities[j]->x) * timeDelta),
-						((curVelocity)* (rigidObjects[i]->velocities[j]->y) * timeDelta),
-						((curVelocity)* (rigidObjects[i]->velocities[j]->z) * timeDelta)
+						((curVelocity)* (rigidObjects[i]->velocities[j]->x)),
+						((curVelocity)* (rigidObjects[i]->velocities[j]->y)),
+						((curVelocity)* (rigidObjects[i]->velocities[j]->z))
 						);
 				}
 			}
