@@ -26,6 +26,10 @@ public:
 	void setHP(int);
 	void setScore(int);
 
+	int getAmmo() { return ammo; }
+	int getHP() { return health; }
+	int getScore() { return score; }
+
 private:
 	int health, ammo, score;
 };

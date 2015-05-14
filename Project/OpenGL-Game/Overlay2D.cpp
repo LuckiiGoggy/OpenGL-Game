@@ -48,7 +48,7 @@ void Overlay2D::Render()
 	//	glVertex2f(-0.3, 0.3);
 	//glEnd();
 	
-	glColor3f(147, 24, 208);
+	glColor3f(0.576, 0.094, 0.816);
 	glRasterPos2f(-1.0, 0.95);
 	std::string output;
 	output = "Health: ";
@@ -59,8 +59,7 @@ void Overlay2D::Render()
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, output[i]);
 	}
 
-
-	glColor3f(147, 24, 208);
+	glColor3f(0.576, 0.094, 0.816);
 	glRasterPos2f(0.85, -1.0);
 	output = "Ammo: ";
 	output += std::to_string(ammo);
@@ -70,7 +69,7 @@ void Overlay2D::Render()
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, output[i]);
 	}
 
-	glColor3f(147, 24, 208);
+	glColor3f(0.576, 0.094, 0.816);
 	glRasterPos2f(-0.05, 0.95);
 	output = "Score: ";
 	output += std::to_string(score);
