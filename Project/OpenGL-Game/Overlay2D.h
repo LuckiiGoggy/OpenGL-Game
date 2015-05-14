@@ -2,6 +2,7 @@
 #define OVERLAY_H
 #pragma once
 #include "openGL.h"
+#include "windows.h"
 
 class Overlay2D
 {

@@ -1,5 +1,4 @@
 #include "Overlay2D.h"
-#include "windows.h"
 #include <gl\gl.h>			// Header File For The OpenGL32 Library
 #include <gl\glu.h>			// Header File For The GLu32 Library
 #include "Dependencies\soil\src\SOIL.h"
@@ -36,17 +35,6 @@ void Overlay2D::Render()
 	glBlendFunc(GL_DST_COLOR, GL_ZERO);
 	glEnable(GL_BLEND);
 	//Render Your Images Here---------------------------------------------------------------------------
-
-	
-
-	//glBegin(GL_QUADS);
-	//	glColor3f(1.0f, 0.0f, 0.0);
-
-	//	glVertex2f(-0.3, -0.3);
-	//	glVertex2f(0.3, -0.3);
-	//	glVertex2f(0.3, 0.3);
-	//	glVertex2f(-0.3, 0.3);
-	//glEnd();
 	
 	glColor3f(0.576, 0.094, 0.816);
 	glRasterPos2f(-1.0, 0.95);

@@ -50,7 +50,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>Dependencies\soil\lib;Dependencies\DevIL\lib;Dependencies\freeglut;Dependencies\glui;Dependencies\glew;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>GLU32.lib;opengl32.lib;freeglut.lib;glew32.lib;glui32.lib;DevIL.lib;ILU.lib;ILUT.lib;libSOIL.a;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>GLU32.lib;opengl32.lib;freeglut.lib;glew32.lib;glui32.lib;DevIL.lib;ILU.lib;ILUT.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
