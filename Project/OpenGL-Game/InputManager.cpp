@@ -130,10 +130,10 @@ void InputManager::MouseInput(int button, int state, int x, int y){
 
 void InputManager::MouseMotion(int x, int y){
 
-	if (x >= glutGet(GLUT_WINDOW_WIDTH) - 5)
-		glutWarpPointer(6, y);
-	if (x <= 5)
-		glutWarpPointer(glutGet(GLUT_WINDOW_WIDTH) - 6, y);
+	if (x == glutGet(GLUT_WINDOW_WIDTH) - 1)
+		glutWarpPointer(1, y);
+	if (x == 0)
+		glutWarpPointer(glutGet(GLUT_WINDOW_WIDTH) - 2, y);
 	
 	
 	mouseInfo.currPos.x = x;
