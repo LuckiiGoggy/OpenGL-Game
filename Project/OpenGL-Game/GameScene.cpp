@@ -2,6 +2,9 @@
 #include "MeshObject.h"
 #include "GlutManager.h"
 #include "PlayerController.h"
+#include "Overlay2D.h"
+
+Overlay2D HUD;
 
 GameScene::GameScene()
 {
@@ -61,6 +64,11 @@ void GameScene::Render() {
 	engine->renderWorld();
 
 	spawn->RenderProjectiles();
+
+	GLint m_viewport[4];
+	glGetIntegerv(GL_VIEWPORT, m_viewport);
+	HUD.prepare2D(m_viewport[0], m_viewport[1], m_viewport[2], m_viewport[3]);
+	HUD.Render();
 }
 
 void GameScene::Update(float timedelta) {
