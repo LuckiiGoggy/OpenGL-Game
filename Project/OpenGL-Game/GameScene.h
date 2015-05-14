@@ -8,6 +8,7 @@
 #include "Projectile.h"
 #include <map>
 #include <string>
+#include <vector>
 #include "PhysicsEngine.h"
 
 class GameScene : public Scene
@@ -26,7 +27,8 @@ public:
 	void Render();
 	void Update(float timedelta);
 
-private:
+protected:
+	std::vector<std::string> projectileIds;
 };
 
 #endif 

@@ -11,8 +11,8 @@ AnimatedObject::AnimatedObject()
 	char* obj_filename = (char*) "../Assets/Models/boxMan.obj";
 	char* obj_filename1 = (char*) "../Assets/Models/boxManWalk1.obj";
 	char* obj_filename2 = (char*) "../Assets/Models/boxManWalk2.obj";
-	char* v_shader_filename = (char*) "../Assets/Shaders/phong-shading.v.glsl";
-	char* f_shader_filename = (char*) "../Assets/Shaders/phong-shading.f.glsl";
+	char* v_shader_filename = (char*) "../Assets/Shaders/boxman-shading.v.glsl";
+	char* f_shader_filename = (char*) "../Assets/Shaders/boxman-shading.f.glsl";
 
 	mesh1->Init(obj_filename, v_shader_filename, f_shader_filename);
 	mesh2->Init(obj_filename1, v_shader_filename, f_shader_filename);
