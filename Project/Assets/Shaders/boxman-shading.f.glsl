@@ -17,25 +17,33 @@ struct lightSource
   float spotCutoff, spotExponent;
   vec3 spotDirection;
 };
-const int numberOfLights = 2;
+const int numberOfLights = 3;
 lightSource lights[numberOfLights];
 lightSource light0 = lightSource(
-  vec4(0.0,  1.0,  2.0, 1.0),
-  vec4(1.0,  1.0,  1.0, 1.0),
-  vec4(1.0,  1.0,  1.0, 1.0),
+  vec4(0.0,  1.0,  0.0, 0.0),
+  vec4(1.0,  0.5,  1.0, 1.0),
+  vec4(1.0,  1.0,  1.0, 0.1),
   0.0, 1.0, 0.0,
-  180.0, 0.0,
-  vec3(0.0, 0.0, 0.0)
+  200.0, 0.0,
+  vec3(0.0, 1.0, 0.0)
 );
 lightSource light1 = lightSource(
-    vec4(0.0, -2.0,  0.0, 1.0),
-    vec4(2.0,  0.0,  0.0, 1.0),
+    vec4(0.0, -2.0,  4.0, 0.0),
+    vec4(0.5,  0.0,  0.5, 1.0),
     vec4(0.1,  0.1,  0.1, 1.0),
     0.0, 1.0, 0.0,
     80.0, 10.0,
     vec3(0.0, 1.0, 0.0)
 );
-vec4 scene_ambient = vec4(0.9, 0.9, 0.9, 1.0);
+lightSource light2 = lightSource(
+    vec4(0.0, 2.0,  -4.0, 0.0),
+    vec4(0.5,  0.0,  0.5, 1.0),
+    vec4(0.1,  0.1,  0.1, 1.0),
+    0.0, 1.0, 0.0,
+    80.0, 10.0,
+    vec3(0.0, -1.0, 0.0)
+);
+vec4 scene_ambient = vec4(0.9, 0.2, 0.2, 0.5);
 
 struct material
 {
@@ -48,13 +56,14 @@ material frontMaterial = material(
   vec4(0.2, 0.2, 0.2, 1.0),
   vec4(1.0, 0.8, 0.8, 1.0),
   vec4(1.0, 1.0, 1.0, 1.0),
-  5.0
+  100.0
 );
 
 void main()
 {
   lights[0] = light0;
   lights[1] = light1;
+  lights[2] = light2;
 
   vec3 normalDirection = normalize(varyingNormalDirection);
   vec3 viewDirection = normalize(vec3(v_inv * vec4(0.0, 0.0, 0.0, 1.0) - position));

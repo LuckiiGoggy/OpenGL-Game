@@ -75,6 +75,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CharacterStat.cpp" />
     <ClCompile Include="Collisions.cpp" />
+    <ClCompile Include="GameFont.cpp" />
     <ClCompile Include="GameObjectContainer.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Image.cpp" />
@@ -86,6 +87,7 @@
     <ClCompile Include="RigidBody.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Spawner.cpp" />
+    <ClCompile Include="TextControl.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="Transform.cpp" />
@@ -116,6 +118,7 @@
     <ClInclude Include="CharacterStat.h" />
     <ClInclude Include="Collisions.h" />
     <ClInclude Include="Exception.h" />
+    <ClInclude Include="GameFont.h" />
     <ClInclude Include="GameObjectContainer.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Image.h" />
@@ -129,6 +132,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SmartPtr.h" />
     <ClInclude Include="Spawner.h" />
+    <ClInclude Include="TextControl.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Transform.h" />

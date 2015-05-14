@@ -28,10 +28,13 @@ void PlayerController::Update(float timeDelta){
 	if (lastMouseX != -1 && lastMouseY != -1){
 		currMouseXDelta = InputManager::GetMousePos().x - lastMouseX;
 		currMouseYDelta = InputManager::GetMousePos().y - lastMouseY;
+
+		if (abs(currMouseXDelta) >= glutGet(GLUT_WINDOW_WIDTH) - 10)
+			currMouseXDelta = 1;
 	}
 
 	lastMouseX = InputManager::GetMousePos().x;
 	lastMouseY = InputManager::GetMousePos().y;
 
-	chara->RotateY((float)currMouseXDelta * timeDelta);
+	chara->RotateY((float)-currMouseXDelta * timeDelta */*sensitivity*/ 0.3f);
 }

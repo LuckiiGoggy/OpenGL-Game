@@ -44,6 +44,9 @@ public:
 
 	virtual void Update(float timeDelta);
 
+	virtual IGameObject *GetBody(void);
+	virtual void SetBody(IGameObject *);
+
 protected:
 	/**Collection of actions available to all characters.**/
 	/**Note: when extending Character create a new collection and modify
@@ -55,6 +58,7 @@ protected:
 	int movementSpeed;
 	glm::vec3 moveDelta;
 
+	IGameObject *body;
 	
 };
 

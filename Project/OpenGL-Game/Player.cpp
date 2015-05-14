@@ -9,13 +9,9 @@ Player::Player(void)
 {
 	GroupObject *group = new GroupObject();
 	Camera *camera = new Camera();
-	AnimatedObject *boxman = new AnimatedObject();
 
-
-	GlutManager::GetPhysEngi()->registerRigidBody((MeshObject *)boxman->GetMember("Idle"), this, "BoxMan");
 	
-
-	GroupObject::AddMember("BoxMan", boxman);
+	SetBody(new AnimatedObject());
 
 
 	AddStat(CharacterStat("Health", 3, 0, 3));
@@ -26,4 +22,10 @@ Player::Player(void)
 
 Player::~Player(void)
 {
+	
+}
+
+MeshObject * Player::GetCollisionMesh(void)
+{
+	return (MeshObject *)(dynamic_cast<GameObjectContainer *>(body)->GetMember("Idle"));
 }

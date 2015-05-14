@@ -22,6 +22,7 @@ void Overlay2D::prepare2D(int left, int top, int right, int bottom)
 	glOrtho(0, 0, bottom, top, 0, 1);
 
 	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
 	glLoadIdentity();
 }
 
@@ -32,15 +33,22 @@ void Overlay2D::Render()
 	glEnable(GL_BLEND);
 	//Render Your Images Here---------------------------------------------------------------------------
 
+	
+
 	glBegin(GL_QUADS);
 		glColor3f(1.0f, 0.0f, 0.0);
 
-		glVertex2f(-3.0, -3.0);
-		glVertex2f(3.0, -3.0);
-		glVertex2f(3.0, 3.0);
-		glVertex2f(-3.0, 3.0);
+		glVertex2f(-1.0, -1.0);
+		glVertex2f(1.0, -1.0);
+		glVertex2f(1.0, 1.0);
+		glVertex2f(-1.0, 1.0);
 	glEnd();
+	/*m_pFont = new CGameFont;
+	m_pFont->CreateFont("Verdana", 30, FW_NORMAL);
 
+	m_pNewGameText = new CTextControl(m_pFont, TRectanglei(150, 207, 209, 591));
+	m_pNewGameText->SetAlignement(CTextControl::TACenter);
+	m_pNewGameText->SetText("New game");*/
 
 
 

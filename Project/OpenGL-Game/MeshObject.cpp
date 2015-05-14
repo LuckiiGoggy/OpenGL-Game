@@ -16,14 +16,14 @@ MeshObject::MeshObject() : vbo_vertices(0), vbo_normals(0), ibo_elements(0)
 }
 
 MeshObject::~MeshObject() {
-	if (vbo_vertices != 0)
-		glDeleteBuffers(1, &vbo_vertices);
-	if (vbo_normals != 0)
-		glDeleteBuffers(1, &vbo_normals);
-	if (ibo_elements != 0)
-		glDeleteBuffers(1, &ibo_elements);
-
-	glDeleteProgram(program);
+// 	if (vbo_vertices != 0)
+// 		glDeleteBuffers(1, &vbo_vertices);
+// 	if (vbo_normals != 0)
+// 		glDeleteBuffers(1, &vbo_normals);
+// 	if (ibo_elements != 0)
+// 		glDeleteBuffers(1, &ibo_elements);
+// 
+// 	glDeleteProgram(program);
 }
 
 
@@ -110,6 +110,7 @@ void MeshObject::BindBuffers() {
 * Draw the object
 */
 void MeshObject::Render() {
+	glUseProgram(program);
 	if (vbo_vertices != 0) {
 		glEnableVertexAttribArray(attribute_v_coord);
 		glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
@@ -161,7 +162,9 @@ void MeshObject::Render() {
 	if (vbo_vertices != 0)
 		glDisableVertexAttribArray(attribute_v_coord);
 
-	RenderBoundingBox();
+	//RenderBoundingBox();
+
+	glUseProgram(0);
 }
 
 void MeshObject::SetUpCamera(){
@@ -359,6 +362,7 @@ void MeshObject::Update(float timeDelta){
 
 	glm::mat4 v_inv = glm::inverse(GlutManager::GetMainCamera()->GetCameraMat());
 	glUniformMatrix4fv(uniform_v_inv, 1, GL_FALSE, glm::value_ptr(v_inv));
+	glUseProgram(0);
 
 }
 

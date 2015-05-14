@@ -43,6 +43,7 @@ private:
 	static glm::vec3 position;
 	static PhysicsEngine *physEngi;
 	static float lastTime;
+	static float currDelta;
 
 	
 };
