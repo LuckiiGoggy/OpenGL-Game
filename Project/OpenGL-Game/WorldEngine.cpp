@@ -1,11 +1,13 @@
 #include "WorldEngine.h"
 #include "MeshObject.h"
+#include "GlutManager.h"
 
 char* floor_filename = (char*) "../Assets/Models/floorPlane.obj";
 char* wall_filename = (char*) "../Assets/Models/wallCube.obj";
 char* v_shader_filename = (char*) "../Assets/Shaders/gouraud-shading.v.glsl";
 char* f_shader_filename = (char*) "../Assets/Shaders/gouraud-shading.f.glsl";
 float tileLength = 8;
+int tileNo = 0;
 
 WorldEngine::WorldEngine() {
 	loaded = false;
@@ -50,6 +52,7 @@ void WorldEngine::readWorld(std::string filename) {
 		std::string s;
 		squares.clear();
 		meshes.clear();
+		tileNo = 0;
 
 		std::getline(file, s);
 		w = stoi(s);
@@ -72,30 +75,49 @@ void WorldEngine::readWorld(std::string filename) {
 				{
 					p = new MeshObject(*wall);
 					p->Move(glm::vec3(j * tileLength, 1.0f, i * tileLength));
+					tileNo++;
+					std::string name = "tile" + std::to_string(tileNo);
+					GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);
 					break;
 				}
 				case FLOOR:
 				{
 					p = new MeshObject(*floor);
 					p->Move(glm::vec3(j * tileLength, 0.0f, i * tileLength));
+					tileNo++;
+					std::string name = "tile" + std::to_string(tileNo);
+					GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);
 					break;
 				}
 				case MOVEWALL:
 				{
 					p = new MeshObject(*wall);
 					p->Move(glm::vec3(j * tileLength, 1.0f, i * tileLength));
+					tileNo++;
+					std::string name = "tile" + std::to_string(tileNo);
+					GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 3, tileNo);
+					p = new MeshObject(*floor);
+					p->Move(glm::vec3(j * tileLength, 0.0f, i * tileLength));
+					name = "extrafloor" + std::to_string(tileNo);
+					GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);
 					break;
 				}
 				case SPAWN:
 				{
 					p = new MeshObject(*floor);
 					p->Move(glm::vec3(j * tileLength, 0.0f, i * tileLength));
+					tileNo++;
+					std::string name = "tile" + std::to_string(tileNo);
+					GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);
 					break;
 				}
 				default:
 				{
 					p = new MeshObject(*wall);
 					p->Move(glm::vec3(j * tileLength, 1.0f, i * tileLength));
+					tileNo++;
+					std::string name = "tile" + std::to_string(tileNo);
+					GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);
 					break;
 				}
 				}
@@ -108,97 +130,6 @@ void WorldEngine::readWorld(std::string filename) {
 	}
 }
 
-bool WorldEngine::writeWorld(std::string filename) {
-	std::ofstream file;
-	if (!filename.empty()) {
-		file.open(path + filename + filetype, std::ofstream::trunc);
-	}
-
-	if (file.is_open()) {
-		file << w << std::endl;
-		file << h << std::endl;
-		for (std::vector<int>::size_type i = 0; i != squares.size(); i++) {
-			if (i % w == 0 && i != 0) {
-				file << std::endl;
-			}
-			file << squares.at(i).type;
-		}
-
-		for (unsigned int j = 0; j < levelNames.size(); j++) {
-			if (filename.compare(levelNames[j].substr(0, levelNames[j].find("."))) == 0) {
-				return false;
-			}
-		}
-		levelNames.push_back(filename);
-
-		file.close();
-	}
-
-	return true;
-}
-
-bool WorldEngine::newWorld(std::string filename, std::string sW, std::string sH) {
-	std::ofstream file;
-
-	if (!filename.empty() && !sW.empty() && !sH.empty()) {
-		file.open(path + filename + filetype, std::ofstream::trunc);
-	}
-
-	if (file.is_open()) {
-		int block;
-		squares.clear();
-		meshes.clear();
-
-		w = stoi(sW);
-		h = stoi(sH);
-
-		glMatrixMode(GL_PROJECTION);		// setup viewing projection
-		glLoadIdentity();					// start with identity matrix
-		glOrtho(-w, w, -h, h, -h, h);	// setup a wxhx2h viewing world
-
-		for (int i = 0; i < h; i++) {
-			for (int j = 0; j < w; j++) {
-				MeshObject* p = new MeshObject();
-				if (i == 0 || j == 0 || i == h - 1 || j == w - 1) {
-					block = WALL;
-					p = new MeshObject(*wall);
-					p->Move(glm::vec3(j * tileLength, 1.0f, i * tileLength));
-				}
-				else {
-					block = FLOOR;
-					p = new MeshObject(*floor);
-					p->Move(glm::vec3(j * tileLength, 1.0f, i * tileLength));
-				}
-				squares.push_back(WorldSquare((int)i, (int)j, block));
-				meshes.push_back(p);
-			}
-		}
-
-		file << w << std::endl;
-		file << h << std::endl;
-		for (std::vector<int>::size_type k = 0; k != squares.size(); k++) {
-			if (k % w == 0 && k != 0) {
-				file << std::endl;
-			}
-			file << squares.at(k).type;
-		}
-
-		file.close();
-		loaded = true;
-
-		for (unsigned int j = 0; j < levelNames.size(); j++) {
-			if (filename.compare(levelNames[j]) == 0) {
-				return false;
-			}
-		}
-
-		levelNames.push_back(filename);
-
-		return true;
-	}
-	return false;
-}
-
 void WorldEngine::renderWorld() {
 	int index = 0;
 	int block;
@@ -208,76 +139,7 @@ void WorldEngine::renderWorld() {
 			block = squares.at(index).type;
 			meshes[index]->Update(0.0);
 			meshes[index]->Render();
-			index++;
-
-			/*switch (block) {
-			case WALL:
-			{
-			glColor3f(0.0f, 0.0f, 0.0f);
-			glBegin(GL_POLYGON);
-			glVertex3f(j, i, 0.0f);
-			glVertex3f(j + 1.0f, i, 0.0f);
-			glVertex3f(j + 1.0f, i + 1.0f, 0.0f);
-			glVertex3f(j, i + 1.0f, 0.0f);
-			glEnd();
-			glFlush();
-			break;
-			}
-			case FLOOR:
-			{
-			glColor3f(1.0f, 0.0f, 0.0f);
-			glBegin(GL_POLYGON);
-			glVertex3f(j, i, 0.0f);
-			glVertex3f(j + 1.0f, i, 0.0f);
-			glVertex3f(j + 1.0f, i + 1.0f, 0.0f);
-			glVertex3f(j, i + 1.0f, 0.0f);
-			glEnd();
-			glFlush();
-			break;
-			}
-			case MOVEWALL:
-			{
-			glColor3f(0.0f, 1.0f, 1.0f);
-			glBegin(GL_POLYGON);
-			glVertex3f(j, i, 0.0f);
-			glVertex3f(j + 1.0f, i, 0.0f);
-			glVertex3f(j + 1.0f, i + 1.0f, 0.0f);
-			glVertex3f(j, i + 1.0f, 0.0f);
-			glEnd();
-			glFlush();
-			break;
-			}
-			case SPAWN:
-			{
-			glColor3f(0.0f, 0.8f, 0.0f);
-			glBegin(GL_POLYGON);
-			glVertex3f(j, i, 0.0f);
-			glVertex3f(j + 1.0f, i, 0.0f);
-			glVertex3f(j + 1.0f, i + 1.0f, 0.0f);
-			glVertex3f(j, i + 1.0f, 0.0f);
-			glEnd();
-			glFlush();
-			break;
-			}
-			default:
-			{
-			glColor3f(0.0f, 0.0f, 0.0f);
-			glBegin(GL_POLYGON);
-			glVertex3f(j, i, 0.0f);
-			glVertex3f(j + 1.0f, i, 0.0f);
-			glVertex3f(j + 1.0f, i + 1.0f, 0.0f);
-			glVertex3f(j, i + 1.0f, 0.0f);
-			glEnd();
-			glFlush();
-			break;
-			}
-			}*/
+			index++;			
 		}
 	}
 }
-
-/*void WorldEngine::updateSquare(Point p, int type) {
-currentsectionx = p.x / ((glutGet(GLUT_WINDOW_WIDTH) - 166) / w);
-currentsectiony = (glutGet(GLUT_WINDOW_HEIGHT) - p.y) / (glutGet(GLUT_WINDOW_HEIGHT) / h);
-squares[currentsectiony * h + currentsectionx].type = type;
-}*/

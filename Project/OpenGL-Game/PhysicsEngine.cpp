@@ -160,7 +160,7 @@ void PhysicsEngine::ApplyVelocities(float timeDelta){
 						((curVelocity)* (rigidObjects[i]->velocities[j]->z) * timeDelta),
 						true);
 				}
-				else {
+				else if (rigidObjects[i]->isEnvironment() == false) {
 					rigidObjects[i]->move(
 						((curVelocity)* (rigidObjects[i]->velocities[j]->x) * timeDelta),
 						((curVelocity)* (rigidObjects[i]->velocities[j]->y) * timeDelta),
