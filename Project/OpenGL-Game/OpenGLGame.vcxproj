@@ -49,8 +49,8 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>Dependencies\soil;Dependencies\DevIL\lib;Dependencies\freeglut;Dependencies\glui;Dependencies\glew;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>GLU32.lib;opengl32.lib;freeglut.lib;glew32.lib;glui32.lib;SOIL.lib;DevIL.lib;ILU.lib;ILUT.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>Dependencies\soil\lib;Dependencies\DevIL\lib;Dependencies\freeglut;Dependencies\glui;Dependencies\glew;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>GLU32.lib;opengl32.lib;freeglut.lib;glew32.lib;glui32.lib;DevIL.lib;ILU.lib;ILUT.lib;libSOIL.a;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -75,10 +75,8 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CharacterStat.cpp" />
     <ClCompile Include="Collisions.cpp" />
-    <ClCompile Include="GameFont.cpp" />
     <ClCompile Include="GameObjectContainer.cpp" />
     <ClCompile Include="GameScene.cpp" />
-    <ClCompile Include="Image.cpp" />
     <ClCompile Include="LocationRect.cpp" />
     <ClCompile Include="Overlay2D.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -87,9 +85,6 @@
     <ClCompile Include="RigidBody.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Spawner.cpp" />
-    <ClCompile Include="TextControl.cpp" />
-    <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Velocity.cpp" />
     <ClCompile Include="Character.cpp" />
@@ -118,23 +113,16 @@
     <ClInclude Include="CharacterStat.h" />
     <ClInclude Include="Collisions.h" />
     <ClInclude Include="Exception.h" />
-    <ClInclude Include="GameFont.h" />
     <ClInclude Include="GameObjectContainer.h" />
     <ClInclude Include="GameScene.h" />
-    <ClInclude Include="Image.h" />
     <ClInclude Include="LocationRect.h" />
     <ClInclude Include="Overlay2D.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerController.h" />
     <ClInclude Include="Projectile.h" />
-    <ClInclude Include="Rectangle.h" />
     <ClInclude Include="RigidBody.h" />
     <ClInclude Include="Scene.h" />
-    <ClInclude Include="SmartPtr.h" />
     <ClInclude Include="Spawner.h" />
-    <ClInclude Include="TextControl.h" />
-    <ClInclude Include="Texture.h" />
-    <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Velocity.h" />
     <ClInclude Include="Character.h" />

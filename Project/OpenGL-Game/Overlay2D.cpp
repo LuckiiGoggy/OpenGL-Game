@@ -2,7 +2,7 @@
 #include "windows.h"
 #include <gl\gl.h>			// Header File For The OpenGL32 Library
 #include <gl\glu.h>			// Header File For The GLu32 Library
-#include "SOIL.h"
+#include "Dependencies\soil\src\SOIL.h"
 #include <string>
 
 Overlay2D::Overlay2D()
@@ -77,21 +77,7 @@ void Overlay2D::Render()
 	for (i = 0; i < len; i++) {
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, output[i]);
 	}
-
-
-	/*m_pFont = new CGameFont;
-	m_pFont->CreateFont("Verdana", 30, FW_NORMAL);
-
-	m_pNewGameText = new CTextControl(m_pFont, TRectanglei(150, 207, 209, 591));
-	m_pNewGameText->SetAlignement(CTextControl::TACenter);
-	m_pNewGameText->SetText("New game");*/
-
-
-
-
-
-
-
+	
 
 
 	//Stop rendering images here--------------------------------------------------------------------------
