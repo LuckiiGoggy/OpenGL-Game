@@ -41,6 +41,7 @@ void Overlay2D::Render()
 	std::string output;
 	output = "Health: ";
 	output += std::to_string(health);
+	output += "/3";
 	int len, i;
 	len = output.size();
 	for (i = 0; i < len; i++) {
@@ -48,7 +49,7 @@ void Overlay2D::Render()
 	}
 
 	glColor3f(0.576, 0.094, 0.816);
-	glRasterPos2f(0.85, -1.0);
+	glRasterPos2f(0.83, 0.95);
 	output = "Ammo: ";
 	output += std::to_string(ammo);
 	output += "/3";
