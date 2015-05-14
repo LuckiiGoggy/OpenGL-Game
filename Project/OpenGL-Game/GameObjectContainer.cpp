@@ -98,6 +98,16 @@ void GameObjectContainer::RenderMembers(void)
 
 }
 
+
+void GameObjectContainer::UpdateMember(std::string key, float timeDelta)
+{
+	IUpdateable *updateable = dynamic_cast<IUpdateable *>(members[key]);
+
+	if (updateable != 0){
+		updateable->Update(timeDelta);
+	}
+}
+
 void GameObjectContainer::UpdateMembers(float timeDelta)
 {
 	std::map<std::string, IGameObject *>::iterator iter;
