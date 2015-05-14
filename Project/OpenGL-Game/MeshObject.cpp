@@ -163,6 +163,8 @@ void MeshObject::Render() {
 		glDisableVertexAttribArray(attribute_v_coord);
 
 	//RenderBoundingBox();
+
+	glUseProgram(0);
 }
 
 void MeshObject::SetUpCamera(){
@@ -360,6 +362,7 @@ void MeshObject::Update(float timeDelta){
 
 	glm::mat4 v_inv = glm::inverse(GlutManager::GetMainCamera()->GetCameraMat());
 	glUniformMatrix4fv(uniform_v_inv, 1, GL_FALSE, glm::value_ptr(v_inv));
+	glUseProgram(0);
 
 }
 

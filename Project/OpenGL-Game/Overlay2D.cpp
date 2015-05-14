@@ -38,10 +38,10 @@ void Overlay2D::Render()
 	glBegin(GL_QUADS);
 		glColor3f(1.0f, 0.0f, 0.0);
 
-		glVertex2f(-10.0, -10.0);
-		glVertex2f(10.0, -10.0);
-		glVertex2f(10.0, 10.0);
-		glVertex2f(-10.0, 10.0);
+		glVertex2f(-1.0, -1.0);
+		glVertex2f(1.0, -1.0);
+		glVertex2f(1.0, 1.0);
+		glVertex2f(-1.0, 1.0);
 	glEnd();
 	/*m_pFont = new CGameFont;
 	m_pFont->CreateFont("Verdana", 30, FW_NORMAL);
