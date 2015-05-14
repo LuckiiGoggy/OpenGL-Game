@@ -36,5 +36,5 @@ void PlayerController::Update(float timeDelta){
 	lastMouseX = InputManager::GetMousePos().x;
 	lastMouseY = InputManager::GetMousePos().y;
 
-	chara->RotateY((float)currMouseXDelta * timeDelta */*sensitivity*/ 0.3f);
+	chara->RotateY((float)-currMouseXDelta * timeDelta */*sensitivity*/ 0.3f);
 }
