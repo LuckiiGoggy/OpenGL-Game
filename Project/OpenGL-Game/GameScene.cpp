@@ -59,23 +59,34 @@ void GameScene::Init(void){
 void GameScene::Render() {
 	Scene::Render();
 	engine->renderWorld();
-	for (size_t i = 0; i < spawn->projectiles.size(); i++) {
-		(spawn->projectiles[i])->Render();
-	}	
+
+	spawn->RenderProjectiles();
 }
 
 void GameScene::Update(float timedelta) {
 	GlutManager::GetPhysEngi()->updateQuadTree();
 	GlutManager::GetPhysEngi()->ApplyVelocities(timedelta);
 	GlutManager::GetPhysEngi()->bruteCollision();
-	GlutManager::GetPhysEngi()->updateVelocities();
-	GlutManager::GetPhysEngi()->ApplyVelocities(timedelta);
-	GlutManager::GetPhysEngi()->updateVelocities();
-	Scene::Update(timedelta);
 
 
 	for (size_t counter = 0; counter < projectileIds.size(); counter++){
-		//if (GlutManager::GetPhysEngi()->listCollisions())
+		std::string currProjectile = projectileIds[counter];
+		std::vector<Transform *> collidedWith = GlutManager::GetPhysEngi()->listCollisionsTransform(currProjectile);
+
+		if (collidedWith.size() > 0){
+			GlutManager::GetPhysEngi()->unregisterRigidBody(currProjectile);
+			spawn->RemoveProjectile(currProjectile);
+			projectileIds.erase(projectileIds.begin() + counter);
+			counter--;
+		}
+
+		for (size_t counter2 = 0; counter2 < collidedWith.size(); counter2++){
+			Player *player = dynamic_cast<Player *> (collidedWith[counter2]);
+
+			if (player != 0)
+				player->DecStat("Health");
+		}
+
 	}
 
 
@@ -84,9 +95,17 @@ void GameScene::Update(float timedelta) {
 		spawn->SpawnProjectile((Player*)members.at("Player"), this);
 	}
 
-	for (size_t i = 0; i < spawn->projectiles.size(); i++){
-		(spawn->projectiles[i])->Update(timedelta);
-	}
-	
+	spawn->UpdateProjectiles(timedelta);
 
+	GlutManager::GetPhysEngi()->updateVelocities();
+	GlutManager::GetPhysEngi()->ApplyVelocities(timedelta);
+	GlutManager::GetPhysEngi()->updateVelocities();
+
+	Scene::Update(timedelta);
+
+}
+
+void GameScene::RegisterNewProjectile(std::string id)
+{
+	projectileIds.push_back(id);
 }

@@ -87,8 +87,8 @@ void GlutManager::RenderScene(void){
 
 	GLint m_viewport[4];
 	glGetIntegerv(GL_VIEWPORT, m_viewport);
-	HUD.prepare2D(m_viewport[0], m_viewport[1], m_viewport[2], m_viewport[3]);
-	HUD.Render();
+	//HUD.prepare2D(m_viewport[0], m_viewport[1], m_viewport[2], m_viewport[3]);
+	//HUD.Render();
 
 	glutSwapBuffers();
 }

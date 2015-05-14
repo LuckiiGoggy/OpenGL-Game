@@ -1,5 +1,6 @@
 #include "Spawner.h"
 #include "GlutManager.h"
+#include "GameScene.h"
 
 int Spawner::projCount;
 
@@ -54,7 +55,8 @@ void Spawner::SpawnPlayer(MeshObject &player, std::vector<MeshObject *> players)
 	//player.MoveTo(spawnPoints[pos].x, 0.0f, spawnPoints[pos].y);
 }
 
-void Spawner::SpawnProjectile(Player* player, GameObjectContainer *scene) {
+void Spawner::SpawnProjectile(Player* player, IGameObject *scene)
+{
 	/*Create a new projectile with
 	direction and position based
 	on player that spawned it*/
@@ -68,5 +70,34 @@ void Spawner::SpawnProjectile(Player* player, GameObjectContainer *scene) {
 	std::string name = "projectile" + std::to_string(projCount);
 	GlutManager::GetPhysEngi()->registerRigidBody(newProj, newProj, name, 1, projCount);
 	GlutManager::GetPhysEngi()->addVelocityTo(name, vel);
-	projectiles.push_back(newProj);
+	projectiles[name] = newProj;
+
+
+	((GameScene *)scene)->RegisterNewProjectile(name);
+
+}
+
+void Spawner::RemoveProjectile(std::string name)
+{
+	delete projectiles[name];
+
+	projectiles.erase(name);
+}
+
+void Spawner::UpdateProjectiles(float timeDelta)
+{
+	std::map<std::string, Projectile *>::iterator it;
+
+	for (it = projectiles.begin(); it != projectiles.end(); ++it){
+		(it->second)->Update(timeDelta);
+	}
+}
+
+void Spawner::RenderProjectiles()
+{
+	std::map<std::string, Projectile *>::iterator it;
+
+	for (it = projectiles.begin(); it != projectiles.end(); ++it){
+		(it->second)->Render();
+	}
 }

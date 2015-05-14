@@ -19,6 +19,7 @@
 
 #include <vector>
 #include <map>
+#include "Transform.h"
 
 /*
 */
@@ -57,6 +58,7 @@ public:
 
 	///COLLISIONS
 	vector<std::pair<RigidBody*, RigidBody*>> listCollisions();
+	vector<Transform*> listCollisionsTransform(std::string nameId);
 	vector<RigidBody*> listCollisions(std::string nameId);
 	vector<std::pair<RigidBody*, RigidBody*>> listCollisions(vector<RigidBody*> list);
 

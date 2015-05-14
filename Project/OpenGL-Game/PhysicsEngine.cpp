@@ -58,7 +58,10 @@ void PhysicsEngine::triggerImpact(RigidBody *A, RigidBody *B)
 	float zImpact_B = 0;//resulting z impact influence created from object A
 
 	//Sum all of the velocities to get the total influence for object A
+
 	glm::vec3 netVeloA = A->NetVelocity();
+
+	if (A->isProjectile()) netVeloA = A->NetVelocityX();
 
 	xTotal_A += netVeloA.x;// -abs((A->pMesh->boundingBox.xRadius + A->pMesh->boundingBox.center.x) - (B->pMesh->boundingBox.xRadius + B->pMesh->boundingBox.center.x));
 	yTotal_A += netVeloA.y;
@@ -580,30 +583,69 @@ vector<std::pair<RigidBody*, RigidBody*>> PhysicsEngine::listCollisions()
 
 	return collidedObjects;
 }
+vector<Transform*> PhysicsEngine::listCollisionsTransform(std::string nameId)
+{
+
+	int numOfObjects = rigidObjects.size();
+
+	vector<Transform*> collidedObjects = vector<Transform*>();
+
+	for (int i = 0; i < numOfObjects; i++)
+	{
+		if (rigidObjects[i]->GetName() == nameId)
+		{
+			RigidBody* targetObject = rigidObjects[i];
+
+			for (size_t count = 0; count < rigidObjects.size(); count++)
+			{
+				RigidBody* cur = rigidObjects[count];
+
+				if (cur->id != targetObject->id)
+				{
+#ifdef DEBUG_SCRIPT
+					cout << "\n object:" << cur->id_c;
+#endif
+
+					bool hit = collisions.checkCollisionAAB(
+						cur->pMesh->boundingBox.center.x, cur->pMesh->boundingBox.center.y, cur->pMesh->boundingBox.center.z,
+						cur->pMesh->boundingBox.xRadius, cur->pMesh->boundingBox.yRadius, cur->pMesh->boundingBox.zRadius,
+						targetObject->pMesh->boundingBox.center.x, targetObject->pMesh->boundingBox.center.y, targetObject->pMesh->boundingBox.center.z,
+						targetObject->pMesh->boundingBox.xRadius, targetObject->pMesh->boundingBox.yRadius, targetObject->pMesh->boundingBox.zRadius
+						);
+					if (hit)
+					{
+#ifdef DEBUG_SCRIPT
+						cout << "\n HIT " << targetObject->id_c << " vs " << cur->id_c;
+#endif
+
+						//triggerImpact(cur, rigidObjects[i]);
+						collidedObjects.push_back(cur->pTrans);
+					}
+				}
+
+			}
+		}//*/
+
+	}
+
+	return collidedObjects;
+}
 vector<RigidBody*> PhysicsEngine::listCollisions(std::string nameId)
 {
 
 	int numOfObjects = rigidObjects.size();
 
 	vector<RigidBody*> collidedObjects = vector<RigidBody*>();
-	list<RigidBody*> returnObjects = list<RigidBody*>();
 
 	for (int i = 0; i < numOfObjects; i++)
 	{
-
 		if (rigidObjects[i]->GetName() == nameId)
 		{
 			RigidBody* targetObject = rigidObjects[i];
 
-			returnObjects.clear();
-			quadtree.retrieve(&returnObjects, targetObject);
-
-
-
-			for (list<RigidBody*>::iterator it = returnObjects.begin(); it != returnObjects.end(); ++it)
+			for (size_t count = 0; count < rigidObjects.size(); count++)
 			{
-
-				RigidBody* cur = *it;
+				RigidBody* cur = rigidObjects[count];
 
 				if (cur->id != targetObject->id)
 				{

@@ -27,6 +27,8 @@ public:
 	void Render();
 	void Update(float timedelta);
 
+	void RegisterNewProjectile(std::string);
+
 protected:
 	std::vector<std::string> projectileIds;
 };

@@ -16,14 +16,14 @@ MeshObject::MeshObject() : vbo_vertices(0), vbo_normals(0), ibo_elements(0)
 }
 
 MeshObject::~MeshObject() {
-	if (vbo_vertices != 0)
-		glDeleteBuffers(1, &vbo_vertices);
-	if (vbo_normals != 0)
-		glDeleteBuffers(1, &vbo_normals);
-	if (ibo_elements != 0)
-		glDeleteBuffers(1, &ibo_elements);
-
-	glDeleteProgram(program);
+// 	if (vbo_vertices != 0)
+// 		glDeleteBuffers(1, &vbo_vertices);
+// 	if (vbo_normals != 0)
+// 		glDeleteBuffers(1, &vbo_normals);
+// 	if (ibo_elements != 0)
+// 		glDeleteBuffers(1, &ibo_elements);
+// 
+// 	glDeleteProgram(program);
 }
 
 
