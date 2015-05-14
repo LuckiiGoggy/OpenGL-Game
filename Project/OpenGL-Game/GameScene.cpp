@@ -73,11 +73,12 @@ void GameScene::Update(float timedelta) {
 		std::string currProjectile = projectileIds[counter];
 		std::vector<Transform *> collidedWith = GlutManager::GetPhysEngi()->listCollisionsTransform(currProjectile);
 
-		if (collidedWith.size() > 0){
+		if (collidedWith.size() > 0 || !spawn->IsProjectileActive(currProjectile)){
 			GlutManager::GetPhysEngi()->unregisterRigidBody(currProjectile);
 			spawn->RemoveProjectile(currProjectile);
 			projectileIds.erase(projectileIds.begin() + counter);
 			counter--;
+			((Player*)members.at("Player"))->IncStat("Ammo");
 		}
 
 		for (size_t counter2 = 0; counter2 < collidedWith.size(); counter2++){

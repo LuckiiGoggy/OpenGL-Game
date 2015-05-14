@@ -128,6 +128,7 @@ check to see if this Velocity has no timeLeft, if so erase it from that object
 				//if the Velocity's time is up, then delete it from the vector
 				delete(rigidObjects[i]->velocities[j]);
 				rigidObjects[i]->velocities.erase(rigidObjects[i]->velocities.begin() + j);
+				j--;
 			}
 		}
 	}

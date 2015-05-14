@@ -101,3 +101,8 @@ void Spawner::RenderProjectiles()
 		(it->second)->Render();
 	}
 }
+
+bool Spawner::IsProjectileActive(std::string name)
+{
+	return (projectiles[name])->IsActive();
+}

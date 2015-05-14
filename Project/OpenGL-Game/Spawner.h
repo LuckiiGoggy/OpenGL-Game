@@ -23,6 +23,9 @@ public:
 	void RemoveProjectile(std::string);
 	void UpdateProjectiles(float timeDelta);
 	void RenderProjectiles();
+
+	bool IsProjectileActive(std::string);
+
 	/*Move to private/protected*/
 	std::vector<WorldSquare> spawnPoints;
 
