@@ -2,7 +2,7 @@
 #define OVERLAY_H
 #pragma once
 #include "openGL.h"
-#include "TextControl.h"
+#include "windows.h"
 
 class Overlay2D
 {
@@ -13,8 +13,22 @@ public:
 	void Render();
 	void unprepare2D();
 
-	CGameFont* m_pFont;
-	CTextControl* m_pNewGameText;
+	void increaseAmmo();
+	void decreaseAmmo();
+	void increaseHP();
+	void decreaseHP();
+	void increaseScore();
+	void decreaseScore();
+	void setAmmo(int);
+	void setHP(int);
+	void setScore(int);
+
+	int getAmmo() { return ammo; }
+	int getHP() { return health; }
+	int getScore() { return score; }
+
+private:
+	int health, ammo, score;
 };
 
 #endif
