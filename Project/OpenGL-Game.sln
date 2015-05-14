@@ -1,11 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenGL-Game", "OpenGL-Game\OpenGLGame.vcxproj", "{53D16B42-17A2-4128-956F-5B9AF40FDA47}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WorldEditor", "WorldEditor\WorldEditor.vcxproj", "{15EDAF13-B8D2-4F1C-95C8-45C034282E8E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server", "Server\Server.vcxproj", "{50C508CF-2CE3-4F30-A65B-B9710432D441}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Client", "Client\Client.vcxproj", "{5F51C30D-40B9-46A0-BADB-02AA2F6156AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{15EDAF13-B8D2-4F1C-95C8-45C034282E8E}.Debug|Win32.Build.0 = Debug|Win32
 		{15EDAF13-B8D2-4F1C-95C8-45C034282E8E}.Release|Win32.ActiveCfg = Release|Win32
 		{15EDAF13-B8D2-4F1C-95C8-45C034282E8E}.Release|Win32.Build.0 = Release|Win32
+		{50C508CF-2CE3-4F30-A65B-B9710432D441}.Debug|Win32.ActiveCfg = Debug|Win32
+		{50C508CF-2CE3-4F30-A65B-B9710432D441}.Debug|Win32.Build.0 = Debug|Win32
+		{50C508CF-2CE3-4F30-A65B-B9710432D441}.Release|Win32.ActiveCfg = Release|Win32
+		{50C508CF-2CE3-4F30-A65B-B9710432D441}.Release|Win32.Build.0 = Release|Win32
+		{5F51C30D-40B9-46A0-BADB-02AA2F6156AD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5F51C30D-40B9-46A0-BADB-02AA2F6156AD}.Debug|Win32.Build.0 = Debug|Win32
+		{5F51C30D-40B9-46A0-BADB-02AA2F6156AD}.Release|Win32.ActiveCfg = Release|Win32
+		{5F51C30D-40B9-46A0-BADB-02AA2F6156AD}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
