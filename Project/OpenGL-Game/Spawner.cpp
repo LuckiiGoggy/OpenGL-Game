@@ -65,7 +65,7 @@ void Spawner::SpawnProjectile(Player* player, IGameObject *scene)
 	glm::mat4 m = (dynamic_cast<Transform *>(player))->NetRotation();
 	Projectile *newProj = new Projectile(m, v, projectileMesh);
 	glm::vec3 vdir = Transform::ApplyTransVec3(glm::vec3(0.0f, 0.0f, -1.0f), m);
-	Velocity* vel = new Velocity(vdir.x * 10, vdir.y * 10, vdir.z * 10, 1, 10);
+	Velocity* vel = new Velocity(vdir.x * 0.10, vdir.y * 0.10, vdir.z * 0.10, 1, 10);
 	projCount++;
 	std::string name = "projectile" + std::to_string(projCount);
 	GlutManager::GetPhysEngi()->registerRigidBody(newProj, newProj, name, 1, projCount);

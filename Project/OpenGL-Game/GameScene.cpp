@@ -100,13 +100,16 @@ void GameScene::Update(float timedelta) {
 			projectileIds.erase(projectileIds.begin() + counter);
 			counter--;
 			((Player*)members.at("Player"))->IncStat("Ammo");
+			HUD.increaseAmmo();
 		}
 
 		for (size_t counter2 = 0; counter2 < collidedWith.size(); counter2++){
 			Player *player = dynamic_cast<Player *> (collidedWith[counter2]);
 
-			if (player != 0)
+			if (player != 0){
 				player->DecStat("Health");
+				HUD.decreaseHP();
+			}
 		}
 
 	}
@@ -116,6 +119,7 @@ void GameScene::Update(float timedelta) {
 	if (InputManager::IsMouseClicked(timedelta) && ((Player*)members.at("Player"))->GetStatValue("Ammo") > 0) {
 		spawn->SpawnProjectile((Player*)members.at("Player"), this);
 		((Player*)members.at("Player"))->DecStat("Ammo");
+		HUD.decreaseAmmo();
 	}
 
 	spawn->UpdateProjectiles(timedelta);
