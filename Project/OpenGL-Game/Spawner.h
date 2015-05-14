@@ -7,7 +7,10 @@
 #include "Player.h"
 #include "Projectile.h"
 #include <limits>
+#include <string>
 #include "GameObjectContainer.h"
+#include "GroupObject.h"
+#include <map>
 
 class Spawner {
 public:
@@ -15,11 +18,21 @@ public:
 	Spawner(std::vector<WorldSquare> squares, std::vector<MeshObject *> players);
 	void InitialSpawn();
 	void SpawnPlayer(MeshObject &player, std::vector<MeshObject *> players);
-	void SpawnProjectile(Player* player, GameObjectContainer *scene);
-	std::vector<WorldSquare> spawnPoints;
-	std::vector<Projectile *> projectiles;
+	void SpawnProjectile(Player* player, IGameObject *scene);
 
-	Projectile projectile;
+	void RemoveProjectile(std::string);
+	void UpdateProjectiles(float timeDelta);
+	void RenderProjectiles();
+
+	bool IsProjectileActive(std::string);
+
+	/*Move to private/protected*/
+	std::vector<WorldSquare> spawnPoints;
+
+	//Gee Self Note: Could use a GroupObject instead... Maybe..
+	std::map<std::string, Projectile *> projectiles;
+	static int projCount;
+	MeshObject* projectileMesh;
 };
 
 #endif

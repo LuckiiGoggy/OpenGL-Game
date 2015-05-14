@@ -6,9 +6,13 @@
 
 class Projectile:public MeshObject {
 public:
-	Projectile();
-	Projectile(glm::mat4 &dir, glm::vec3 pos);
-	Velocity v;
+	Projectile(glm::mat4 &dir, glm::vec3 pos, MeshObject* proj);
+	void Update(float timeDelta);
+
+	bool IsActive(void);
+
+protected:
+	float duration;
 };
 
 #endif

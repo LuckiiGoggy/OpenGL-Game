@@ -161,7 +161,7 @@ RigidBody::RigidBody(MeshObject* mesh, Transform* trans, float mass_, std::strin
 	pTrans = trans;
 
 	char *intStr = new char;
-	_itoa_s(id, intStr, 3, 10);
+	_itoa_s(id, intStr, 5, 10);
 	id_c = (const unsigned char *)intStr;
 }
 RigidBody::RigidBody(char* obj_filename, char* v_shader_filename, char* f_shader_filename, float mass_, Transform* trans, std::string nameID_, int id_)
@@ -428,7 +428,7 @@ void RigidBody::move(float x, float y, float z, bool noChange)
 	pTrans->Move(x_, y_, z_);
 
 	//pMesh->bottomFace.move(x_, z_);
-	
+
 	pMesh->UpdateBoundingBox(0.0f);
 	//pMesh->calculateBottomFace();
 	//pMesh->boundingBox.translate(x_, y_, z_);

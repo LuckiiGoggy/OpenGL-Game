@@ -183,6 +183,8 @@
     </ClCompile>
     <ClCompile Include="GameFont.cpp">
       <Filter>Source Files\GameEngine\Graphics</Filter>
+    <ClCompile Include="PlayerController.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -321,6 +323,8 @@
     </ClInclude>
     <ClInclude Include="GameFont.h">
       <Filter>Header Files\GameEngine\Graphics</Filter>
+    <ClInclude Include="PlayerController.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
