@@ -91,8 +91,9 @@ void GameScene::Update(float timedelta) {
 
 
 
-	if (InputManager::IsMouseClicked(timedelta)) {
+	if (InputManager::IsMouseClicked(timedelta) && ((Player*)members.at("Player"))->GetStatValue("Ammo") > 0) {
 		spawn->SpawnProjectile((Player*)members.at("Player"), this);
+		((Player*)members.at("Player"))->DecStat("Ammo");
 	}
 
 	spawn->UpdateProjectiles(timedelta);

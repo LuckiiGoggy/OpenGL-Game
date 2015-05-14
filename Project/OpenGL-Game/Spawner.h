@@ -25,6 +25,8 @@ public:
 	void RenderProjectiles();
 	/*Move to private/protected*/
 	std::vector<WorldSquare> spawnPoints;
+
+	//Gee Self Note: Could use a GroupObject instead... Maybe..
 	std::map<std::string, Projectile *> projectiles;
 	static int projCount;
 	MeshObject* projectileMesh;
