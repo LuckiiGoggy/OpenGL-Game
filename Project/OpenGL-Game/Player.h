@@ -15,7 +15,11 @@ public:
 	Player(void);
 	~Player(void);
 
-private:
+	MeshObject *GetCollisionMesh(void);
+	
+
+
+protected:
 	
 };
 

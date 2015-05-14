@@ -95,3 +95,16 @@ void Character::ResetStats(void){
 		(it->second).Reset();
 	}
 }
+
+IGameObject * Character::GetBody(void)
+{
+	return body;
+}
+
+void Character::SetBody(IGameObject * newBody)
+{
+	GroupObject::RemoveMember("Body");
+	GroupObject::AddMember("Body", newBody);
+
+	body = newBody;
+}

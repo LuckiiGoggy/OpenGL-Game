@@ -71,17 +71,11 @@ void GlutManager::RenderScene(void){
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(1.0, 1.0, 1.0, 1.0);
-// 	GLint m_viewport[4];
-// 	glGetIntegerv(GL_VIEWPORT, m_viewport);
-// 	HUD.prepare2D(m_viewport[0], m_viewport[1], m_viewport[2], m_viewport[3]);
-// 	HUD.Render();
 
+
+	
 	std::map<std::string, IObject *>::iterator iter;
 	IRenderable *renderable;
-	GLint m_viewport[4];
-	glGetIntegerv(GL_VIEWPORT, m_viewport);
-	HUD.prepare2D(m_viewport[0], m_viewport[1], m_viewport[2], m_viewport[3]);
-	HUD.Render();
 
 	for (iter = members.begin(); iter != members.end(); ++iter) {
 		renderable = dynamic_cast<IRenderable*>(iter->second);
@@ -91,6 +85,11 @@ void GlutManager::RenderScene(void){
 		}
 	}
 
+	GLint m_viewport[4];
+	glGetIntegerv(GL_VIEWPORT, m_viewport);
+	HUD.prepare2D(m_viewport[0], m_viewport[1], m_viewport[2], m_viewport[3]);
+	HUD.Render();
+
 	glutSwapBuffers();
 }
 
@@ -98,7 +97,7 @@ void GlutManager::IdleFunc(void){
 
 	float currTime = glutGet(GLUT_ELAPSED_TIME)/1000.0f;
 
-	float currDelta = currTime - lastTime;
+	currDelta = currTime - lastTime;
 	lastTime = currTime;
 	if (InputManager::isKeyDown(KeyCodes::ESC)) glutLeaveMainLoop();
 	
@@ -118,6 +117,7 @@ void GlutManager::IdleFunc(void){
 	//std::cout << "\n In IdleFunc";
 
 	//mainCamera->Update(currDelta);
+
 
 	UpdateMembers(currDelta);
 
@@ -185,5 +185,7 @@ PhysicsEngine * GlutManager::GetPhysEngi(void)
 {
 	return physEngi;
 }
+
+float GlutManager::currDelta = 0.0f;
 
 PhysicsEngine * GlutManager::physEngi;

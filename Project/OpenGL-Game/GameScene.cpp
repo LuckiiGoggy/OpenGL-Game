@@ -34,6 +34,13 @@ void GameScene::Init(void){
 	Player *player = new Player();
 	AddMember("Player", player);
 
+
+
+
+	GlutManager::GetPhysEngi()->registerRigidBody(player->GetCollisionMesh(), player, "BoxMan");
+
+
+
 	pC = new PlayerController(player);
 
 	AddMember("Controller", pC);
