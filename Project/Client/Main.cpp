@@ -1,7 +1,6 @@
 // Client: Main.cpp
 //
 
-#include "Net.h"
 #include "ClientGame.h"
 // used for multi-threading
 #include <process.h>

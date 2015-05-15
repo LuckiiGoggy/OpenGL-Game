@@ -1,7 +1,7 @@
 // Server: NetworkServices.cpp
 //
 
-#include "Net.h"
+#include "GLNetwork.h"
 #include "NetworkServices.h"
 
 int NetworkServices::sendMessage(SOCKET curSocket, char * message, int messageSize)

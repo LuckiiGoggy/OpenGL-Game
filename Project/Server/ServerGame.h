@@ -2,8 +2,8 @@
 //
 
 #pragma once
+#include "GLNetwork.h"
 #include "ServerNetwork.h"
-#include "Net.h"
 
 class ServerGame
 {

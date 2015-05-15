@@ -3,6 +3,8 @@
 
 #include "ClientGame.h"
 
+using namespace GLNetwork;
+
 ClientGame::ClientGame()
 {
 	network = new ClientNetwork();

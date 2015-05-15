@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "Net.h"
+#include "GLNetwork.h"
 #include "ClientNetwork.h"
 
 #include <winsock2.h>

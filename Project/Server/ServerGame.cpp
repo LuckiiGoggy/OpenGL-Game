@@ -2,8 +2,11 @@
 //
 
 #include "ServerGame.h"
+#include <iostream>
 
 unsigned int ServerGame::client_id;
+
+using namespace GLNetwork;
 
 ServerGame::ServerGame(void)
 {

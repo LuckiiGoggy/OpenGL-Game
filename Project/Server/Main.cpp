@@ -1,7 +1,7 @@
 // Server: Main.cpp
 //
 
-#include "Net.h"
+#include "GLNetwork.h"
 #include "ServerGame.h"
 
 // used for multi-threading

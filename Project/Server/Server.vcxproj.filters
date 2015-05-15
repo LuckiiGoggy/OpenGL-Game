@@ -18,9 +18,6 @@
     <ClInclude Include="NetworkServices.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Net.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ServerNetwork.h">
       <Filter>Header Files</Filter>
     </ClInclude>

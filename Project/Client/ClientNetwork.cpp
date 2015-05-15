@@ -1,7 +1,6 @@
 // Client: ClientNetwork.cpp
 //
 
-#include "Net.h"
 #include "ClientNetwork.h"
 
 ClientNetwork::ClientNetwork(void)
