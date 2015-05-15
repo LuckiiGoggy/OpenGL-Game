@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "Dependencies\dirent\dirent.h"
-#include "InputManager.h"
 
 class WorldEngine {
 

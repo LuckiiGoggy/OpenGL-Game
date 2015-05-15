@@ -3,8 +3,6 @@
 
 #include "IGameObject.h"
 #include "Character.h"
-#include "CharacterController.h"
-#include "IRenderable.h"
 #include "MeshObject.h"
 #include "Dependencies\glm\glm\glm.hpp"
 #include "Dependencies\glm\glm\detail\type_vec.hpp"

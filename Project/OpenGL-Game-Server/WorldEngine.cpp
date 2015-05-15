@@ -1,6 +1,5 @@
 #include "WorldEngine.h"
 #include "MeshObject.h"
-#include "GlutManager.h"
 
 char* floor_filename = (char*) "../Assets/Models/floorPlane.obj";
 char* wall_filename = (char*) "../Assets/Models/wallCube.obj";
@@ -77,7 +76,7 @@ void WorldEngine::readWorld(std::string filename) {
 					p->Move(glm::vec3(j * tileLength, 1.0f, i * tileLength));
 					tileNo++;
 					std::string name = "tile" + std::to_string(tileNo);
-					GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);
+					//GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);
 					break;
 				}
 				case FLOOR:
@@ -86,7 +85,7 @@ void WorldEngine::readWorld(std::string filename) {
 					p->Move(glm::vec3(j * tileLength, 0.0f, i * tileLength));
 					tileNo++;
 					std::string name = "tile" + std::to_string(tileNo);
-					GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);
+					//GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);
 					break;
 				}
 				case MOVEWALL:
@@ -95,11 +94,11 @@ void WorldEngine::readWorld(std::string filename) {
 					p->Move(glm::vec3(j * tileLength, 1.0f, i * tileLength));
 					tileNo++;
 					std::string name = "tile" + std::to_string(tileNo);
-					GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 3, tileNo);
+					//GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 3, tileNo);
 					p = new MeshObject(*floor);
 					p->Move(glm::vec3(j * tileLength, 0.0f, i * tileLength));
 					name = "extrafloor" + std::to_string(tileNo);
-					GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);
+					//GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);
 					break;
 				}
 				case SPAWN:
@@ -108,7 +107,7 @@ void WorldEngine::readWorld(std::string filename) {
 					p->Move(glm::vec3(j * tileLength, 0.0f, i * tileLength));
 					tileNo++;
 					std::string name = "tile" + std::to_string(tileNo);
-					GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);
+					//GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);
 					break;
 				}
 				default:
@@ -117,7 +116,7 @@ void WorldEngine::readWorld(std::string filename) {
 					p->Move(glm::vec3(j * tileLength, 1.0f, i * tileLength));
 					tileNo++;
 					std::string name = "tile" + std::to_string(tileNo);
-					GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);
+					//GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);
 					break;
 				}
 				}
@@ -138,7 +137,6 @@ void WorldEngine::renderWorld() {
 		for (float j = 0; j < w; j++) {
 			block = squares.at(index).type;
 			meshes[index]->Update(0.0);
-			meshes[index]->Render();
 			index++;			
 		}
 	}

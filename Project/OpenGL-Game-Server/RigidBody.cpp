@@ -290,20 +290,6 @@ std::vector<Velocity*>* RigidBody::GetVelocities(void){
 void RigidBody::Update(float timeDelta){
 	pMesh->Update(timeDelta);
 }
-void RigidBody::Render(){
-	pMesh->Render();
-#ifdef DEBUG_SCRIPT
-	std::cout << "\n id " << this->id_c << "\n";
-	std::cout << "BoundingBox v1 x: " << pMesh->boundingBox.v1.x << " y: " << pMesh->boundingBox.v1.y << " z: " << pMesh->boundingBox.v1.z << "\n";
-	std::cout << "BoundingBox v2 x: " << pMesh->boundingBox.v2.x << " y: " << pMesh->boundingBox.v2.y << " z: " << pMesh->boundingBox.v2.z << "\n";
-	std::cout << "BoundingBox v3 x: " << pMesh->boundingBox.v3.x << " y: " << pMesh->boundingBox.v3.y << " z: " << pMesh->boundingBox.v3.z << "\n";
-	std::cout << "BoundingBox v4 x: " << pMesh->boundingBox.v4.x << " y: " << pMesh->boundingBox.v4.y << " z: " << pMesh->boundingBox.v4.z << "\n";
-	std::cout << "BoundingBox v5 x: " << pMesh->boundingBox.v5.x << " y: " << pMesh->boundingBox.v5.y << " z: " << pMesh->boundingBox.v5.z << "\n";
-	std::cout << "BoundingBox v6 x: " << pMesh->boundingBox.v6.x << " y: " << pMesh->boundingBox.v6.y << " z: " << pMesh->boundingBox.v6.z << "\n";
-	std::cout << "BoundingBox v7 x: " << pMesh->boundingBox.v7.x << " y: " << pMesh->boundingBox.v7.y << " z: " << pMesh->boundingBox.v7.z << "\n";
-	std::cout << "BoundingBox v8 x: " << pMesh->boundingBox.v8.x << " y: " << pMesh->boundingBox.v8.y << " z: " << pMesh->boundingBox.v8.z << "\n";
-#endif
-}
 void RigidBody::SetBoundingBox(std::vector<glm::vec3> box){
 	pMesh->boundingBox = BoundingBox(box[0], box[1], box[2], box[3], box[4],
 		box[5], box[6], box[7]);

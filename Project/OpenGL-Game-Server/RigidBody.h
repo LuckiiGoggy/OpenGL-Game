@@ -11,7 +11,7 @@
 //
 
 
-class RigidBody : public IGameObject, public IRenderable
+class RigidBody : public IGameObject
 {
 public:
 	RigidBody();
@@ -29,7 +29,6 @@ public:
 
 	~RigidBody();
 
-	void Render(void);//calls pMesh->Render()
 	virtual void Update(float timeDelta);
 
 	void SetName(std::string);  //set this object's string ID

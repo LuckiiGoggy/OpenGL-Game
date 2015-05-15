@@ -35,7 +35,6 @@ public:
 protected:
 	virtual void MoveMembers(glm::vec3);
 	virtual void MoveMembers(float x, float y, float z);
-	virtual void RenderMembers(void);
 	virtual void UpdateMembers(float timeDelta);
 	virtual void RotateMembers(float axisX, float axisY, float axisZ, float angle, glm::vec3 rotPoint = glm::vec3(0.0f), Transform::Space transformSpace = Transform::Space::Local);
 	void UpdateMember(std::string, float timeDelta);

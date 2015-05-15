@@ -7,7 +7,6 @@
 #include "IUpdateable.h"
 #include "GameObjectContainer.h"
 
-#include "Position.h"
 #include <map>
 #include <string>
 #include "Transform.h"
@@ -15,14 +14,12 @@
 
 
 /** A Group Object is a group of Game Objects that move as one entity **/
-class GroupObject : public GameObjectContainer, public Transform, public IGameObject, public IRenderable
+class GroupObject : public GameObjectContainer, public Transform, public IGameObject
 {
 public:
 	GroupObject();
 	~GroupObject();
 
-	/**Render function of the Group Object(renders members)**/
-	void Render();
 	/**Moves the GroupObject and all its members**/
 	virtual void Move(float dX, float dY, float dZ, Space transformSpace = Space::Global);
 	virtual void Move(glm::vec3 moveDelta, Space transformSpace = Space::Global);

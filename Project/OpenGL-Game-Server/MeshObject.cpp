@@ -1,8 +1,6 @@
 #include "MeshObject.h"
 #include <algorithm>
 #include <iostream>
-#include "shader_utils.h"
-#include "GlutManager.h"
 
 MeshObject::MeshObject() : vbo_vertices(0), vbo_normals(0), ibo_elements(0)
 {
@@ -106,156 +104,6 @@ void MeshObject::BindBuffers() {
 	}
 }
 
-/**
-* Draw the object
-*/
-void MeshObject::Render() {
-	glUseProgram(program);
-	if (vbo_vertices != 0) {
-		glEnableVertexAttribArray(attribute_v_coord);
-		glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
-		glVertexAttribPointer(
-			attribute_v_coord,  // attribute
-			4,                  // number of elements per vertex, here (x,y,z,w)
-			GL_FLOAT,           // the type of each element
-			GL_FALSE,           // take our values as-is
-			0,                  // no extra data between each position
-			0                   // offset of first element
-			);
-	}
-
-	if (vbo_normals != 0) {
-		glEnableVertexAttribArray(attribute_v_normal);
-		glBindBuffer(GL_ARRAY_BUFFER, vbo_normals);
-		glVertexAttribPointer(
-			attribute_v_normal, // attribute
-			3,                  // number of elements per vertex, here (x,y,z)
-			GL_FLOAT,           // the type of each element
-			GL_FALSE,           // take our values as-is
-			0,                  // no extra data between each position
-			0                   // offset of first element
-			);
-	}
-
-
-	/* Apply object's transformation matrix */
-	glUniformMatrix4fv(uniform_m, 1, GL_FALSE, glm::value_ptr(netTransformations));
-	/* Transform normal vectors with transpose of inverse of upper left
-	3x3 model matrix (ex-gl_NormalMatrix): */
-	glm::mat3 m_3x3_inv_transp = glm::transpose(glm::inverse(glm::mat3(netTransformations)));
-	glUniformMatrix3fv(uniform_m_3x3_inv_transp, 1, GL_FALSE, glm::value_ptr(m_3x3_inv_transp));
-
-	/* Push each element in buffer_vertices to the vertex shader */
-	if (ibo_elements != 0) {
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
-		int size;
-		glGetBufferParameteriv(GL_ELEMENT_ARRAY_BUFFER, GL_BUFFER_SIZE, &size);
-		glDrawElements(GL_TRIANGLES, size / sizeof(GLushort), GL_UNSIGNED_SHORT, 0);
-	}
-	else
-	{
-		glDrawArrays(GL_TRIANGLES, 0, vertices.size());
-	}
-
-	if (vbo_normals != 0)
-		glDisableVertexAttribArray(attribute_v_normal);
-	if (vbo_vertices != 0)
-		glDisableVertexAttribArray(attribute_v_coord);
-
-	//RenderBoundingBox();
-
-	glUseProgram(0);
-}
-
-void MeshObject::SetUpCamera(){
-
-}
-
-
-
-
-/**
-* Draw object bounding box
-*/
-void MeshObject::RenderBoundingBox() {
-
-	// Cube 1x1x1, centered on origin
-	GLfloat vertices[] = {
-		-0.5, -0.5, -0.5, 1.0,
-		0.5, -0.5, -0.5, 1.0,
-		0.5, 0.5, -0.5, 1.0,
-		-0.5, 0.5, -0.5, 1.0,
-		-0.5, -0.5, 0.5, 1.0,
-		0.5, -0.5, 0.5, 1.0,
-		0.5, 0.5, 0.5, 1.0,
-		-0.5, 0.5, 0.5, 1.0,
-	};
-	GLuint vbo_vertices;
-	glGenBuffers(1, &vbo_vertices);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	GLushort elements[] = {
-		0, 1, 2, 3,
-		4, 5, 6, 7,
-		0, 4, 1, 5, 2, 6, 3, 7
-	};
-	GLuint ibo_elements;
-	glGenBuffers(1, &ibo_elements);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-	GLfloat
-		min_x, max_x,
-		min_y, max_y,
-		min_z, max_z;
-	min_x = max_x = this->vertices[0].x;
-	min_y = max_y = this->vertices[0].y;
-	min_z = max_z = this->vertices[0].z;
-	for (unsigned int i = 0; i < this->vertices.size(); i++) {
-		if (this->vertices[i].x < min_x) min_x = this->vertices[i].x;
-		if (this->vertices[i].x > max_x) max_x = this->vertices[i].x;
-		if (this->vertices[i].y < min_y) min_y = this->vertices[i].y;
-		if (this->vertices[i].y > max_y) max_y = this->vertices[i].y;
-		if (this->vertices[i].z < min_z) min_z = this->vertices[i].z;
-		if (this->vertices[i].z > max_z) max_z = this->vertices[i].z;
-	}
-
-	returnBB(glm::vec3(min_x, min_y, min_z), glm::vec3(max_x, max_y, max_z));
-
-	glm::vec3 size = glm::vec3(max_x - min_x, max_y - min_y, max_z - min_z);
-	glm::vec3 center = glm::vec3((min_x + max_x) / 2, (min_y + max_y) / 2, (min_z + max_z) / 2);
-	glm::mat4 transform = glm::scale(glm::mat4(1), size) * glm::translate(glm::mat4(1), center);
-
-	/* Apply object's transformation matrix */
-	glm::mat4 m = this->netTransformations * transform;
-	glUniformMatrix4fv(uniform_m, 1, GL_FALSE, glm::value_ptr(m));
-
-	glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
-	glEnableVertexAttribArray(attribute_v_coord);
-	glVertexAttribPointer(
-		attribute_v_coord,  // attribute
-		4,                  // number of elements per vertex, here (x,y,z,w)
-		GL_FLOAT,           // the type of each element
-		GL_FALSE,           // take our values as-is
-		0,                  // no extra data between each position
-		0                   // offset of first element
-		);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
-	glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, 0);
-	glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, (GLvoid*)(4 * sizeof(GLushort)));
-	glDrawElements(GL_LINES, 8, GL_UNSIGNED_SHORT, (GLvoid*)(8 * sizeof(GLushort)));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-	glDisableVertexAttribArray(attribute_v_coord);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	glDeleteBuffers(1, &vbo_vertices);
-	glDeleteBuffers(1, &ibo_elements);
-}
 void MeshObject::calculateBottomFace()
 {
 	bottomFace = LocationRect(boundingBox.v1.x, boundingBox.v1.z, boundingBox.v8.x, boundingBox.v8.z);
@@ -352,95 +200,12 @@ void MeshObject::returnBB(glm::vec3 startPoint, glm::vec3 endPoint)
 void MeshObject::Update(float timeDelta){
 	UpdateNetTransformations(); 
 	UpdateBoundingBox(timeDelta);
-	// Projection
-	glm::mat4 camera2screen = glm::perspective(45.0f, 1.0f*glutGet(GLUT_WINDOW_WIDTH) / glutGet(GLUT_WINDOW_HEIGHT), 0.1f, 100.0f);
-
-
-	glUseProgram(program);
-	glUniformMatrix4fv(uniform_v, 1, GL_FALSE, glm::value_ptr(GlutManager::GetMainCamera()->GetCameraMat()));
-	glUniformMatrix4fv(uniform_p, 1, GL_FALSE, glm::value_ptr(GlutManager::GetMainCamera()->GetPerspective()));
-
-	glm::mat4 v_inv = glm::inverse(GlutManager::GetMainCamera()->GetCameraMat());
-	glUniformMatrix4fv(uniform_v_inv, 1, GL_FALSE, glm::value_ptr(v_inv));
-	glUseProgram(0);
-
 }
 
 bool MeshObject::Init(char* model_filename, char* vshader_filename, char* fshader_filename)
 {
 	ReadObjFile(model_filename);
 	// mesh position initialized in init_view()
-
-	BindBuffers();
-
-	/* Compile and link shaders */
-	GLint link_ok = GL_FALSE;
-	GLint validate_ok = GL_FALSE;
-
-	GLuint vs, fs;
-	if ((vs = create_shader(vshader_filename, GL_VERTEX_SHADER)) == 0) return 0;
-	if ((fs = create_shader(fshader_filename, GL_FRAGMENT_SHADER)) == 0) return 0;
-
-	program = glCreateProgram();
-	program = program;
-	glAttachShader(program, vs);
-	glAttachShader(program, fs);
-	glLinkProgram(program);
-	glGetProgramiv(program, GL_LINK_STATUS, &link_ok);
-	if (!link_ok) {
-		fprintf(stderr, "glLinkProgram:");
-		return 0;
-	}
-	glValidateProgram(program);
-	glGetProgramiv(program, GL_VALIDATE_STATUS, &validate_ok);
-	if (!validate_ok) {
-		fprintf(stderr, "glValidateProgram:");
-	}
-
-	const char* attribute_name;
-	attribute_name = "v_coord";
-	attribute_v_coord = glGetAttribLocation(program, attribute_name);
-	if (attribute_v_coord == -1) {
-		fprintf(stderr, "Could not bind attribute %s\n", attribute_name);
-		return 0;
-	}
-	attribute_name = "v_normal";
-	attribute_v_normal = glGetAttribLocation(program, attribute_name);
-	if (attribute_v_normal == -1) {
-		fprintf(stderr, "Could not bind attribute %s\n", attribute_name);
-		return 0;
-	}
-	const char* uniform_name;
-	uniform_name = "m";
-	uniform_m = glGetUniformLocation(program, uniform_name);
-	if (uniform_m == -1) {
-		fprintf(stderr, "Could not bind uniform %s\n", uniform_name);
-		return 0;
-	}
-	uniform_name = "v";
-	uniform_v = glGetUniformLocation(program, uniform_name);
-	if (uniform_v == -1) {
-		fprintf(stderr, "Could not bind uniform %s\n", uniform_name);
-		return 0;
-	}
-	uniform_name = "p";
-	uniform_p = glGetUniformLocation(program, uniform_name);
-	if (uniform_p == -1) {
-		fprintf(stderr, "Could not bind uniform %s\n", uniform_name);
-		return 0;
-	}
-	uniform_name = "m_3x3_inv_transp";
-	uniform_m_3x3_inv_transp = glGetUniformLocation(program, uniform_name);
-	if (uniform_m_3x3_inv_transp == -1) {
-		fprintf(stderr, "Could not bind uniform %s\n", uniform_name);
-		return 0;
-	}
-	uniform_name = "v_inv";
-	uniform_v_inv = glGetUniformLocation(program, uniform_name);
-	if (uniform_v_inv == -1) {
-		fprintf(stderr, "Could not bind uniform %s\n", uniform_name);
-		return 0;
-	}
 
 	// Cube 1x1x1, centered on origin
 	GLfloat vertices[] = {
@@ -488,19 +253,6 @@ bool MeshObject::Init(char* model_filename, char* vshader_filename, char* fshade
 
 	returnBB(glm::vec3(min_x, min_y, min_z), glm::vec3(max_x, max_y, max_z));
 
-	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-	GLfloat mat_shininess[] = { 50.0 };
-	GLfloat light_position[] = { 0.0, 20.0, 0.0, 0.0 };
-	glClearColor(0.0, 0.0, 0.0, 0.0);
-	glShadeModel(GL_SMOOTH);
-
-	glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-	glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
-	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
-	glEnable(GL_DEPTH_TEST);
 	return 1;
 }
 

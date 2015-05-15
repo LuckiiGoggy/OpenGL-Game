@@ -12,16 +12,6 @@ GroupObject::~GroupObject()
 	EmptyMembers();
 }
 
-void GroupObject::Render()
-{
-	#ifdef DEBUG
-		std::cout << "\nGroup Object Rendering..";
-	#endif
-	
-	RenderMembers();
-
-}
-
 void GroupObject::Update(float timeDelta){
 	UpdateMembers(timeDelta);
 }

@@ -7,7 +7,6 @@
 
 #include "GroupObject.h"
 #include "IUpdateable.h"
-#include "IRenderable.h"
 #include "GameObjectContainer.h"
 #include "CharacterStat.h"
 

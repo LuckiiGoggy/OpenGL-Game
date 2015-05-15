@@ -1,7 +1,6 @@
 #include "GameObjectContainer.h"
 
 #include "IUpdateable.h"
-#include "IRenderable.h"
 #include "IMovable.h"
 
 #include <iostream>
@@ -82,20 +81,6 @@ void GameObjectContainer::RotateMembers(float axisX, float axisY, float axisZ, f
 			transformable->Rotate(axisX, axisY, axisZ, angle, rotPoint, transformSpace);
 		}
 	}
-}
-
-void GameObjectContainer::RenderMembers(void)
-{
-	std::map<std::string, IGameObject *>::iterator iter;
-	IRenderable *renderable;
-
-	for (iter = this->members.begin(); iter != this->members.end(); ++iter) {
-		renderable = dynamic_cast<IRenderable*>(iter->second);
-		if (renderable != 0){
-			renderable->Render();
-		}
-	}
-
 }
 
 

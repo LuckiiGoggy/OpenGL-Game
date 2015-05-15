@@ -8,7 +8,6 @@
 #include <sstream>
 
 #include "IGameObject.h"
-#include "IRenderable.h"
 #include "IMovable.h"
 #include "Transform.h"
 
@@ -20,7 +19,7 @@
 
 
 #pragma once
-class MeshObject: public Transform, public IGameObject, public IRenderable
+class MeshObject: public Transform, public IGameObject
 {
 public:
 	MeshObject();
@@ -30,9 +29,6 @@ public:
 	virtual void UpdateBoundingBox(float timeDelta);
 
 	virtual bool Init(char* model_filename, char* vshader_filename, char* fshader_filename);
-
-	void Render(void);
-	virtual void RenderBoundingBox(void);
 	
 	void returnBB(glm::vec3, glm::vec3);
 
@@ -45,7 +41,6 @@ public:
 	LocationRect bottomFace;
 
 private:
-	virtual void SetUpCamera(void);
 	virtual void BindBuffers(void);
 	virtual void ReadObjFile(std::string filename);
 

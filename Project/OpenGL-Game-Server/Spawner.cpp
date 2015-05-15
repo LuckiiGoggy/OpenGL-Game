@@ -1,7 +1,4 @@
 #include "Spawner.h"
-#include "GlutManager.h"
-#include "GameScene.h"
-
 int Spawner::projCount;
 
 Spawner::Spawner() {
@@ -68,12 +65,12 @@ void Spawner::SpawnProjectile(Player* player, IGameObject *scene)
 	Velocity* vel = new Velocity(vdir.x * 10, vdir.y * 10, vdir.z * 10, 1, 10);
 	projCount++;
 	std::string name = "projectile" + std::to_string(projCount);
-	GlutManager::GetPhysEngi()->registerRigidBody(newProj, newProj, name, 1, projCount);
-	GlutManager::GetPhysEngi()->addVelocityTo(name, vel);
+	//GlutManager::GetPhysEngi()->registerRigidBody(newProj, newProj, name, 1, projCount);
+	//GlutManager::GetPhysEngi()->addVelocityTo(name, vel);
 	projectiles[name] = newProj;
 
 
-	((GameScene *)scene)->RegisterNewProjectile(name);
+	//((GameScene *)scene)->RegisterNewProjectile(name);
 
 }
 
@@ -90,15 +87,6 @@ void Spawner::UpdateProjectiles(float timeDelta)
 
 	for (it = projectiles.begin(); it != projectiles.end(); ++it){
 		(it->second)->Update(timeDelta);
-	}
-}
-
-void Spawner::RenderProjectiles()
-{
-	std::map<std::string, Projectile *>::iterator it;
-
-	for (it = projectiles.begin(); it != projectiles.end(); ++it){
-		(it->second)->Render();
 	}
 }
 

@@ -1,5 +1,4 @@
 #include "Character.h"
-#include "GlutManager.h"
 
 Character::Character()
 {
@@ -21,7 +20,7 @@ Character::~Character()
 
 void Character::Update(float timeDelta){
 	GroupObject::Update(timeDelta);
-	GlutManager::GetPhysEngi()->addVelocityTo("BoxMan", new Velocity(moveDelta.x, moveDelta.y, moveDelta.z, 2, 1));
+	//GlutManager::GetPhysEngi()->addVelocityTo("BoxMan", new Velocity(moveDelta.x, moveDelta.y, moveDelta.z, 2, 1));
 	moveDelta = glm::vec3(0.0f);
 }
 
