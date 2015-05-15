@@ -33,9 +33,11 @@ namespace GLNetwork{
 
 		WALL_OBJECT = 6,
 
-		PLAYER_OBJECT = 7,
+		FLOOR_OBJECT = 7,
 
-		PROJECTILE_OBJECT = 8
+		PLAYER_OBJECT = 8,
+
+		PROJECTILE_OBJECT = 9
 
 	};
 
@@ -86,6 +88,8 @@ namespace GLNetwork{
 	struct PlayerInfo : Packet {
 		PlayerInfo() : Packet(PLAYER_INFO_PACKET,sizeof(PlayerInfo)){};
 
+		int objectId;
+
 		int health;
 		int score;
 		int ammo;
@@ -117,6 +121,10 @@ namespace GLNetwork{
 
 	struct WallObjectPacket : ObjectPacket{
 		WallObjectPacket() : ObjectPacket(WALL_OBJECT, sizeof(WallObjectPacket)){};
+	};
+
+	struct FloorObjectPacket : ObjectPacket{
+		FloorObjectPacket() : ObjectPacket(FLOOR_OBJECT, sizeof(FloorObjectPacket)){};
 	};
 
 	struct PlayerObjectPacket : ObjectPacket{

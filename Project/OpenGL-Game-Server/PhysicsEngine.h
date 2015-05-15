@@ -6,7 +6,6 @@
 //
 #include "Collisions.h"
 #include "RigidBody.h"
-#include "Quadtree.h"
 //
 
 #include "openGL.h"
@@ -14,12 +13,12 @@
 
 #include "Velocity.h"
 
-#include "RectObject.h"//Object must include BoundingBox.h
-//#include "BoundingBox.h"
-
+#include <list>
 #include <vector>
 #include <map>
 #include "Transform.h"
+
+using namespace std;
 
 /*
 */
@@ -28,7 +27,6 @@ class PhysicsEngine
 {
 public:
 	Collisions collisions;
-	Quadtree quadtree;
 
 	PhysicsEngine();
 	PhysicsEngine(int screenWidth_, int screenHeight_); // 2D
@@ -47,14 +45,9 @@ public:
 	update this Velocity (decrement timeLeft counter and re-calculate strength)
 	check to see if this Velocity has no timeLeft, if so erase it from that object
 	*/
-	void updateVelocities(std::vector<RectObject*> objects);
-	void updateVelocities(std::vector<RigidBody*> objects);
-	void updateVelocities(std::vector<RigidBody*> objects, bool revamp);
 	void updateVelocities();
 
-	void triggerImpact(RectObject* A, RectObject* B);
 	void triggerImpact(RigidBody* A, RigidBody* B);
-	void triggerImpact(RigidBody* A, RigidBody* B, bool prep);
 
 	///COLLISIONS
 	vector<std::pair<RigidBody*, RigidBody*>> listCollisions();
@@ -73,28 +66,18 @@ public:
 	return->first is an object passed into this function, return->second is what that has collided with
 	*/
 
-	void updateQuadTree();
-	void quadTreeCollision();
 	void bruteCollision();
 
-	void registerRigidBody(char* obj_filename, char* v_shader_filename, char* f_shader_filename, std::string nameId, int id, float mass = 1);
-	void registerRigidBody(char* obj_filename, char* v_shader_filename, char* f_shader_filename, std::string nameId, float mass = 1);
-	void registerRigidBody(char* obj_filename, char* v_shader_filename, char* f_shader_filename, Transform* trans, std::string nameId, int id, float mass = 1);
-	void registerRigidBody(char* obj_filename, char* v_shader_filename, char* f_shader_filename, Transform* trans, std::string nameId, float mass = 1);
-	void registerRigidBody(MeshObject* object, std::string nameId, int id, float mass = 1);
-	void registerRigidBody(MeshObject* object, std::string nameId, float mass = 1);
-	void registerRigidBody(MeshObject* object, Transform* trans, std::string nameId, float mass = 1);
-	void registerRigidBody(MeshObject* object, Transform* trans, std::string nameId, int id, float mass = 1);
-	void registerRigidBody(MeshObject* object, Transform* trans, std::string nameId, int type, int id, float mass = 1);
+	void registerRigidBody(BoundingBox* box, Transform* trans, std::string nameId, float mass = 1);
+	void registerRigidBody(BoundingBox* box, Transform* trans, std::string nameId, int id, float mass = 1);
+	void registerRigidBody(BoundingBox* box, Transform* trans, std::string nameId, int type, int id, float mass = 1);
+
 	void unregisterRigidBody(std::string nameId);
-	void swapRigidBodyMesh(std::string nameId, MeshObject* pMesh_);
+	void swapRigidBodyTrans(std::string nameId, Transform* pTrans_);
 
 	void addVelocityTo(std::string nameId, Velocity* velocity);
 
 	bool forcesAreEqual(Velocity* v1, Velocity* v2);
-
-	void checkScreenBounds(RectObject* object);
-	void checkScreenBounds(RigidBody* object);
 
 	vector<RigidBody*> rigidObjects;
 

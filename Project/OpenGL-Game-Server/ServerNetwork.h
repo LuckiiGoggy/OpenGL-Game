@@ -2,13 +2,9 @@
 #define SERVERNETWORK_H
 // Server: ServerNetwork.h
 //
-
-#pragma once
-
 #include "GLNetwork.h"
 #include "NetworkServices.h"
 
-#include <ws2tcpip.h>
 #include <map>
 
 using namespace std;

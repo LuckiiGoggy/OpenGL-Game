@@ -6,156 +6,19 @@ RigidBody::RigidBody()
 {
 	id = -1;
 	mass = 1;
-	pMesh = new MeshObject();
+	type = 1;
 	pTrans = new Transform();
+	boundingBox = new BoundingBox();
 }
-RigidBody::RigidBody(int id_)
+RigidBody::RigidBody(BoundingBox* box, Transform* trans, float mass_, std::string nameID_)
 {
-	id = id_;
-	mass = 1;
-
-	pMesh = new MeshObject();
-
-	pTrans = new Transform();
-
-	char *intStr = new char;
-	_itoa_s(id, intStr, 3, 10);
-	id_c = (const unsigned char *)intStr;
-
-	nameId = "RIGIDBODY";
-}
-RigidBody::RigidBody(float mass_, int id_)
-{
-	id = id_;
-	mass = mass_;
-
-	pMesh = new MeshObject();
-
-	pTrans = new Transform();
-
-	char *intStr = new char;
-	_itoa_s(id, intStr, 3, 10);
-	id_c = (const unsigned char *)intStr;
-
-	nameId = "RIGIDBODY";
-}
-RigidBody::RigidBody(float mass_, std::string nameID_, int id_)
-{
-	id = id_;
+	id = -1;
 	mass = mass_;
 	nameId = nameID_;
+	type = 1;
 
-	pMesh = new MeshObject();
-
-	pTrans = new Transform();
-
-	char *intStr = new char;
-	_itoa_s(id, intStr, 3, 10);
-	id_c = (const unsigned char *)intStr;
-}
-RigidBody::RigidBody(MeshObject* mesh, int id_)
-{
-	id = id_;
-	mass = 1;
-
-	pMesh = new MeshObject();
-	pMesh = mesh;
-
-	pTrans = new Transform();
-
-	char *intStr = new char;
-	_itoa_s(id, intStr, 3, 10);
-	id_c = (const unsigned char *)intStr;
-
-	nameId = "RIGIDBODY";
-}
-RigidBody::RigidBody(MeshObject* mesh, float mass_, int id_)
-{
-	id = id_;
-	mass = mass_;
-
-	pMesh = new MeshObject();
-	pMesh = mesh;
-
-	pTrans = new Transform();
-
-	char *intStr = new char;
-	_itoa_s(id, intStr, 3, 10);
-	id_c = (const unsigned char *)intStr;
-
-	nameId = "RIGIDBODY";
-}
-RigidBody::RigidBody(MeshObject* mesh, float mass_, std::string nameID_, int id_)
-{
-	id = id_;
-	mass = mass_;
-	nameId = nameID_;
-
-	pMesh = new MeshObject();
-	pMesh = mesh;
-
-	pTrans = new Transform();
-
-	char *intStr = new char;
-	_itoa_s(id, intStr, 3, 10);
-	id_c = (const unsigned char *)intStr;
-}
-RigidBody::RigidBody(char* obj_filename, char* v_shader_filename, char* f_shader_filename, int id_)
-{
-	id = id_;
-	mass = 1;
-
-	pMesh = new MeshObject();
-	pMesh->Init(obj_filename, v_shader_filename, f_shader_filename);
-
-	pTrans = new Transform();
-
-	char *intStr = new char;
-	_itoa_s(id, intStr, 3, 10);
-	id_c = (const unsigned char *)intStr;
-
-	nameId = "RIGIDBODY";
-}
-RigidBody::RigidBody(char* obj_filename, char* v_shader_filename, char* f_shader_filename, float mass_, int id_)
-{
-	id = id_;
-	mass = mass_;
-
-	pMesh = new MeshObject();
-	pMesh->Init(obj_filename, v_shader_filename, f_shader_filename);
-
-	pTrans = new Transform();
-
-	char *intStr = new char;
-	_itoa_s(id, intStr, 3, 10);
-	id_c = (const unsigned char *)intStr;
-
-	nameId = "RIGIDBODY";
-}
-RigidBody::RigidBody(char* obj_filename, char* v_shader_filename, char* f_shader_filename, float mass_, std::string nameID_, int id_)
-{
-	id = id_;
-	mass = mass_;
-	nameId = nameID_;
-
-	pMesh = new MeshObject();
-	pMesh->Init(obj_filename, v_shader_filename, f_shader_filename);
-
-	pTrans = new Transform();
-
-	char *intStr = new char;
-	_itoa_s(id, intStr, 3, 10);
-	id_c = (const unsigned char *)intStr;
-}
-
-RigidBody::RigidBody(MeshObject* mesh, Transform* trans, float mass_, std::string nameID_, int id_)
-{
-	id = id_;
-	mass = mass_;
-	nameId = nameID_;
-
-	pMesh = new MeshObject();
-	pMesh = mesh;
+	boundingBox = new BoundingBox();
+	boundingBox = box;
 
 	pTrans = new Transform();
 	pTrans = trans;
@@ -164,22 +27,60 @@ RigidBody::RigidBody(MeshObject* mesh, Transform* trans, float mass_, std::strin
 	_itoa_s(id, intStr, 5, 10);
 	id_c = (const unsigned char *)intStr;
 }
-RigidBody::RigidBody(char* obj_filename, char* v_shader_filename, char* f_shader_filename, float mass_, Transform* trans, std::string nameID_, int id_)
+RigidBody::RigidBody(BoundingBox* box, Transform* trans, float mass_, std::string nameID_, int id_)
 {
 	id = id_;
 	mass = mass_;
 	nameId = nameID_;
+	type = 1;
 
-	pMesh = new MeshObject();
-	pMesh->Init(obj_filename, v_shader_filename, f_shader_filename);
+	boundingBox = new BoundingBox();
+	boundingBox = box;
 
 	pTrans = new Transform();
 	pTrans = trans;
 
 	char *intStr = new char;
-	_itoa_s(id, intStr, 3, 10);
+	_itoa_s(id, intStr, 5, 10);
 	id_c = (const unsigned char *)intStr;
 }
+RigidBody::RigidBody(BoundingBox* box, Transform* trans, float mass_, int type_, std::string nameID_, int id_)
+{
+	id = id_;
+	mass = mass_;
+	nameId = nameID_;
+
+	type = type_;
+
+	boundingBox = new BoundingBox();
+	boundingBox = box;
+
+	pTrans = new Transform();
+	pTrans = trans;
+
+	char *intStr = new char;
+	_itoa_s(id, intStr, 5, 10);
+	id_c = (const unsigned char *)intStr;
+}
+RigidBody::RigidBody(BoundingBox* box, Transform* trans, float mass_, int type_, std::string nameID_)
+{
+	id = -1;
+	mass = mass_;
+	nameId = nameID_;
+
+	type = type_;
+
+	boundingBox = new BoundingBox();
+	boundingBox = box;
+
+	pTrans = new Transform();
+	pTrans = trans;
+
+	char *intStr = new char;
+	_itoa_s(id, intStr, 5, 10);
+	id_c = (const unsigned char *)intStr;
+}
+
 ///END OF CONSTRUCTORS 
 RigidBody::~RigidBody()
 {
@@ -287,23 +188,38 @@ void RigidBody::ClearVelocities(void){
 std::vector<Velocity*>* RigidBody::GetVelocities(void){
 	return &velocities;
 }
-void RigidBody::Update(float timeDelta){
-	pMesh->Update(timeDelta);
-}
-void RigidBody::SetBoundingBox(std::vector<glm::vec3> box){
-	pMesh->boundingBox = BoundingBox(box[0], box[1], box[2], box[3], box[4],
-		box[5], box[6], box[7]);
+void RigidBody::updateBoundingBox()
+{
+	//Apply world transformation to bounding box
+	//*
+	glm::vec4 v1_world = (this->pTrans->NetTranslation() * glm::vec4(boundingBox->v1.x, boundingBox->v1.y, boundingBox->v1.z, 1));
+	glm::vec4 v2_world = (this->pTrans->NetTranslation() * glm::vec4(boundingBox->v2.x, boundingBox->v2.y, boundingBox->v2.z, 1));
+	glm::vec4 v3_world = (this->pTrans->NetTranslation() * glm::vec4(boundingBox->v3.x, boundingBox->v3.y, boundingBox->v3.z, 1));
+	glm::vec4 v4_world = (this->pTrans->NetTranslation() * glm::vec4(boundingBox->v4.x, boundingBox->v4.y, boundingBox->v4.z, 1));
+	glm::vec4 v5_world = (this->pTrans->NetTranslation() * glm::vec4(boundingBox->v5.x, boundingBox->v5.y, boundingBox->v5.z, 1));
+	glm::vec4 v6_world = (this->pTrans->NetTranslation() * glm::vec4(boundingBox->v6.x, boundingBox->v6.y, boundingBox->v6.z, 1));
+	glm::vec4 v7_world = (this->pTrans->NetTranslation() * glm::vec4(boundingBox->v7.x, boundingBox->v7.y, boundingBox->v7.z, 1));
+	glm::vec4 v8_world = (this->pTrans->NetTranslation() * glm::vec4(boundingBox->v8.x, boundingBox->v8.y, boundingBox->v8.z, 1));
+	//*/
 
-	pMesh->bottomFace = LocationRect(pMesh->boundingBox.v6.x, pMesh->boundingBox.v6.y,
-		pMesh->boundingBox.v3.x, pMesh->boundingBox.v3.y);
-	//rect = LocationRect(box.v2.x, box.v2.y, box.v7.x, box.v7.y);
-	//rect = LocationRect(box.v1.x, box.v1.y, box.v3.x, box.v3.y);
+	//*
+	boundingBox->v1 = glm::vec3(v1_world);
+	boundingBox->v2 = glm::vec3(v2_world);
+	boundingBox->v3 = glm::vec3(v3_world);
+	boundingBox->v4 = glm::vec3(v4_world);
+	boundingBox->v5 = glm::vec3(v5_world);
+	boundingBox->v6 = glm::vec3(v6_world);
+	boundingBox->v7 = glm::vec3(v7_world);
+	boundingBox->v8 = glm::vec3(v8_world);//*/
+
+	//Calculate the updated bottomFace of the bounding box
+	//calculateBottomFace();
+
+	//Recalculate the directional radius of the bounding box
+	boundingBox->refresh();
 }
-void RigidBody::SetBoundingBox(BoundingBox box){
-	pMesh->boundingBox = box;
-	pMesh->bottomFace = LocationRect(box.v6.x, box.v6.y, box.v3.x, box.v3.y);
-	//rect = LocationRect(box.v2.x, box.v2.y, box.v7.x, box.v7.y);
-	//rect = LocationRect(box.v1.x, box.v1.y, box.v3.x, box.v3.y);
+void RigidBody::SetBoundingBox(BoundingBox* box){
+	boundingBox = box;
 	/*
 	EVERYTHING IS COUNTER CLOCKWISE
 
@@ -322,102 +238,28 @@ void RigidBody::SetBoundingBox(BoundingBox box){
 
 	//*/
 }
-std::vector<glm::vec3> RigidBody::GetBoundingBox_vector(void){
-	std::vector<glm::vec3> returnBox;
-	BoundingBox Bbox = pMesh->boundingBox;
-	returnBox.push_back(Bbox.v1);
-	returnBox.push_back(Bbox.v2);
-	returnBox.push_back(Bbox.v3);
-	returnBox.push_back(Bbox.v4);
-	returnBox.push_back(Bbox.v5);
-	returnBox.push_back(Bbox.v6);
-	returnBox.push_back(Bbox.v7);
-	return returnBox;
-}
+
 BoundingBox* RigidBody::GetBoundingBox(void){
-	return &pMesh->boundingBox;
+	return boundingBox;
 }
-void RigidBody::SetRect(LocationRect* newRect){
-	pMesh->bottomFace = *newRect;
-}
-void RigidBody::SetRect(LocationRect newRect){
-	pMesh->bottomFace = newRect;
-}
-void RigidBody::SetRect(int sx, int sy, int ex, int ey){
-	pMesh->bottomFace = LocationRect(sx, sy, ex, ey, id);
-}
-void RigidBody::SetRect(int sx, int sy, int ex, int ey, int id_){
-	pMesh->bottomFace = LocationRect(sx, sy, ex, ey, id_);
-}
-LocationRect RigidBody::GetRect_copy(void){
-	return pMesh->bottomFace;
-}
-LocationRect* RigidBody::GetRect(void){
-	return &pMesh->bottomFace;
-}
-void RigidBody::positionMesh()
-{
-	//pMesh->Move(position.x, position.y, position.z);
-	pTrans->Move(position.x, position.y, position.z);
 
-	pMesh->bottomFace.move(position.x, position.z);
-
-	pMesh->updateBoundingBox();
-	//pMesh->boundingBox.translate(position.x, position.y, position.z);
-}
 void RigidBody::move(glm::vec3 v)
 {
 	float x = v.x; float y = v.y; float z = v.z;
-	float x_ = ((float)x / (float)400);
-	float y_ = ((float)y / (float)400);
-	float z_ = ((float)z / (float)400);
-	position.x += x_;// x;
-	position.y += y_;// y;
-	position.z += z_;// z;
 
-	//pMesh->Move(x_, y_, z_);
-	pTrans->Move(x_, y_, z_, Transform::Local);
-
-	//pMesh->bottomFace.move(x_, z_);
-
-	//pMesh->updateBoundingBox();
-	//pMesh->boundingBox.translate(x_, y_, z_);
+	pTrans->Move(x, y, z, Transform::Local);
 }
 void RigidBody::move(float x, float y, float z)
 {
-	float x_ = ((float)x);
-	float y_ = ((float)y);
-	float z_ = ((float)z);
-	//position.x += x_;// x;
-	//position.y += y_;// y;
-	//position.z += z_;// z;
+	pTrans->Move(x, y, z, Transform::Local);
 
-	//pMesh->Move(x_, y_, z_);
-	pTrans->Move(x_, y_, z_, Transform::Local);
-
-	//pMesh->bottomFace.move(x_, z_);
-
-	pMesh->UpdateBoundingBox(0.0f);
-	//pMesh->calculateBottomFace();
-	//pMesh->boundingBox.translate(x_, y_, z_);
+	updateBoundingBox();
 }
 void RigidBody::move(float x, float y, float z, bool noChange)
 {
-	float x_ = x;
-	float y_ = y;
-	float z_ = z;
-	//position.x += x_;// x;
-	//position.y += y_;// y;
-	//position.z += z_;// z;
+	pTrans->Move(x, y, z);
 
-	//pMesh->Move(x_, y_, z_);
-	pTrans->Move(x_, y_, z_);
-
-	//pMesh->bottomFace.move(x_, z_);
-
-	pMesh->UpdateBoundingBox(0.0f);
-	//pMesh->calculateBottomFace();
-	//pMesh->boundingBox.translate(x_, y_, z_);
+	updateBoundingBox();
 }
 
 glm::vec3 RigidBody::NetVelocity(void)
@@ -430,7 +272,7 @@ glm::vec3 RigidBody::NetVelocity(void)
 		{
 			glm::vec3 vel(velo->x, velo->y, velo->z);
 
-			vel = Transform::ApplyTransVec3(vel, pMesh->NetRotation());
+			vel = Transform::ApplyTransVec3(vel, pTrans->NetRotation());
 
 			netVelocity += vel;
 		}

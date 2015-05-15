@@ -3,7 +3,6 @@
 // Server: ServerGame.h
 //
 
-#include "GLNetwork.h"
 #include "ServerNetwork.h"
 #include <thread>
 #include <vector>
@@ -17,8 +16,6 @@ public:
 	~ServerGame(void);
 
 	void update();
-
-	void receiveFromClients();
 
 	static void threadedClient(int clientId);
 

@@ -46,11 +46,12 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../Network</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>Dependencies\soil;Dependencies\DevIL\lib;Dependencies\freeglut;Dependencies\glui;Dependencies\glew;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>GLU32.lib;opengl32.lib;freeglut.lib;glew32.lib;glui32.lib;SOIL.lib;DevIL.lib;ILU.lib;ILUT.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;GLU32.lib;opengl32.lib;freeglut.lib;glew32.lib;glui32.lib;SOIL.lib;DevIL.lib;ILU.lib;ILUT.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -60,13 +61,14 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>../Network</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>Dependencies\freeglut;Dependencies\glui;Dependencies\glew;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>GLU32.lib;opengl32.lib;freeglut.lib;glew32.lib;glui32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;GLU32.lib;opengl32.lib;freeglut.lib;glew32.lib;glui32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -78,7 +80,9 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="RigidBody.cpp" />
+    <ClCompile Include="ServerGame.cpp" />
     <ClCompile Include="ServerMain.cpp" />
+    <ClCompile Include="ServerNetwork.cpp" />
     <ClCompile Include="Spawner.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Velocity.cpp" />
@@ -88,7 +92,6 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MeshObject.cpp" />
     <ClCompile Include="PhysicsEngine.cpp" />
-    <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="Rect.cpp" />
     <ClCompile Include="RectObject.cpp" />
     <ClCompile Include="WorldEngine.cpp" />
@@ -104,7 +107,9 @@
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="RigidBody.h" />
+    <ClInclude Include="ServerGame.h" />
     <ClInclude Include="ServerMain.h" />
+    <ClInclude Include="ServerNetwork.h" />
     <ClInclude Include="Spawner.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Velocity.h" />
@@ -115,12 +120,16 @@
     <ClInclude Include="GroupObject.h" />
     <ClInclude Include="PhysicsEngine.h" />
     <ClInclude Include="IMovable.h" />
-    <ClInclude Include="Quadtree.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="MeshObject.h" />
     <ClInclude Include="RectObject.h" />
     <ClInclude Include="WorldEngine.h" />
     <ClInclude Include="WorldSquare.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Network\Network.vcxproj">
+      <Project>{e89cbc7e-6e89-46e1-baf5-0cf8acc7a2cf}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

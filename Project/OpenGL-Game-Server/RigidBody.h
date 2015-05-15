@@ -11,25 +11,15 @@
 //
 
 
-class RigidBody : public IGameObject
+class RigidBody
 {
 public:
 	RigidBody();
-	RigidBody(int id_);
-	RigidBody(float mass_, int id_);
-	RigidBody(float mass_, std::string nameID_, int id_);
-	RigidBody(MeshObject* mesh, int id_);
-	RigidBody(MeshObject* mesh, float mass_, int id_);
-	RigidBody(MeshObject* mesh, float mass_, std::string nameID_, int id_);
-	RigidBody(MeshObject* mesh, Transform* trans, float mass_, std::string nameID_, int id_);
-	RigidBody(char* obj_filename, char* v_shader_filename, char* f_shader_filename, int id_);
-	RigidBody(char* obj_filename, char* v_shader_filename, char* f_shader_filename, float mass_, int id_);
-	RigidBody(char* obj_filename, char* v_shader_filename, char* f_shader_filename, float mass_, std::string nameID_, int id_);
-	RigidBody(char* obj_filename, char* v_shader_filename, char* f_shader_filename, float mass_, Transform* trans, std::string nameID_, int id_);
-
+	RigidBody(BoundingBox* box, Transform* trans, float mass_, std::string nameID_);
+	RigidBody(BoundingBox* box, Transform* trans, float mass_, std::string nameID_, int id_);
+	RigidBody(BoundingBox* box, Transform* trans, float mass_, int type_, std::string nameID_);
+	RigidBody(BoundingBox* box, Transform* trans, float mass_, int type_, std::string nameID_, int id_);
 	~RigidBody();
-
-	virtual void Update(float timeDelta);
 
 	void SetName(std::string);  //set this object's string ID
 	std::string GetName(void);  //return this object's string ID
@@ -64,17 +54,9 @@ public:
 	void move(float x, float y, float z);
 	void move(float x, float y, float z, bool noChange);
 
-	//Location Rect
-	void SetRect(LocationRect rect);
-	void SetRect(LocationRect* rect);
-	void SetRect(int sx, int sy, int ex, int ey);		  //Creates a new LocationRect
-	void SetRect(int sx, int sy, int ex, int ey, int id); //Creates a new LocationRect
-	LocationRect GetRect_copy(void);
-	LocationRect* GetRect(void);
-
 	//Bounding Box
-	void SetBoundingBox(std::vector<glm::vec3>);		//Creates a new BoundingBox
-	void SetBoundingBox(BoundingBox box);
+	void updateBoundingBox();
+	void SetBoundingBox(BoundingBox* box);
 	BoundingBox* GetBoundingBox(void);					//returns &Bbox
 	std::vector<glm::vec3> GetBoundingBox_vector(void); //returns a vector of Bbox's verticies
 
@@ -87,9 +69,8 @@ public:
 	int id;
 	const unsigned char * id_c;
 
-	//Mesh
-	void positionMesh();
-	MeshObject* pMesh;
+	//BoundingBox
+	BoundingBox* boundingBox;
 	Transform* pTrans;
 
 private:

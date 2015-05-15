@@ -19,5 +19,7 @@ int main(int argc, char **argv) {
 // 
 // 	GlutManager::StartLoop();
 
+	ServerMain::StartLoop();
+
 	return 0;
 }

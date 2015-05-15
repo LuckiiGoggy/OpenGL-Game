@@ -12,7 +12,6 @@ PhysicsEngine::PhysicsEngine()
 	screenDepth = 400;
 
 	collisions = Collisions();
-	quadtree = Quadtree(0, Rect(0, 0, screenWidth, screenHeight));
 	rigidObjects = vector<RigidBody*>();
 }
 PhysicsEngine::PhysicsEngine(int screenWidth_, int screenHeight_)
@@ -22,7 +21,6 @@ PhysicsEngine::PhysicsEngine(int screenWidth_, int screenHeight_)
 	screenDepth = screenHeight_;
 
 	collisions = Collisions();
-	quadtree = Quadtree(0, Rect(0, 0, screenWidth, screenHeight));
 	rigidObjects = vector<RigidBody*>();
 }
 PhysicsEngine::PhysicsEngine(int screenWidth_, int screenHeight_, int screenDepth_)
@@ -32,7 +30,6 @@ PhysicsEngine::PhysicsEngine(int screenWidth_, int screenHeight_, int screenDept
 	screenDepth = screenDepth_;
 
 	collisions = Collisions();
-	quadtree = Quadtree(0, Rect(0, 0, screenWidth, screenHeight));
 	rigidObjects = vector<RigidBody*>();
 }
 
@@ -63,9 +60,9 @@ void PhysicsEngine::triggerImpact(RigidBody *A, RigidBody *B)
 
 	if (A->isProjectile()) netVeloA = A->NetVelocityX();
 
-	xTotal_A += netVeloA.x;// -abs((A->pMesh->boundingBox.xRadius + A->pMesh->boundingBox.center.x) - (B->pMesh->boundingBox.xRadius + B->pMesh->boundingBox.center.x));
+	xTotal_A += netVeloA.x;// -abs((A->boundingBox->xRadius + A->boundingBox->center.x) - (B->boundingBox->xRadius + B->boundingBox->center.x));
 	yTotal_A += netVeloA.y;
-	zTotal_A += netVeloA.z;// -abs((A->pMesh->boundingBox.zDepth + A->pMesh->boundingBox.center.z) - (B->pMesh->boundingBox.zDepth + B->pMesh->boundingBox.center.z));
+	zTotal_A += netVeloA.z;// -abs((A->boundingBox->zDepth + A->boundingBox->center.z) - (B->boundingBox->zDepth + B->boundingBox->center.z));
 
 	//Sum all of the velocities to get the total influence for object A
 	glm::vec3 netVeloB = A->NetVelocityX();
@@ -178,286 +175,29 @@ void PhysicsEngine::ApplyVelocities(float timeDelta){
 
 
 
-
-void PhysicsEngine::updateVelocities(std::vector<RigidBody*> objects, bool revamp)
-{
-	int i = 0;
-	int numOfObjects = objects.size();
-
-	int j = 0;
-	int numOfVelocitys = 0;
-
-	float curVelocity = 0.0f;
-
-	for (i = 0; i < numOfObjects; i++)
-	{
-		numOfVelocitys = objects[i]->velocities.size();//get initial number of velocities before removing dead ones
-
-		for (j = numOfVelocitys - 1; j >= 0; j--)
-		{
-			//check to see if this Velocity has died
-			if (objects[i]->velocities[j]->isDead())//if (objects[i]->Velocitys[j]->timeLeft < 1)
-			{
-				//if the Velocity's time is up, then delete it from the vector
-				delete(objects[i]->velocities[j]);
-				objects[i]->velocities.erase(objects[i]->velocities.begin() + j);
-			}
-		}
-
-		numOfVelocitys = objects[i]->velocities.size();//get the number of velocities left alive
-
-		for (j = 0; j < numOfVelocitys; j++)
-		{
-			//Keep track of current Velocity strength (timeLeft / duration)
-			curVelocity = objects[i]->velocities[j]->strength;
-
-			if (curVelocity > 0.0f)
-			{
-				//Apply translation to object through Velocity
-				objects[i]->move(
-					((curVelocity)* (objects[i]->velocities[j]->x)),
-					((curVelocity)* (objects[i]->velocities[j]->y)),
-					((curVelocity)* (objects[i]->velocities[j]->z))
-					);
-			}
-
-			/*Velocity::update() decrements the timeLeft counter, then
-			recalculates the strength by taking timeLeft / duration
-
-			This function should be called on every Velocity once per frame*/
-
-			objects[i]->velocities[j]->update();
-
-			//check to see if the object has moved out of bounds, if so move it to the edge
-			//checkScreenBounds(objects[i], true);
-		}
-
-		numOfVelocitys = objects[i]->velocities.size();
-
-		for (j = numOfVelocitys - 1; j > 0; j--)
-		{
-			//check to see if this Velocity has died
-			if (objects[i]->velocities[j]->isDead())//if (objects[i]->Velocitys[j]->timeLeft < 1)
-			{
-				//if the Velocity's time is up, then delete it from the vector
-				delete(objects[i]->velocities[j]);
-				objects[i]->velocities.erase(objects[i]->velocities.begin() + j);
-			}
-		}
-	}
-}
-void PhysicsEngine::updateVelocities(std::vector<RigidBody*> objects)
-{
-	int i = 0;
-	int numOfObjects = objects.size();
-
-	int j = 0;
-	int numOfVelocitys = 0;
-
-	float curVelocity = 0.0f;
-
-	for (i = 0; i < numOfObjects; i++)
-	{
-		numOfVelocitys = objects[i]->velocities.size();//get initial number of velocities before removing dead ones
-
-		for (j = numOfVelocitys - 1; j >= 0; j--)
-		{
-			//check to see if this Velocity has died
-			if (objects[i]->velocities[j]->isDead())//if (objects[i]->Velocitys[j]->timeLeft < 1)
-			{
-				//if the Velocity's time is up, then delete it from the vector
-				delete(objects[i]->velocities[j]);
-				objects[i]->velocities.erase(objects[i]->velocities.begin() + j);
-			}
-		}
-
-		numOfVelocitys = objects[i]->velocities.size();//get the updated number of velocities
-
-		for (j = 0; j < numOfVelocitys; j++)
-		{
-			//Keep track of current Velocity strength (timeLeft / duration)
-			curVelocity = objects[i]->velocities[j]->strength;
-
-			if (curVelocity > 0.0f)
-			{
-				//Apply translation to object through Velocity
-				objects[i]->move(
-					(int)((curVelocity)* (objects[i]->velocities[j]->x)),
-					(int)((curVelocity)* (objects[i]->velocities[j]->y)),
-					(int)((curVelocity)* (objects[i]->velocities[j]->z))
-					);
-			}
-
-			/*Velocity::update() decrements the timeLeft counter, then
-			recalculates the strength by taking timeLeft / duration
-
-			This function should be called on every Velocity once per frame*/
-
-			objects[i]->velocities[j]->update();
-
-			//check to see if the object has moved out of bounds, if so move it to the edge
-			checkScreenBounds(objects[i]);
-		}
-
-		numOfVelocitys = objects[i]->velocities.size();
-
-		for (j = numOfVelocitys - 1; j > 0; j--)
-		{
-			//check to see if this Velocity has died
-			if (objects[i]->velocities[j]->isDead())//if (objects[i]->Velocitys[j]->timeLeft < 1)
-			{
-				//if the Velocity's time is up, then delete it from the vector
-				delete(objects[i]->velocities[j]);
-				objects[i]->velocities.erase(objects[i]->velocities.begin() + j);
-			}
-		}
-	}
-}
-void PhysicsEngine::updateVelocities(std::vector<RectObject*> objects)
-{
-	int i = 0;
-	int numOfObjects = objects.size();
-
-	int j = 0;
-	int numOfVelocitys = 0;
-
-	float curVelocity = 0.0f;
-
-	for (i = 0; i < numOfObjects; i++)
-	{
-		numOfVelocitys = objects[i]->velocities.size();
-
-		for (j = numOfVelocitys - 1; j >= 0; j--)
-		{
-			//check to see if this Velocity has died
-			if (objects[i]->velocities[j]->isDead())//if (objects[i]->Velocitys[j]->timeLeft < 1)
-			{
-				//if the Velocity's time is up, then delete it from the vector
-				delete(objects[i]->velocities[j]);
-				objects[i]->velocities.erase(objects[i]->velocities.begin() + j);
-			}
-		}
-
-		numOfVelocitys = objects[i]->velocities.size();
-
-		for (j = 0; j < numOfVelocitys; j++)
-		{
-			//Keep track of current Velocity strength (timeLeft / duration)
-			curVelocity = objects[i]->velocities[j]->strength;
-
-			if (curVelocity > 0.0f)
-			{
-				//Apply translation to object through Velocity
-				objects[i]->move(
-					(int)((curVelocity)* (objects[i]->velocities[j]->x)),
-					(int)((curVelocity)* (objects[i]->velocities[j]->y))
-					//(int)( (curVelocity) * (objects[i]->velocities[j]->z) )
-					);
-			}
-
-
-
-			/*Velocity::update() decrements the timeLeft counter, then
-			recalculates the strength by taking timeLeft / duration
-
-			This function should be called on every Velocity once per frame*/
-
-			objects[i]->velocities[j]->update();
-
-
-
-			//check to see if the object has moved out of bounds, if so move it to the edge
-			checkScreenBounds(objects[i]);
-		}
-
-		numOfVelocitys = objects[i]->velocities.size();
-
-		for (j = numOfVelocitys - 1; j > 0; j--)
-		{
-			//check to see if this Velocity has died
-			if (objects[i]->velocities[j]->isDead())//if (objects[i]->Velocitys[j]->timeLeft < 1)
-			{
-				//if the Velocity's time is up, then delete it from the vector
-				delete(objects[i]->velocities[j]);
-				objects[i]->velocities.erase(objects[i]->velocities.begin() + j);
-			}
-		}
-	}
-}
-
 ///MESH
-void PhysicsEngine::registerRigidBody(char* obj_filename, char* v_shader_filename, char* f_shader_filename, std::string nameId, int id, float mass)
-{
-	MeshObject* object = new MeshObject();
-	object->Init(obj_filename, v_shader_filename, f_shader_filename);
-
-	//RigidBody(MeshObject* mesh, float mass_, std::string nameID_, int id_);
-	//rigidObjects.insert(std::pair<std::string, RigidBody*>(nameId, new RigidBody(object, mass, nameId, id)));
-	rigidObjects.push_back(new RigidBody(object, mass, nameId, id));
-}
-void PhysicsEngine::registerRigidBody(char* obj_filename, char* v_shader_filename, char* f_shader_filename, std::string nameId, float mass)
-{
-	MeshObject* object = new MeshObject();
-	object->Init(obj_filename, v_shader_filename, f_shader_filename);
-
-	int id = rigidObjects.size();
-	//RigidBody(MeshObject* mesh, float mass_, std::string nameID_, int id_);
-	//rigidObjects.insert(std::pair<std::string, RigidBody*>(nameId, new RigidBody(object, mass, nameId, id)));
-	rigidObjects.push_back(new RigidBody(object, mass, nameId, id));
-}
-void PhysicsEngine::registerRigidBody(char* obj_filename, char* v_shader_filename, char* f_shader_filename, Transform* trans, std::string nameId, int id, float mass)
-{
-	MeshObject* object = new MeshObject();
-	object->Init(obj_filename, v_shader_filename, f_shader_filename);
-
-	//RigidBody(MeshObject* mesh, float mass_, std::string nameID_, int id_);
-	//rigidObjects.insert(std::pair<std::string, RigidBody*>(nameId, new RigidBody(object, mass, nameId, id)));
-	rigidObjects.push_back(new RigidBody(object, trans, mass, nameId, id));
-}
-void PhysicsEngine::registerRigidBody(char* obj_filename, char* v_shader_filename, char* f_shader_filename, Transform* trans, std::string nameId, float mass)
-{
-	MeshObject* object = new MeshObject();
-	object->Init(obj_filename, v_shader_filename, f_shader_filename);
-
-	int id = rigidObjects.size();
-	//RigidBody(MeshObject* mesh, float mass_, std::string nameID_, int id_);
-	//rigidObjects.insert(std::pair<std::string, RigidBody*>(nameId, new RigidBody(object, mass, nameId, id)));
-	rigidObjects.push_back(new RigidBody(object, trans, mass, nameId, id));
-}
-void PhysicsEngine::registerRigidBody(MeshObject* object, std::string nameId, int id, float mass)
+void PhysicsEngine::registerRigidBody(BoundingBox* box, Transform* trans, std::string nameId, int type, int id, float mass)
 {
 	//RigidBody(MeshObject* mesh, float mass_, std::string nameID_, int id_);
 	//rigidObjects.insert(std::pair<std::string, RigidBody*>(nameId, new RigidBody(object, mass, nameId, id)));
-	rigidObjects.push_back(new RigidBody(object, mass, nameId, id));
-}
-void PhysicsEngine::registerRigidBody(MeshObject* object, std::string nameId, float mass)
-{
-	int id = rigidObjects.size();
-	//RigidBody(MeshObject* mesh, float mass_, std::string nameID_, int id_);
-	//rigidObjects.insert(std::pair<std::string, RigidBody*>(nameId, new RigidBody(object, mass, nameId, id)));
-	rigidObjects.push_back(new RigidBody(object, mass, nameId, id));
-}
-void PhysicsEngine::registerRigidBody(MeshObject* object, Transform* trans, std::string nameId, int type, int id, float mass)
-{
-	//RigidBody(MeshObject* mesh, float mass_, std::string nameID_, int id_);
-	//rigidObjects.insert(std::pair<std::string, RigidBody*>(nameId, new RigidBody(object, mass, nameId, id)));
-	RigidBody* temp = new RigidBody(object, trans, mass, nameId, id);
+	RigidBody* temp = new RigidBody(box, trans, mass, nameId, id);
 	temp->setType(type);
 	rigidObjects.push_back(temp);
 }
-void PhysicsEngine::registerRigidBody(MeshObject* object, Transform* trans, std::string nameId, int id, float mass)
+void PhysicsEngine::registerRigidBody(BoundingBox* box, Transform* trans, std::string nameId, int id, float mass)
 {
 	//RigidBody(MeshObject* mesh, float mass_, std::string nameID_, int id_);
 	//rigidObjects.insert(std::pair<std::string, RigidBody*>(nameId, new RigidBody(object, mass, nameId, id)));
-	rigidObjects.push_back(new RigidBody(object, trans, mass, nameId, id));
+	rigidObjects.push_back(new RigidBody(box, trans, mass, nameId, id));
 }
-void PhysicsEngine::registerRigidBody(MeshObject* object, Transform* trans, std::string nameId, float mass)
+void PhysicsEngine::registerRigidBody(BoundingBox* box, Transform* trans, std::string nameId, float mass)
 {
 	int id = rigidObjects.size();
 	//RigidBody(MeshObject* mesh, float mass_, std::string nameID_, int id_);
 	//rigidObjects.insert(std::pair<std::string, RigidBody*>(nameId, new RigidBody(object, mass, nameId, id)));
-	rigidObjects.push_back(new RigidBody(object, trans, mass, nameId, id));
+	rigidObjects.push_back(new RigidBody(box, trans, mass, nameId, id));
 }
+
 void PhysicsEngine::unregisterRigidBody(std::string nameId)
 {
 	int numOfObjects = rigidObjects.size();
@@ -471,14 +211,14 @@ void PhysicsEngine::unregisterRigidBody(std::string nameId)
 		}
 	}
 }
-void PhysicsEngine::swapRigidBodyMesh(std::string nameId, MeshObject* pMesh_)
+void PhysicsEngine::swapRigidBodyTrans(std::string nameId, Transform* pTrans_)
 {
 	int numOfObjects = rigidObjects.size();
 	for (int i = 0; i < numOfObjects; i++)
 	{
 		if (rigidObjects[i]->GetName() == nameId)
 		{
-			rigidObjects[i]->pMesh = pMesh_;
+			rigidObjects[i]->pTrans = pTrans_;
 			break;//unless you want multiple things with the same name
 		}
 	}
@@ -541,11 +281,16 @@ vector<std::pair<RigidBody*, RigidBody*>> PhysicsEngine::listCollisions()
 	int numOfObjects = rigidObjects.size();
 
 	list<RigidBody*> returnObjects = list<RigidBody*>();
+	for (int i = 0; i < numOfObjects; i++)
+	{
+		returnObjects.push_back(rigidObjects[i]);
+	}
 
 	for (int i = 0; i < numOfObjects; i++)
 	{
+/*
 		returnObjects.clear();
-		quadtree.retrieve(&returnObjects, rigidObjects[i]);
+		quadtree.retrieve(&returnObjects, rigidObjects[i]);*/
 
 #ifdef DEBUG_SCRIPT
 		cout << "\n object:" << rigidObjects[i]->id_c << " vs";
@@ -563,10 +308,10 @@ vector<std::pair<RigidBody*, RigidBody*>> PhysicsEngine::listCollisions()
 #endif
 
 				bool hit = collisions.checkCollisionAAB(
-					cur->pMesh->boundingBox.center.x, cur->pMesh->boundingBox.center.y, cur->pMesh->boundingBox.center.z,
-					cur->pMesh->boundingBox.xRadius, cur->pMesh->boundingBox.yRadius, cur->pMesh->boundingBox.zRadius,
-					rigidObjects[i]->pMesh->boundingBox.center.x, rigidObjects[i]->pMesh->boundingBox.center.y, rigidObjects[i]->pMesh->boundingBox.center.z,
-					rigidObjects[i]->pMesh->boundingBox.xRadius, rigidObjects[i]->pMesh->boundingBox.yRadius, rigidObjects[i]->pMesh->boundingBox.zRadius
+					cur->boundingBox->center.x, cur->boundingBox->center.y, cur->boundingBox->center.z,
+					cur->boundingBox->xRadius, cur->boundingBox->yRadius, cur->boundingBox->zRadius,
+					rigidObjects[i]->boundingBox->center.x, rigidObjects[i]->boundingBox->center.y, rigidObjects[i]->boundingBox->center.z,
+					rigidObjects[i]->boundingBox->xRadius, rigidObjects[i]->boundingBox->yRadius, rigidObjects[i]->boundingBox->zRadius
 					);
 				if (hit)
 				{
@@ -608,10 +353,10 @@ vector<Transform*> PhysicsEngine::listCollisionsTransform(std::string nameId)
 #endif
 
 					bool hit = collisions.checkCollisionAAB(
-						cur->pMesh->boundingBox.center.x, cur->pMesh->boundingBox.center.y, cur->pMesh->boundingBox.center.z,
-						cur->pMesh->boundingBox.xRadius, cur->pMesh->boundingBox.yRadius, cur->pMesh->boundingBox.zRadius,
-						targetObject->pMesh->boundingBox.center.x, targetObject->pMesh->boundingBox.center.y, targetObject->pMesh->boundingBox.center.z,
-						targetObject->pMesh->boundingBox.xRadius, targetObject->pMesh->boundingBox.yRadius, targetObject->pMesh->boundingBox.zRadius
+						cur->boundingBox->center.x, cur->boundingBox->center.y, cur->boundingBox->center.z,
+						cur->boundingBox->xRadius, cur->boundingBox->yRadius, cur->boundingBox->zRadius,
+						targetObject->boundingBox->center.x, targetObject->boundingBox->center.y, targetObject->boundingBox->center.z,
+						targetObject->boundingBox->xRadius, targetObject->boundingBox->yRadius, targetObject->boundingBox->zRadius
 						);
 					if (hit)
 					{
@@ -655,10 +400,10 @@ vector<RigidBody*> PhysicsEngine::listCollisions(std::string nameId)
 #endif
 
 					bool hit = collisions.checkCollisionAAB(
-						cur->pMesh->boundingBox.center.x, cur->pMesh->boundingBox.center.y, cur->pMesh->boundingBox.center.z,
-						cur->pMesh->boundingBox.xRadius, cur->pMesh->boundingBox.yRadius, cur->pMesh->boundingBox.zRadius,
-						targetObject->pMesh->boundingBox.center.x, targetObject->pMesh->boundingBox.center.y, targetObject->pMesh->boundingBox.center.z,
-						targetObject->pMesh->boundingBox.xRadius, targetObject->pMesh->boundingBox.yRadius, targetObject->pMesh->boundingBox.zRadius
+						cur->boundingBox->center.x, cur->boundingBox->center.y, cur->boundingBox->center.z,
+						cur->boundingBox->xRadius, cur->boundingBox->yRadius, cur->boundingBox->zRadius,
+						targetObject->boundingBox->center.x, targetObject->boundingBox->center.y, targetObject->boundingBox->center.z,
+						targetObject->boundingBox->xRadius, targetObject->boundingBox->yRadius, targetObject->boundingBox->zRadius
 						);
 					if (hit)
 					{
@@ -722,10 +467,10 @@ bool PhysicsEngine::hasCollided(std::string nameId1, std::string nameId2)
 	}
 
 	return collisions.checkCollisionAAB(
-		obj1->pMesh->boundingBox.center.x, obj1->pMesh->boundingBox.center.y, obj1->pMesh->boundingBox.center.z,
-		obj1->pMesh->boundingBox.xRadius, obj1->pMesh->boundingBox.yRadius, obj1->pMesh->boundingBox.zRadius,
-		obj2->pMesh->boundingBox.center.x, obj2->pMesh->boundingBox.center.y, obj2->pMesh->boundingBox.center.z,
-		obj2->pMesh->boundingBox.xRadius, obj2->pMesh->boundingBox.yRadius, obj2->pMesh->boundingBox.zRadius
+		obj1->boundingBox->center.x, obj1->boundingBox->center.y, obj1->boundingBox->center.z,
+		obj1->boundingBox->xRadius, obj1->boundingBox->yRadius, obj1->boundingBox->zRadius,
+		obj2->boundingBox->center.x, obj2->boundingBox->center.y, obj2->boundingBox->center.z,
+		obj2->boundingBox->xRadius, obj2->boundingBox->yRadius, obj2->boundingBox->zRadius
 		);
 }
 
@@ -816,61 +561,6 @@ vector<std::pair<RigidBody*, bool>> PhysicsEngine::hasHitProjectile(vector<Rigid
 	return objectsThatHitProjectile;
 }
 
-void PhysicsEngine::quadTreeCollision()
-{
-	/*
-	Once all objects have been inserted,
-	you will go through each object and retrieve a
-	list of objects it could possibly collide with.
-	You'll then check for collisions between each
-	object in the list and the initial object,
-	using a collision detection algorithm.
-	//*/
-
-	int numOfObjects = rigidObjects.size();
-
-	list<RigidBody*> returnObjects = list<RigidBody*>();
-
-	for (int i = 0; i < numOfObjects; i++)
-	{
-		returnObjects.clear();
-		quadtree.retrieve(&returnObjects, rigidObjects[i]);
-
-#ifdef DEBUG_SCRIPT
-		cout << "\n object:" << rigidObjects[i]->id_c << " vs";
-#endif
-
-
-		for (list<RigidBody*>::iterator it = returnObjects.begin(); it != returnObjects.end(); ++it)
-		{
-
-			RigidBody* cur = *it;
-
-			if (cur->id != rigidObjects[i]->id)
-			{
-#ifdef DEBUG_SCRIPT
-				cout << "\n object:" << cur->id_c;
-#endif
-
-				bool hit = collisions.checkCollisionAAB(
-					cur->pMesh->boundingBox.center.x, cur->pMesh->boundingBox.center.y, cur->pMesh->boundingBox.center.z,
-					cur->pMesh->boundingBox.xRadius, cur->pMesh->boundingBox.yRadius, cur->pMesh->boundingBox.zRadius,
-					rigidObjects[i]->pMesh->boundingBox.center.x, rigidObjects[i]->pMesh->boundingBox.center.y, rigidObjects[i]->pMesh->boundingBox.center.z,
-					rigidObjects[i]->pMesh->boundingBox.xRadius, rigidObjects[i]->pMesh->boundingBox.yRadius, rigidObjects[i]->pMesh->boundingBox.zRadius
-					);
-				if (hit)
-				{
-#ifdef PRINT_COLLISION
-					cout << "\n HIT " << rigidObjects[i]->id_c << " vs " << cur->id_c;
-#endif
-
-					triggerImpact(cur, rigidObjects[i]);
-				}
-			}
-
-		}
-	}//*/
-}
 void PhysicsEngine::bruteCollision()
 {
 	int numOfObjects = rigidObjects.size();
@@ -900,10 +590,10 @@ void PhysicsEngine::bruteCollision()
 			if (cur->id != rigidObjects[i]->id)
 			{
 				bool hit = collisions.checkCollisionAAB(
-					cur->pMesh->boundingBox.center.x, cur->pMesh->boundingBox.center.y, cur->pMesh->boundingBox.center.z,
-					cur->pMesh->boundingBox.xRadius, cur->pMesh->boundingBox.yRadius, cur->pMesh->boundingBox.zRadius,
-					rigidObjects[i]->pMesh->boundingBox.center.x, rigidObjects[i]->pMesh->boundingBox.center.y, rigidObjects[i]->pMesh->boundingBox.center.z,
-					rigidObjects[i]->pMesh->boundingBox.xRadius, rigidObjects[i]->pMesh->boundingBox.yRadius, rigidObjects[i]->pMesh->boundingBox.zRadius
+					cur->boundingBox->center.x, cur->boundingBox->center.y, cur->boundingBox->center.z,
+					cur->boundingBox->xRadius, cur->boundingBox->yRadius, cur->boundingBox->zRadius,
+					rigidObjects[i]->boundingBox->center.x, rigidObjects[i]->boundingBox->center.y, rigidObjects[i]->boundingBox->center.z,
+					rigidObjects[i]->boundingBox->xRadius, rigidObjects[i]->boundingBox->yRadius, rigidObjects[i]->boundingBox->zRadius
 					);
 				if (hit)
 				{
@@ -915,20 +605,6 @@ void PhysicsEngine::bruteCollision()
 		}
 	}//*/
 }
-void PhysicsEngine::updateQuadTree()
-{
-	//At every frame, you will insert all objects into the quadtree by
-	//first clearing the quadtree then using the insert method for every object.
-
-	int numOfObjects = rigidObjects.size();
-
-	quadtree.clear();
-
-	for (int i = 0; i < numOfObjects; i++) {
-		quadtree.insert(rigidObjects[i]);
-	}
-
-}
 
 ///VALIDATION
 bool PhysicsEngine::forcesAreEqual(Velocity* v1, Velocity* v2)
@@ -938,116 +614,4 @@ bool PhysicsEngine::forcesAreEqual(Velocity* v1, Velocity* v2)
 		return true;
 	}
 	return false;
-}
-void PhysicsEngine::checkScreenBounds(RigidBody* object)
-{
-	float object_sx = object->pMesh->bottomFace.sx;
-	float object_sz = object->pMesh->bottomFace.sy;
-	float object_ex = object->pMesh->bottomFace.ex;
-	float object_ez = object->pMesh->bottomFace.ey;
-
-	if (object_sx < 0)
-	{
-		object->move(-(object_sx), 0, 0);
-		int numOfVelocities = object->velocities.size();
-		for (int i = 0; i < numOfVelocities; i++)
-		{
-			if (object->velocities[i]->velocityType == 1)
-			{
-				object->velocities.erase(object->velocities.begin() + i);
-			}
-		}
-	}
-	if (object_sz < 0)
-	{
-		object->move(0, 0, -(object_sz));
-		int numOfVelocities = object->velocities.size();
-		for (int i = 0; i < numOfVelocities; i++)
-		{
-			if (object->velocities[i]->velocityType == 1)
-			{
-				object->velocities.erase(object->velocities.begin() + i);
-			}
-		}
-	}
-	if (object_ex > screenWidth)
-	{
-		int diff = object_ex - screenWidth;
-		object->move(-diff, 0, 0);
-		int numOfVelocities = object->velocities.size();
-		for (int i = 0; i < numOfVelocities; i++)
-		{
-			if (object->velocities[i]->velocityType == 1)
-			{
-				object->velocities.erase(object->velocities.begin() + i);
-			}
-		}
-	}
-	if (object_ez > screenHeight)
-	{
-		int diff = object_ez - screenDepth;
-		object->move(0, 0, -diff);
-		int numOfVelocities = object->velocities.size();
-		for (int i = 0; i < numOfVelocities; i++)
-		{
-			if (object->velocities[i]->velocityType == 1)
-			{
-				object->velocities.erase(object->velocities.begin() + i);
-			}
-		}
-	}
-}
-void PhysicsEngine::checkScreenBounds(RectObject* object)
-{
-
-	if (object->sx < 0)
-	{
-		object->move(-(object->sx), 0);
-		int numOfVelocities = object->velocities.size();
-		for (int i = 0; i < numOfVelocities; i++)
-		{
-			if (object->velocities[i]->velocityType == 1)
-			{
-				object->velocities.erase(object->velocities.begin() + i);
-			}
-		}
-	}
-	if (object->sy < 0)
-	{
-		object->move(0, -(object->sy));
-		int numOfVelocities = object->velocities.size();
-		for (int i = 0; i < numOfVelocities; i++)
-		{
-			if (object->velocities[i]->velocityType == 1)
-			{
-				object->velocities.erase(object->velocities.begin() + i);
-			}
-		}
-	}
-	if (object->ex > screenWidth)
-	{
-		int diff = object->ex - screenWidth;
-		object->move(-diff, 0);
-		int numOfVelocities = object->velocities.size();
-		for (int i = 0; i < numOfVelocities; i++)
-		{
-			if (object->velocities[i]->velocityType == 1)
-			{
-				object->velocities.erase(object->velocities.begin() + i);
-			}
-		}
-	}
-	if (object->ey > screenHeight)
-	{
-		int diff = object->ey - screenHeight;
-		object->move(0, -diff);
-		int numOfVelocities = object->velocities.size();
-		for (int i = 0; i < numOfVelocities; i++)
-		{
-			if (object->velocities[i]->velocityType == 1)
-			{
-				object->velocities.erase(object->velocities.begin() + i);
-			}
-		}
-	}
 }

@@ -18,12 +18,13 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MeshObject.cpp" />
     <ClCompile Include="PhysicsEngine.cpp" />
-    <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="Rect.cpp" />
     <ClCompile Include="RectObject.cpp" />
     <ClCompile Include="WorldEngine.cpp" />
     <ClCompile Include="WorldSquare.cpp" />
     <ClCompile Include="ServerMain.cpp" />
+    <ClCompile Include="ServerGame.cpp" />
+    <ClCompile Include="ServerNetwork.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoundingBox.h" />
@@ -45,12 +46,13 @@
     <ClInclude Include="GroupObject.h" />
     <ClInclude Include="PhysicsEngine.h" />
     <ClInclude Include="IMovable.h" />
-    <ClInclude Include="Quadtree.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="MeshObject.h" />
     <ClInclude Include="RectObject.h" />
     <ClInclude Include="WorldEngine.h" />
     <ClInclude Include="WorldSquare.h" />
     <ClInclude Include="ServerMain.h" />
+    <ClInclude Include="ServerGame.h" />
+    <ClInclude Include="ServerNetwork.h" />
   </ItemGroup>
 </Project>
