@@ -34,7 +34,6 @@ void ClientGame::sendActionPackets(int i)
 
 	Packet packet;
 	packet.packet_type = ACTION_EVENT;
-	packet.testValue = i;
 
 	packet.serialize(packet_data);
 

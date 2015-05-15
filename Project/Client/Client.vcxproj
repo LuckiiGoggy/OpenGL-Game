@@ -68,13 +68,11 @@
   <ItemGroup>
     <ClInclude Include="ClientGame.h" />
     <ClInclude Include="ClientNetwork.h" />
-    <ClInclude Include="NetworkServices.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClientGame.cpp" />
     <ClCompile Include="ClientNetwork.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="NetworkServices.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Network\Network.vcxproj">

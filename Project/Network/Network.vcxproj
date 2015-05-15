@@ -77,9 +77,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GLNetwork.h" />
+    <ClInclude Include="NetworkServices.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Network.cpp" />
+    <ClCompile Include="GLNetwork.cpp" />
+    <ClCompile Include="NetworkServices.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
