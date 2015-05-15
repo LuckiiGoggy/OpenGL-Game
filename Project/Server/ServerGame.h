@@ -4,6 +4,8 @@
 #pragma once
 #include "GLNetwork.h"
 #include "ServerNetwork.h"
+#include <thread>
+#include <vector>
 
 class ServerGame
 {
@@ -17,6 +19,8 @@ public:
 
 	void receiveFromClients();
 
+	static void threadedClient(int clientId);
+
 	void sendActionPackets();
 
 private:
@@ -25,8 +29,11 @@ private:
 	static unsigned int client_id;
 
 	// The ServerNetwork object 
-	ServerNetwork* network;
+	static ServerNetwork* network;
 
 	// data buffer
 	char network_data[MAX_PACKET_SIZE];
+
+	//threads
+	std::vector<std::thread *> myThreads;
 };

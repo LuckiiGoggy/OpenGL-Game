@@ -2,6 +2,7 @@
 //
 
 #include "ServerNetwork.h"
+#include <iostream>
 
 ServerNetwork::ServerNetwork(void)
 {
@@ -137,10 +138,11 @@ int ServerNetwork::receiveData(unsigned int client_id, char * recvbuf)
 void ServerNetwork::sendToAll(char * packets, int totalSize)
 {
 	SOCKET currentSocket;
-	std::map<unsigned int, SOCKET>::iterator iter;
+	std::map<unsigned int, SOCKET>::iterator iter = sessions.begin();
 	int iSendResult;
 
-	for (iter = sessions.begin(); iter != sessions.end(); iter++)
+
+	while (iter != sessions.end())
 	{
 		currentSocket = iter->second;
 		iSendResult = NetworkServices::sendMessage(currentSocket, packets, totalSize);
@@ -148,7 +150,18 @@ void ServerNetwork::sendToAll(char * packets, int totalSize)
 		if (iSendResult == SOCKET_ERROR)
 		{
 			printf("send failed with error: %d\n", WSAGetLastError());
-			closesocket(currentSocket);
+
+			if (WSAGetLastError() == WSAECONNRESET){
+				std::cout << "Deleting Client: " << iter->first;
+				closesocket(currentSocket);
+				sessions.erase(iter++);
+			}
+			else{
+				++iter;
+			}
+		}
+		else{
+			++iter;
 		}
 	}
 }

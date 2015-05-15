@@ -6,6 +6,8 @@
 
 // used for multi-threading
 #include <process.h>
+#include <thread>
+#include <iostream>
 
 void serverLoop(void *);
 
@@ -22,16 +24,4 @@ int main()
 		server->update();
 	}
 
-	/*
-	// create thread with arbitrary argument for the run function
-	_beginthread(serverLoop, 0, (void*)12);
-	*/
-}
-
-void serverLoop(void * arg)
-{
-	while (true)
-	{
-		server->update();
-	}
 }
