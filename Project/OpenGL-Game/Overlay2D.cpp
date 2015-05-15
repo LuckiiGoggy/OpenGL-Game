@@ -38,7 +38,7 @@ void Overlay2D::Render()
 
 	GLuint tex_2d = SOIL_load_OGL_texture
 		(
-		"../Assets/Images/heart2.png",
+		"../Assets/Images/heart.png",
 		SOIL_LOAD_AUTO,
 		SOIL_CREATE_NEW_ID,
 		SOIL_FLAG_INVERT_Y
@@ -56,13 +56,30 @@ void Overlay2D::Render()
 		glTexCoord2f(1, 0); glVertex2f(-0.9 - offset, 0.95);
 		glEnd();
 	}
+	GLuint tex2_2d = SOIL_load_OGL_texture
+		(
+		"../Assets/Images/spear.png",
+		SOIL_LOAD_AUTO,
+		SOIL_CREATE_NEW_ID,
+		SOIL_FLAG_INVERT_Y
+		);
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, tex2_2d);
+
+	glBegin(GL_QUADS);
+		glTexCoord2f(0, 0); glVertex2f(0.95, 1.0);;
+		glTexCoord2f(0, 1); glVertex2f(0.9, 1.0);
+		glTexCoord2f(1, 1); glVertex2f(0.9, 0.95);
+		glTexCoord2f(1, 0); glVertex2f(0.95, 0.95);
+	glEnd();
+
 	glDisable(GL_BLEND);
 
 	std::string output;
 	int len, i;
 	glColor3f(0.576, 0.094, 0.816);
-	glRasterPos2f(0.85, -1.0);
-	output = "Ammo: ";
+	glRasterPos2f(0.94, 0.95);
+	output = ": ";
 	output += std::to_string(ammo);
 	output += "/3";
 	len = output.size();
