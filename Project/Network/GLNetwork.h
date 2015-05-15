@@ -29,7 +29,13 @@ namespace GLNetwork{
 
 		OBJECT_INFO = 4,
 		
-		KILL_OBJECT = 5
+		KILL_OBJECT = 5,
+
+		WALL_OBJECT = 6,
+
+		PLAYER_OBJECT = 7,
+
+		PROJECTILE_OBJECT = 8
 
 	};
 
@@ -55,10 +61,11 @@ namespace GLNetwork{
 	struct PlayerPacket : Packet {
 		PlayerPacket() : Packet(PLAYER_PACKET, sizeof(PlayerPacket)){};
 
-		/*Velocity*/
-		float veloX;
-		float veloY;
-		float veloZ;
+		/*Player Input*/
+		bool forward;
+		bool backward;
+		bool left;
+		bool right;
 
 		/*Net Rotation*/
 		float netRot00;
@@ -86,6 +93,7 @@ namespace GLNetwork{
 
 	struct ObjectPacket : Packet{
 		ObjectPacket() : Packet(OBJECT_INFO,sizeof(ObjectPacket)){};
+		ObjectPacket(PacketType type, size_t size) : Packet(type, size){};
 
 		/*Object Id*/
 		int objectId;
@@ -105,6 +113,18 @@ namespace GLNetwork{
 		float posX;
 		float posY;
 		float posZ;
+	};
+
+	struct WallObjectPacket : ObjectPacket{
+		WallObjectPacket() : ObjectPacket(WALL_OBJECT, sizeof(WallObjectPacket)){};
+	};
+
+	struct PlayerObjectPacket : ObjectPacket{
+		PlayerObjectPacket() : ObjectPacket(PLAYER_OBJECT, sizeof(PlayerObjectPacket)){};
+	};
+
+	struct ProjectileObjectPacket : ObjectPacket{
+		ProjectileObjectPacket() : ObjectPacket(PROJECTILE_OBJECT, sizeof(ProjectileObjectPacket)){};
 	};
 
 	struct KillObject : Packet{
