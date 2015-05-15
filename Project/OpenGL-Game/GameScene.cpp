@@ -36,13 +36,26 @@ void GameScene::Init(void){
 
 	Player *player = new Player();
 	AddMember("Player", player);
+	players.push_back(player);
 
+	Player *player2 = new Player();
+	AddMember("Player2", player2);
+	players.push_back(player2);
 
+	Player *player3 = new Player();
+	AddMember("Player3", player3);
+	players.push_back(player3);
+
+	Player *player4 = new Player();
+	AddMember("Player4", player4);
+	players.push_back(player4);
 
 
 	GlutManager::GetPhysEngi()->registerRigidBody(player->GetCollisionMesh(), player, "BoxMan");
 
-
+	GlutManager::GetPhysEngi()->registerRigidBody(player2->GetCollisionMesh(), player2, "BoxMan2");
+	GlutManager::GetPhysEngi()->registerRigidBody(player3->GetCollisionMesh(), player3, "BoxMan3");
+	GlutManager::GetPhysEngi()->registerRigidBody(player4->GetCollisionMesh(), player4, "BoxMan4");
 
 	pC = new PlayerController(player);
 
@@ -53,9 +66,9 @@ void GameScene::Init(void){
 	engine = new WorldEngine();
 	engine->readWorld("level");
 
-	spawn = new Spawner(engine->squares, players);
+	spawn = new Spawner(engine->squares);
 
-
+	spawn->InitialSpawn(players);
 
 }
 
@@ -87,13 +100,16 @@ void GameScene::Update(float timedelta) {
 			projectileIds.erase(projectileIds.begin() + counter);
 			counter--;
 			((Player*)members.at("Player"))->IncStat("Ammo");
+			HUD.increaseAmmo();
 		}
 
 		for (size_t counter2 = 0; counter2 < collidedWith.size(); counter2++){
 			Player *player = dynamic_cast<Player *> (collidedWith[counter2]);
 
-			if (player != 0)
+			if (player != 0){
 				player->DecStat("Health");
+				HUD.decreaseHP();
+			}
 		}
 
 	}
@@ -103,6 +119,7 @@ void GameScene::Update(float timedelta) {
 	if (InputManager::IsMouseClicked(timedelta) && ((Player*)members.at("Player"))->GetStatValue("Ammo") > 0) {
 		spawn->SpawnProjectile((Player*)members.at("Player"), this);
 		((Player*)members.at("Player"))->DecStat("Ammo");
+		HUD.decreaseAmmo();
 	}
 
 	spawn->UpdateProjectiles(timedelta);

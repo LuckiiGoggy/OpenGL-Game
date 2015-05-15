@@ -4,8 +4,10 @@
 
 char* floor_filename = (char*) "../Assets/Models/floorPlane.obj";
 char* wall_filename = (char*) "../Assets/Models/wallCube.obj";
-char* v_shader_filename = (char*) "../Assets/Shaders/gouraud-shading.v.glsl";
-char* f_shader_filename = (char*) "../Assets/Shaders/gouraud-shading.f.glsl";
+char* v_wall_filename = (char*) "../Assets/Shaders/new-shading.v.glsl";
+char* f_wall_filename = (char*) "../Assets/Shaders/new-shading.f.glsl";
+char* v_floor_filename = (char*) "../Assets/Shaders/floor-shading.v.glsl";
+char* f_floor_filename = (char*) "../Assets/Shaders/floor-shading.f.glsl";
 float tileLength = 8;
 int tileNo = 0;
 
@@ -43,8 +45,8 @@ void WorldEngine::loadDirectory() {
 void WorldEngine::readWorld(std::string filename) {
 	std::ifstream file;
 	file.open(path + filename + filetype);
-	wall->Init(wall_filename, v_shader_filename, f_shader_filename);
-	floor->Init(floor_filename, v_shader_filename, f_shader_filename);
+	wall->Init(wall_filename, v_wall_filename, f_wall_filename);
+	floor->Init(floor_filename, v_floor_filename, f_floor_filename);
 
 	if (file.is_open()) {
 		int index;
@@ -68,13 +70,13 @@ void WorldEngine::readWorld(std::string filename) {
 			index = 0;
 			for (float j = 0; j < w; j++) {
 				block = (int)(s.at(index) - '0');
-				squares.push_back(WorldSquare((int)i, (int)j, block));
+				squares.push_back(WorldSquare((int)j, (int)i, block));
 				MeshObject* p;
 				switch (block) {
 				case WALL:
 				{
 					p = new MeshObject(*wall);
-					p->Move(glm::vec3(j * tileLength, 1.0f, i * tileLength));
+					p->Move(glm::vec3(j * tileLength, 3.0f, i * tileLength));
 					tileNo++;
 					std::string name = "tile" + std::to_string(tileNo);
 					GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);
@@ -83,38 +85,41 @@ void WorldEngine::readWorld(std::string filename) {
 				case FLOOR:
 				{
 					p = new MeshObject(*floor);
-					p->Move(glm::vec3(j * tileLength, 0.0f, i * tileLength));
+					p->Move(glm::vec3(j * tileLength, -1.0f, i * tileLength));
 					tileNo++;
-					std::string name = "tile" + std::to_string(tileNo);
-					GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);
+					/*std::string name = "tile" + std::to_string(tileNo);
+					GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);*/
 					break;
 				}
 				case MOVEWALL:
 				{
+					p = new MeshObject(*floor);
+					p->Move(glm::vec3(j * tileLength, -1.0f, i * tileLength));
+					/*std::string name = "extrafloor" + std::to_string(tileNo);
+					GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);*/
+					meshes.push_back(p);
+
 					p = new MeshObject(*wall);
-					p->Move(glm::vec3(j * tileLength, 1.0f, i * tileLength));
+					p->Move(glm::vec3(j * tileLength, 3.0f, i * tileLength));
 					tileNo++;
 					std::string name = "tile" + std::to_string(tileNo);
 					GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 3, tileNo);
-					p = new MeshObject(*floor);
-					p->Move(glm::vec3(j * tileLength, 0.0f, i * tileLength));
-					name = "extrafloor" + std::to_string(tileNo);
-					GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);
+					
 					break;
 				}
 				case SPAWN:
 				{
 					p = new MeshObject(*floor);
-					p->Move(glm::vec3(j * tileLength, 0.0f, i * tileLength));
+					p->Move(glm::vec3(j * tileLength, -1.0f, i * tileLength));
 					tileNo++;
-					std::string name = "tile" + std::to_string(tileNo);
-					GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);
+					/*std::string name = "tile" + std::to_string(tileNo);
+					GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);*/
 					break;
 				}
 				default:
 				{
 					p = new MeshObject(*wall);
-					p->Move(glm::vec3(j * tileLength, 1.0f, i * tileLength));
+					p->Move(glm::vec3(j * tileLength, 3.0f, i * tileLength));
 					tileNo++;
 					std::string name = "tile" + std::to_string(tileNo);
 					GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);
@@ -131,15 +136,8 @@ void WorldEngine::readWorld(std::string filename) {
 }
 
 void WorldEngine::renderWorld() {
-	int index = 0;
-	int block;
-
-	for (float i = 0; i < h; i++) {
-		for (float j = 0; j < w; j++) {
-			block = squares.at(index).type;
-			meshes[index]->Update(0.0);
-			meshes[index]->Render();
-			index++;			
-		}
+	for (size_t i = 0; i < meshes.size(); i++) {
+		meshes[i]->Update(0.0);
+		meshes[i]->Render();
 	}
 }
