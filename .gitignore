@@ -10,6 +10,10 @@
 *.idb
 Project/OpenGL-Game/Debug/
 Project/WorldEditor/Debug/
-Project\WorldEditor\Debug\
 Project/OpenGL-Game.v12.suo
-Project/OpenGL-Game/Main.cpp
+Project/Server/Debug/
+Project/Client/Debug/
+Project/Network/Debug/
+Project/OpenGL-Game-Client/Debug/
+Project/OpenGL-Game-Server/Debug/
+Project/Debug/Network.lib
