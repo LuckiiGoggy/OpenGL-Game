@@ -29,27 +29,39 @@ void Overlay2D::prepare2D(int left, int top, int right, int bottom)
 	glLoadIdentity();
 }
 
-void Overlay2D::Render() 
+void Overlay2D::Render()
 {
 	glDisable(GL_DEPTH_TEST);
-	glBlendFunc(GL_DST_COLOR, GL_ZERO);
+	//glBlendFunc(GL_DST_COLOR, GL_ZERO);
 	glEnable(GL_BLEND);
 	//Render Your Images Here---------------------------------------------------------------------------
-	
-	glColor3f(0.576, 0.094, 0.816);
-	glRasterPos2f(-1.0, 0.95);
-	std::string output;
-	output = "Health: ";
-	output += std::to_string(health);
-	output += "/3";
-	int len, i;
-	len = output.size();
-	for (i = 0; i < len; i++) {
-		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, output[i]);
-	}
 
+	GLuint tex_2d = SOIL_load_OGL_texture
+		(
+		"../Assets/Images/heart2.png",
+		SOIL_LOAD_AUTO,
+		SOIL_CREATE_NEW_ID,
+		SOIL_FLAG_INVERT_Y
+		);
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, tex_2d);
+
+	for (int i = 1; i <= health; i++)
+	{
+		glBegin(GL_QUADS);
+		float offset = (3 - i)*0.05;
+		glTexCoord2f(0, 0); glVertex2f(-0.9 - offset, 1.0);;
+		glTexCoord2f(0, 1); glVertex2f(-0.85 - offset, 1.0);
+		glTexCoord2f(1, 1); glVertex2f(-0.85 - offset, 0.95);
+		glTexCoord2f(1, 0); glVertex2f(-0.9 - offset, 0.95);
+		glEnd();
+	}
+	glDisable(GL_BLEND);
+
+	std::string output;
+	int len, i;
 	glColor3f(0.576, 0.094, 0.816);
-	glRasterPos2f(0.83, 0.95);
+	glRasterPos2f(0.85, -1.0);
 	output = "Ammo: ";
 	output += std::to_string(ammo);
 	output += "/3";
@@ -66,8 +78,6 @@ void Overlay2D::Render()
 	for (i = 0; i < len; i++) {
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, output[i]);
 	}
-	
-
 
 	//Stop rendering images here--------------------------------------------------------------------------
 	glDisable(GL_BLEND);
@@ -82,10 +92,26 @@ void Overlay2D::unprepare2D()
 	glMatrixMode(GL_MODELVIEW);
 }
 
-void Overlay2D::increaseAmmo() { ammo++; }
-void Overlay2D::decreaseAmmo() { ammo--; }
-void Overlay2D::increaseHP() { health++; }
-void Overlay2D::decreaseHP() { health--; }
+void Overlay2D::increaseAmmo() {
+	if (ammo <= 3)
+		ammo++;
+}
+
+void Overlay2D::decreaseAmmo() {
+	if (ammo > 0)
+		ammo--;
+}
+
+void Overlay2D::increaseHP() {
+	if (health <= 3)
+		health++;
+}
+
+void Overlay2D::decreaseHP() {
+	if (health > 0)
+		health--;
+}
+
 void Overlay2D::increaseScore() { score++; }
 void Overlay2D::decreaseScore() { score--; }
 void Overlay2D::setAmmo(int i) { ammo = i; }
