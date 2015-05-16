@@ -9,6 +9,8 @@ ServerGame * ServerMain::server;
 bool ServerMain::isRunning = false;
 float ServerMain::currDelta;
 float ServerMain::lastTime;
+int ServerMain::lastObjectId;
+
 
 
 void ServerMain::SetPhysEngi(PhysicsEngine * newPhysEngi)
@@ -27,6 +29,7 @@ void ServerMain::Init(void)
 	server = new ServerGame();
 	lastTime = glutGet(GLUT_ELAPSED_TIME) / 1000.0f;
 	isRunning = true;
+	lastObjectId = 0;
 }
 
 void ServerMain::StartLoop()
@@ -76,5 +79,10 @@ Transform *ServerMain::GetMember(int objectId)
 	if (members.find(objectId) != members.end()){
 		return members[objectId];
 	}
+}
+
+int ServerMain::GetNewObjectId(void)
+{
+	return lastObjectId++;
 }
 

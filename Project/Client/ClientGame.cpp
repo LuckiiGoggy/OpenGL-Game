@@ -9,14 +9,12 @@ ClientGame::ClientGame()
 {
 	network = new ClientNetwork();
 
-	// send init packet
-	const unsigned int packet_size = sizeof(Packet);
-	char packet_data[packet_size];
+	char *packet_data;
 
-	Packet packet;
-	packet.packet_type = INIT_CONNECTION;
+	Packet *packet = new Packet();
 
-	packet.serialize(packet_data);
+	const unsigned int packet_size = PacketBuilder::SerializePacket(INIT_CONNECTION, packet, packet_data);
+	//packet.serialize(packet_data);
 
 	NetworkServices::sendMessage(network->ConnectSocket, packet_data, packet_size);
 }
@@ -29,22 +27,21 @@ ClientGame::~ClientGame(void)
 void ClientGame::sendActionPackets(int i)
 {
 	// send action packet
-	const unsigned int packet_size = sizeof(Packet);
-	char packet_data[packet_size];
+	char *packet_data;
 
 	Packet packet;
-	packet.packet_type = ACTION_EVENT;
 
-	packet.serialize(packet_data);
+	const unsigned int packet_size = PacketBuilder::SerializePacket(ACTION_EVENT, &packet, packet_data);
 
 	NetworkServices::sendMessage(network->ConnectSocket, packet_data, packet_size);
 }
 
 void ClientGame::update(int j)
 {
-	Packet packet;
+	Packet *packet;
+	PlayerInfoPacket newPacket;
 	int data_length = network->receivePackets(network_data);
-
+	int packetSize = 0;
 	if (data_length <= 0)
 	{
 		//no data recieved
@@ -52,18 +49,25 @@ void ClientGame::update(int j)
 	}
 
 	int i = 0;
-	while (i < (unsigned int)data_length)
+	for(int i =0; i < (unsigned int)data_length; i+=packetSize)
 	{
-		packet.deserialize(&(network_data[i]));
-		i += sizeof(Packet);
 
-		switch (packet.packet_type) {
+		packetSize = PacketReader::DeSerializePacket(packet, network_data, i);
+
+		switch (network_data[i]) {
 
 		case ACTION_EVENT:
 
 			printf("client received action event packet from server\n");
 
 			sendActionPackets(j);
+
+			break;
+
+		case PLAYER_INFO_PACKET:
+
+			printf("\nPlayer Info, ammo: %d, health: %d, score: %d", ((PlayerInfoPacket *)packet)->ammo, ((PlayerInfoPacket *)packet)->health, ((PlayerInfoPacket *)packet)->score);
+
 
 			break;
 

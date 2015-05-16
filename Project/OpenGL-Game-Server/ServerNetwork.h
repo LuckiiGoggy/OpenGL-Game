@@ -5,6 +5,9 @@
 #include "GLNetwork.h"
 #include "NetworkServices.h"
 
+#include <winsock2.h>
+#include <Windows.h>
+
 #include <map>
 
 using namespace std;
@@ -21,6 +24,8 @@ public:
 
 	// send data to all clients
 	void sendToAll(char * packets, int totalSize);
+	// send data to one client
+	void SendToOne(unsigned int clientId, char * packets, int totalSize);
 
 	// receive incoming data
 	int receiveData(unsigned int client_id, char * recvbuf);

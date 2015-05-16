@@ -1,9 +1,9 @@
 // Server: ServerNetwork.cpp
 //
 
+#include "ServerGame.h"
 #include "ServerNetwork.h"
 #include <ws2tcpip.h>
-#include <iostream>
 
 ServerNetwork::ServerNetwork(void)
 {
@@ -64,8 +64,10 @@ ServerNetwork::ServerNetwork(void)
 		exit(1);
 	}
 
+	
+
 	// Setup the listening socket
-	iResult = bind(ListenSocket, result->ai_addr, (int)result->ai_addrlen);
+	iResult = ::bind(ListenSocket, result->ai_addr, (int)result->ai_addrlen);
 
 	if (iResult == SOCKET_ERROR) {
 		printf("bind failed with error: %d\n", WSAGetLastError());
@@ -153,7 +155,7 @@ void ServerNetwork::sendToAll(char * packets, int totalSize)
 			printf("send failed with error: %d\n", WSAGetLastError());
 
 			if (WSAGetLastError() == WSAECONNRESET){
-				std::cout << "Deleting Client: " << iter->first;
+				ServerGame::RemoveClient(iter->first);
 				closesocket(currentSocket);
 				sessions.erase(iter++);
 			}
@@ -166,3 +168,17 @@ void ServerNetwork::sendToAll(char * packets, int totalSize)
 		}
 	}
 }
+
+void ServerNetwork::SendToOne(unsigned int clientId, char * packets, int totalSize)
+{
+	SOCKET currSocket;
+
+	if (sessions.find(clientId) == sessions.end()) return;
+
+	currSocket = sessions[clientId];
+
+
+	NetworkServices::sendMessage(currSocket, packets, totalSize);
+
+}
+

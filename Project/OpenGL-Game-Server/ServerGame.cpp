@@ -2,20 +2,18 @@
 //
 
 #include "ServerGame.h"
-#include <iostream>
+#include "ServerMain.h"
+#include "Player.h"
 
 unsigned int ServerGame::client_id = 0;
 ServerNetwork* ServerGame::network = new ServerNetwork();
+std::map<unsigned int, int> ServerGame::clients;
+
 
 using namespace GLNetwork;
 
 ServerGame::ServerGame(void)
 {
-	// Assigning id's to clients
-	client_id = 0;
-
-	// Setup network for listening
-	//network = new ServerNetwork();
 }
 
 ServerGame::~ServerGame(void)
@@ -28,28 +26,43 @@ void ServerGame::update()
 	if (network->acceptNewClient(client_id))
 	{
 		printf("client %d has been connected to the server\n", client_id);
-
 		myThreads.push_back(new std::thread(threadedClient, client_id));
+
+		int newObjId = ServerMain::GetNewObjectId();
+
+		clients[client_id] = newObjId;
+		Player *player = new Player();
+
+		ServerMain::AddMember(newObjId, player);
+
+		PlayerInfoPacket playerInfo;
+		playerInfo.ammo = player->GetStatValue("Ammo");
+		playerInfo.health = player->GetStatValue("Health");
+		playerInfo.score = player->GetStatValue("Score");
+
+		SendPacketToClient(&playerInfo, client_id);
 
 		client_id++;
 
 	}
 
 	//receiveFromClients();
-	sendActionPackets();
+	//sendActionPackets();
 }
+
 
 
 void ServerGame::sendActionPackets()
 {
+	Packet *packet = new PlayerInfoPacket();
 	// Send action packet
-	const unsigned int packet_size = sizeof(Packet);
-	char packet_data[packet_size];
+	unsigned int packet_size;
+	char *packet_data;
 
-	Packet packet;
-	packet.packet_type = ACTION_EVENT;
 
-	packet.serialize(packet_data);
+	
+	packet_size = PacketBuilder::SerializePacket(PLAYER_INFO_PACKET, packet, packet_data);
+	//packet->serialize(packet_data);
 
 	network->sendToAll(packet_data, packet_size);
 }
@@ -57,7 +70,7 @@ void ServerGame::sendActionPackets()
 void ServerGame::threadedClient(int clientId)
 {
 	char network_data[MAX_PACKET_SIZE];
-	Packet packet;
+	Packet *packet;
 
 	while (network->sessions.find(clientId) != network->sessions.end()){
 		int data_length = network->receiveData(clientId, network_data);
@@ -71,10 +84,12 @@ void ServerGame::threadedClient(int clientId)
 		int i = 0;
 		while ((i < (unsigned int)data_length) && (network->sessions.find(clientId) != network->sessions.end()))
 		{
-			packet.deserialize(&(network_data[i]));
-			i += packet.packet_size;
+			int packetSize = PacketReader::DeSerializePacket(packet, network_data, i);
 
-			switch (packet.packet_type) {
+			//packet.deserialize(&(network_data[i]));
+			i += packetSize;
+
+			switch (network_data[i]) {
 
 			case INIT_CONNECTION:
 
@@ -102,4 +117,32 @@ void ServerGame::threadedClient(int clientId)
 		}
 	}
 
+}
+
+void ServerGame::RemoveClient(unsigned int clientId)
+{
+	if (clients.find(clientId) != clients.end()){
+		clients.erase(clientId);
+	}
+}
+
+void ServerGame::sendPackets(GLNetwork::Packet *packet)
+{
+	unsigned int packet_size;
+	char *packet_data;
+
+	packet_size = PacketBuilder::SerializePacket(ACTION_EVENT, packet, packet_data);
+	//packet->serialize(packet_data);
+
+	network->sendToAll(packet_data, packet_size);
+}
+
+void ServerGame::SendPacketToClient(GLNetwork::Packet *packet, unsigned int clientId)
+{
+	unsigned int packet_size;
+	char *packet_data;
+
+	packet_size = PacketBuilder::SerializePacket(packet->PacketType(), packet, packet_data);
+
+	network->SendToOne(clientId, packet_data, packet_size);
 }

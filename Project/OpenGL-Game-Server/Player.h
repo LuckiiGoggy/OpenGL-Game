@@ -12,11 +12,6 @@ class Player : public Character
 public:
 	Player(void);
 	~Player(void);
-
-	MeshObject *GetCollisionMesh(void);
-	
-
-
 protected:
 	
 };
