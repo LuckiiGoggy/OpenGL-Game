@@ -3,6 +3,7 @@
 // Server: ServerGame.h
 //
 
+#include "GLNetwork.h"
 #include "ServerNetwork.h"
 #include <thread>
 #include <vector>
@@ -19,12 +20,18 @@ public:
 
 	static void threadedClient(int clientId);
 
-	void sendActionPackets();
 
+	static void sendPackets(GLNetwork::Packet *packet);
+	void sendActionPackets();
+	static void RemoveClient(unsigned int clientId);
+	void SendPacketToClient(GLNetwork::Packet *packet, unsigned int clientId);
 private:
 
 	// IDs for the clients connecting for table in ServerNetwork 
 	static unsigned int client_id;
+
+	/*map of client_ids and Player ObjectID*/
+	static std::map<unsigned int, int> clients;
 
 	// The ServerNetwork object 
 	static ServerNetwork* network;

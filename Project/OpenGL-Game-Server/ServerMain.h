@@ -19,6 +19,8 @@ public:
 	static void AddMember(int objectId, Transform *object);
 	static Transform *GetMember(int objectId);
 
+	static int GetNewObjectId(void);
+
 	static void StartLoop();
 	static void EndLoop();
 
@@ -31,6 +33,9 @@ protected:
 
 	static float lastTime;
 	static float currDelta;
+
+	static int lastObjectId;
+
 
 
 };
