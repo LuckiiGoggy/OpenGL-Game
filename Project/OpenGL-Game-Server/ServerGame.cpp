@@ -4,6 +4,7 @@
 #include "ServerGame.h"
 #include "ServerMain.h"
 #include "Player.h"
+#include "PacketData.h"
 
 unsigned int ServerGame::client_id = 0;
 ServerNetwork* ServerGame::network = new ServerNetwork();
@@ -26,22 +27,23 @@ void ServerGame::update()
 	if (network->acceptNewClient(client_id))
 	{
 		printf("client %d has been connected to the server\n", client_id);
-		myThreads.push_back(new std::thread(threadedClient, client_id));
 
 		int newObjId = ServerMain::GetNewObjectId();
 
 		clients[client_id] = newObjId;
-		Player *player = new Player();
+		Player *player = new Player("Player" + std::to_string(newObjId));
 
-		ServerMain::AddMember(newObjId, player);
+		ServerMain::AddMember(ServerMain::Players, newObjId, player);
 
 		PlayerInfoPacket playerInfo;
+		playerInfo.objectId = newObjId;
 		playerInfo.ammo = player->GetStatValue("Ammo");
 		playerInfo.health = player->GetStatValue("Health");
 		playerInfo.score = player->GetStatValue("Score");
 
 		SendPacketToClient(&playerInfo, client_id);
 
+		myThreads.push_back(new std::thread(threadedClient, client_id));
 		client_id++;
 
 	}
@@ -54,22 +56,25 @@ void ServerGame::update()
 
 void ServerGame::sendActionPackets()
 {
-	Packet *packet = new PlayerInfoPacket();
+	Packet *packet = new Packet();
 	// Send action packet
 	unsigned int packet_size;
 	char *packet_data;
-
-
-	
-	packet_size = PacketBuilder::SerializePacket(PLAYER_INFO_PACKET, packet, packet_data);
+		
+	packet_size = PacketBuilder::SerializePacket(ACTION_EVENT, packet, packet_data);
 	//packet->serialize(packet_data);
 
 	network->sendToAll(packet_data, packet_size);
+
+	delete packet_data;
+	delete packet;
 }
 
 void ServerGame::threadedClient(int clientId)
 {
-	char network_data[MAX_PACKET_SIZE];
+	int objectId = clients[clientId];
+	char network_data[MAX_PACKET_SIZE]; 
+	Player * player = (Player*)ServerMain::GetMember(ServerMain::Players, objectId);
 	Packet *packet;
 
 	while (network->sessions.find(clientId) != network->sessions.end()){
@@ -77,7 +82,7 @@ void ServerGame::threadedClient(int clientId)
 
 		if (data_length <= 0)
 		{
-			//no data recieved
+			//no data received
 			continue;
 		}
 
@@ -87,7 +92,6 @@ void ServerGame::threadedClient(int clientId)
 			int packetSize = PacketReader::DeSerializePacket(packet, network_data, i);
 
 			//packet.deserialize(&(network_data[i]));
-			i += packetSize;
 
 			switch (network_data[i]) {
 
@@ -108,12 +112,36 @@ void ServerGame::threadedClient(int clientId)
 
 				break;
 
+			case PLAYER_PACKET:{
+				std::pair<glm::mat4, bool*> packetData = PacketData::extractPlayerInfo((PlayerPacket *)packet);
+
+				if (player == NULL) break;
+
+				if (((PlayerPacket *)packet)->forward)
+					player->MoveForward();
+				if (((PlayerPacket *)packet)->backward)
+					player->MoveBackward();
+				if (((PlayerPacket *)packet)->left)
+					player->MoveLeft();
+				if (((PlayerPacket *)packet)->right)
+					player->MoveRight();
+				if (((PlayerPacket *)packet)->isShooting)
+					player->Shoot();
+
+				player->NetRotation(packetData.first);
+				break;
+			}
+				
+
+
 			default:
 
 				printf("error in packet types\n");
 
 				break;
 			}
+
+			i += packetSize;
 		}
 	}
 

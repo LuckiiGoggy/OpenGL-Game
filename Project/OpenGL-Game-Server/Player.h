@@ -11,7 +11,10 @@ class Player : public Character
 {
 public:
 	Player(void);
+	Player(std::string _name);
 	~Player(void);
+
+	void Shoot(void);
 protected:
 	
 };

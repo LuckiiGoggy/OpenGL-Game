@@ -25,6 +25,8 @@
     <ClCompile Include="ServerMain.cpp" />
     <ClCompile Include="ServerGame.cpp" />
     <ClCompile Include="ServerNetwork.cpp" />
+    <ClCompile Include="BoundingBoxLibrary.cpp" />
+    <ClCompile Include="PacketData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoundingBox.h" />
@@ -54,5 +56,7 @@
     <ClInclude Include="ServerMain.h" />
     <ClInclude Include="ServerGame.h" />
     <ClInclude Include="ServerNetwork.h" />
+    <ClInclude Include="BoundingBoxLibrary.h" />
+    <ClInclude Include="PacketData.h" />
   </ItemGroup>
 </Project>

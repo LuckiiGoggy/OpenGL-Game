@@ -199,7 +199,7 @@ void MeshObject::returnBB(glm::vec3 startPoint, glm::vec3 endPoint)
 
 void MeshObject::Update(float timeDelta){
 	UpdateNetTransformations(); 
-	UpdateBoundingBox(timeDelta);
+	//UpdateBoundingBox(timeDelta);
 }
 
 bool MeshObject::Init(char* model_filename, char* vshader_filename, char* fshader_filename)

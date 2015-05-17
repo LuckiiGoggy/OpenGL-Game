@@ -73,6 +73,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BoundingBox.cpp" />
+    <ClCompile Include="BoundingBoxLibrary.cpp" />
     <ClCompile Include="CharacterStat.cpp" />
     <ClCompile Include="Collisions.cpp" />
     <ClCompile Include="GameObjectContainer.cpp" />
@@ -81,6 +82,7 @@
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="RigidBody.cpp" />
     <ClCompile Include="ServerGame.cpp" />
+    <ClCompile Include="PacketData.cpp" />
     <ClCompile Include="ServerMain.cpp" />
     <ClCompile Include="ServerNetwork.cpp" />
     <ClCompile Include="Spawner.cpp" />
@@ -99,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoundingBox.h" />
+    <ClInclude Include="BoundingBoxLibrary.h" />
     <ClInclude Include="CharacterStat.h" />
     <ClInclude Include="Collisions.h" />
     <ClInclude Include="GameObjectContainer.h" />
@@ -108,6 +111,7 @@
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="RigidBody.h" />
     <ClInclude Include="ServerGame.h" />
+    <ClInclude Include="PacketData.h" />
     <ClInclude Include="ServerMain.h" />
     <ClInclude Include="ServerNetwork.h" />
     <ClInclude Include="Spawner.h" />

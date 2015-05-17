@@ -17,6 +17,8 @@ public:
 	
 	Transform(void);
 
+	void UpdateNetTransformations(void);
+
 	virtual void Move(float dX, float dY, float dZ, Space transformSpace = Space::Global);
 	virtual void Move(glm::vec3 moveDelta, Space transformSpace = Space::Global);
 	virtual void Rotate(float axisX, float axisY, float axisZ, float angle, glm::vec3 rotPoint = glm::vec3(0.0f), Space transformSpace = Space::Local);
@@ -29,6 +31,7 @@ public:
 	virtual glm::mat4& NetTranslation(void);
 	virtual glm::mat4& NetRotation(void);
 	virtual glm::mat4& NetScale(void);
+	void NetRotation(glm::mat4 &rot);
 
 	glm::vec3 Position(void);
 	void* operator new(size_t);
@@ -40,9 +43,6 @@ protected:
 	glm::mat4 netTranslation;
 	glm::mat4 netRotation;
 	glm::mat4 netScale;
-
-	void UpdateNetTransformations(void);
-
 };
 
 #endif

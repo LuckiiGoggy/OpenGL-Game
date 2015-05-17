@@ -100,3 +100,7 @@ glm::mat4& Transform::NetRotation(void){
 glm::mat4& Transform::NetScale(void){
 	return netScale;
 }
+
+void Transform::NetRotation(glm::mat4 &rot){
+	netRotation = rot;
+}

@@ -1,4 +1,5 @@
 #include "Character.h"
+#include "ServerMain.h"
 
 Character::Character()
 {
@@ -20,7 +21,7 @@ Character::~Character()
 
 void Character::Update(float timeDelta){
 	GroupObject::Update(timeDelta);
-	//GlutManager::GetPhysEngi()->addVelocityTo("BoxMan", new Velocity(moveDelta.x, moveDelta.y, moveDelta.z, 2, 1));
+	ServerMain::GetPhysEngi()->addVelocityTo(name, new Velocity(moveDelta.x, moveDelta.y, moveDelta.z, 2, 1));
 	moveDelta = glm::vec3(0.0f);
 }
 
@@ -93,17 +94,4 @@ void Character::ResetStats(void){
 	for (it = charaStats.begin(); it != charaStats.end(); ++it){
 		(it->second).Reset();
 	}
-}
-
-IGameObject * Character::GetBody(void)
-{
-	return body;
-}
-
-void Character::SetBody(IGameObject * newBody)
-{
-	GroupObject::RemoveMember("Body");
-	GroupObject::AddMember("Body", newBody);
-
-	body = newBody;
 }

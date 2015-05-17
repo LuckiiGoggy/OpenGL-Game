@@ -190,6 +190,7 @@ std::vector<Velocity*>* RigidBody::GetVelocities(void){
 }
 void RigidBody::updateBoundingBox()
 {
+	pTrans->UpdateNetTransformations();
 	//Apply world transformation to bounding box
 	//*
 	glm::vec4 v1_world = (this->pTrans->NetTranslation() * glm::vec4(boundingBox->v1.x, boundingBox->v1.y, boundingBox->v1.z, 1));
