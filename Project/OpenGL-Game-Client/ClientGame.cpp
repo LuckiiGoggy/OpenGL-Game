@@ -2,6 +2,7 @@
 //
 
 #include "ClientGame.h"
+#include "PacketData.h"
 
 ClientNetwork* ClientGame::network;
 char ClientGame::network_data[];
@@ -76,18 +77,25 @@ void ClientGame::update(int j)
 			break;
 
 		case PLAYER_INFO_PACKET:
-
-			printf("\nPlayer Info, objID: %d, ammo: %d, health: %d, score: %d", ((PlayerInfoPacket *)packet)->objectId,((PlayerInfoPacket *)packet)->ammo, ((PlayerInfoPacket *)packet)->health, ((PlayerInfoPacket *)packet)->score);
-
+		{
 			
+			//printf("\nPlayer Info, objID: %d, ammo: %d, health: %d, score: %d", ((PlayerInfoPacket *)packet)->objectId, ((PlayerInfoPacket *)packet)->ammo, ((PlayerInfoPacket *)packet)->health, ((PlayerInfoPacket *)packet)->score);
+
+ 			int* pInfo = PacketData::extractPlayerInfo((PlayerInfoPacket *)packet);
+ 			printf("\nPlayer Info, objID: %d, ammo: %d, health: %d, score: %d", pInfo[0], pInfo[1], pInfo[2], pInfo[3]);
+
+			game->UpdatePlayerInfo(pInfo[0], pInfo[1], pInfo[2], pInfo[3]);
 
 			//sendActionPackets(j);
 
 			break;
+		}
+
+			
 
 		case PLAYER_OBJECT:{
 			ObjectPacket *objPacket = (ObjectPacket *)packet;
-			printf("\nPlayerObjectPacket, objID: %d, pos: x: %f, y: %f, z: %f", objPacket->objectId, objPacket->posX, objPacket->posY, objPacket->posZ);
+			//printf("\nPlayerObjectPacket, objID: %d, pos: x: %f, y: %f, z: %f", objPacket->objectId, objPacket->posX, objPacket->posY, objPacket->posZ);
 
 			break;
 

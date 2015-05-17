@@ -37,6 +37,8 @@ void ServerGame::update()
 
 		ServerMain::AddMember(ServerMain::Players, newObjId, player);
 
+		player->SetObjectId(newObjId);
+
 		PlayerInfoPacket playerInfo;
 		playerInfo.objectId = newObjId;
 		playerInfo.ammo = player->GetStatValue("Ammo");
@@ -44,6 +46,8 @@ void ServerGame::update()
 		playerInfo.score = player->GetStatValue("Score");
 
 		SendPacketToClient(&playerInfo, client_id);
+
+		player->Update(0.0f);
 
 		myThreads.push_back(new std::thread(threadedClient, client_id));
 		client_id++;
@@ -82,6 +86,8 @@ void ServerGame::threadedClient(int clientId)
 	while (network->sessions.find(clientId) != network->sessions.end()){
 		int data_length = network->receiveData(clientId, network_data);
 
+		player = (Player*)ServerMain::GetMember(ServerMain::Players, objectId);
+		SendPacketToClient(GLNetwork::PLAYER_INFO_PACKET, player->GetPInfoPacket(), clientId);
 		if (data_length <= 0)
 		{
 			//no data received
@@ -150,9 +156,6 @@ void ServerGame::threadedClient(int clientId)
 			i += packetSize;
 		}
 
-
-		player = (Player*)ServerMain::GetMember(ServerMain::Players, objectId);
-		SendPacketToClient(GLNetwork::PLAYER_INFO_PACKET, player->GetPInfoPacket(), clientId);
 
 
 

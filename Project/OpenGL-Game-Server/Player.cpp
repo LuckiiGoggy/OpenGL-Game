@@ -26,6 +26,9 @@ Player::Player(std::string _name)
 	name = _name;
 
 	ServerMain::GetPhysEngi()->registerRigidBody(BoundingBoxLibrary::NewPlayer(), this, name);
+
+	ammoCD = 2.0f;
+	ammoCDTimer = 0.0f;
 }
 
 
