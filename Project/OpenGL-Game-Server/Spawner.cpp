@@ -13,8 +13,13 @@ Spawner::Spawner(std::vector<WorldSquare> squares) {
 	}
 }
 
+void Spawner::InitialSpawn(std::vector<Player *> players) {
+	for (size_t i = 0; i < players.size(); i++) {
+		players[i]->Move(spawnPoints[i].x * 8, 0.0f, spawnPoints[i].y * 8);
+	}
+}
 
-void Spawner::SpawnPlayer(Player *player, std::vector<IGameObject *>players) {
+void Spawner::SpawnPlayer(Player *player, std::vector<IGameObject *> players) {
 	float dist = std::numeric_limits<float>::max();
 	float temp = 0;
 	float posx = 0;

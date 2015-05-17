@@ -2,7 +2,6 @@
 #define _SPAWNER_H_
 
 #include "openGL.h"
-#include "MeshObject.h"
 #include "WorldSquare.h"
 #include "Player.h"
 #include "Projectile.h"
@@ -10,13 +9,13 @@
 #include <string>
 #include "GameObjectContainer.h"
 #include "GroupObject.h"
-#include <map>
 
 class Spawner {
 public:
 	Spawner();
 	Spawner(std::vector<WorldSquare> squares);
-	void SpawnPlayer(Player *player, std::vector<IGameObject *>players);
+	void InitialSpawn(std::vector<Player *> players);
+	void SpawnPlayer(Player *player, std::vector<IGameObject *> players);
 
 	/*Move to private/protected*/
 	std::vector<WorldSquare> spawnPoints;
