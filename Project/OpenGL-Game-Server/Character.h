@@ -43,8 +43,9 @@ public:
 
 	virtual void Update(float timeDelta);
 
-	virtual IGameObject *GetBody(void);
-	virtual void SetBody(IGameObject *);
+
+
+	
 
 protected:
 	/**Collection of actions available to all characters.**/
@@ -57,7 +58,7 @@ protected:
 	int movementSpeed;
 	glm::vec3 moveDelta;
 
-	IGameObject *body;
+	std::string name;
 	
 };
 

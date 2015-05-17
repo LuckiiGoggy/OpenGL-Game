@@ -29,9 +29,12 @@ void ClientGame::sendActionPackets(int i)
 	// send action packet
 	char *packet_data;
 
-	Packet packet;
+	PlayerPacket packet;
+	
+	//packet.forward = true;
+	/packet.isShooting = true;
 
-	const unsigned int packet_size = PacketBuilder::SerializePacket(ACTION_EVENT, &packet, packet_data);
+	const unsigned int packet_size = PacketBuilder::SerializePacket(PLAYER_PACKET, &packet, packet_data);
 
 	NetworkServices::sendMessage(network->ConnectSocket, packet_data, packet_size);
 }
@@ -59,15 +62,15 @@ void ClientGame::update(int j)
 		case ACTION_EVENT:
 
 			printf("client received action event packet from server\n");
-
-			sendActionPackets(j);
-
 			break;
 
 		case PLAYER_INFO_PACKET:
 
-			printf("\nPlayer Info, ammo: %d, health: %d, score: %d", ((PlayerInfoPacket *)packet)->ammo, ((PlayerInfoPacket *)packet)->health, ((PlayerInfoPacket *)packet)->score);
+			printf("\nPlayer Info, objID: %d, ammo: %d, health: %d, score: %d", ((PlayerInfoPacket *)packet)->objectId,((PlayerInfoPacket *)packet)->ammo, ((PlayerInfoPacket *)packet)->health, ((PlayerInfoPacket *)packet)->score);
 
+
+
+			sendActionPackets(j);
 
 			break;
 

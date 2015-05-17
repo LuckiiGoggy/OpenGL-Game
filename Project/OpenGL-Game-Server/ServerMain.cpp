@@ -1,8 +1,13 @@
 #include "openGL.h"
 #include "ServerMain.h"
+#include "PacketData.h"
+#include "BoundingBoxLibrary.h"
 
 
-std::map<int, Transform *> ServerMain::members;
+GameObjectContainer ServerMain::players;
+GameObjectContainer ServerMain::floors;
+GameObjectContainer ServerMain::walls;
+GameObjectContainer ServerMain::projectiles;
 PhysicsEngine * ServerMain::physEngi;
 ServerGame * ServerMain::server;
 
@@ -30,6 +35,9 @@ void ServerMain::Init(void)
 	lastTime = glutGet(GLUT_ELAPSED_TIME) / 1000.0f;
 	isRunning = true;
 	lastObjectId = 0;
+	
+	BoundingBoxLibrary::InitBoxes();
+	//ServerInit::init();
 }
 
 void ServerMain::StartLoop()
@@ -41,17 +49,17 @@ void ServerMain::StartLoop()
 		currDelta = currTime - lastTime;
 		lastTime = currTime;
 
-
 		//Loop
-		//CheckPlayerInput
-		//AddVelocity
+		physEngi->ApplyVelocities(currDelta);
+		physEngi->bruteCollision();
+		physEngi->updateVelocities();
+		physEngi->ApplyVelocities(currDelta);
+		physEngi->updateVelocities();
 
-		//Loop
-// 		physEngi->ApplyVelocities(currDelta);
-// 		physEngi->bruteCollision();
-// 		physEngi->updateVelocities();
-// 		physEngi->ApplyVelocities(currDelta);
-// 		physEngi->updateVelocities();
+		players.UpdateMembers(currDelta);
+		walls.UpdateMembers(currDelta);
+		floors.UpdateMembers(currDelta);
+ 		projectiles.UpdateMembers(currDelta);
 
 		//Loop
 			//go through members and get pos and rotation
@@ -69,16 +77,45 @@ void ServerMain::EndLoop()
 	isRunning = false;
 }
 
-void ServerMain::AddMember(int objectId, Transform *object)
+void ServerMain::AddMember(MemberList listType, int objectId, IGameObject *object)
 {
-	members[objectId] = object;
+	switch (listType)
+	{
+	case Players:
+		players.AddMember(objectId, object);
+		break;
+	case Walls:
+		walls.AddMember(objectId, object);
+		break;
+	case Floors:
+		floors.AddMember(objectId, object);
+		break;
+	case Projectiles:
+		projectiles.AddMember(objectId, object);
+		break;
+	}
+
 }
 
-Transform *ServerMain::GetMember(int objectId)
+IGameObject *ServerMain::GetMember(MemberList listType, int objectId)
 {
-	if (members.find(objectId) != members.end()){
-		return members[objectId];
+	switch (listType)
+	{
+	case Players:
+		return players.GetMember(objectId);
+		break;
+	case Walls:
+		return walls.GetMember(objectId);
+		break;
+	case Floors:
+		return floors.GetMember(objectId);
+		break;
+	case Projectiles:
+		return projectiles.GetMember(objectId);
+		break;
 	}
+
+	return NULL;
 }
 
 int ServerMain::GetNewObjectId(void)

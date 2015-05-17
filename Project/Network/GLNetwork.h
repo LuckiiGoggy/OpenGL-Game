@@ -21,7 +21,7 @@ namespace GLNetwork{
 
 		INIT_CONNECTION = 0,
 
-		ACTION_EVENT = 10,
+		ACTION_EVENT = 1,
 
 		PLAYER_PACKET = 2,
 
@@ -66,24 +66,24 @@ namespace GLNetwork{
 
 	struct PlayerPacket : Packet{
 		/*Player Input*/
-		bool forward;
-		bool backward;
-		bool left;
-		bool right;
+		bool forward = false;
+		bool backward = false;
+		bool left = false;
+		bool right = false;
 
 		/*Net Rotation*/
-		float netRot00;
-		float netRot01;
-		float netRot02;
-		float netRot10;
-		float netRot11;
-		float netRot12;
-		float netRot20;
-		float netRot21;
+		float netRot00 = 1.0f;
+		float netRot01 = 0.0f;
+		float netRot02 = 0.0f;
+		float netRot10 = 0.0f;
+		float netRot11 = 1.0f;
+		float netRot12 = 0.0f;
+		float netRot20 = 0.0f;
+		float netRot21 = 0.0f;
+		float netRot22 = 1.0f;
 
-		float netRot22;
 		/*Player is shooting*/
-		bool isShooting;
+		bool isShooting = false;
 
 		virtual size_t size(void){ return sizeof(PlayerPacket); };
 		virtual GLNetwork::PacketType PacketType(void){ return PLAYER_PACKET; };
@@ -105,20 +105,20 @@ namespace GLNetwork{
 		int objectId;
 
 		/*Net Rotation*/
-		float netRot00;
-		float netRot01;
-		float netRot02;
-		float netRot10;
-		float netRot11;
-		float netRot12;
-		float netRot20;
-		float netRot21;
-		float netRot22;
+		float netRot00 = 1.0f;
+		float netRot01 = 0.0f;
+		float netRot02 = 0.0f;
+		float netRot10 = 0.0f;
+		float netRot11 = 1.0f;
+		float netRot12 = 0.0f;
+		float netRot20 = 0.0f;
+		float netRot21 = 0.0f;
+		float netRot22 = 1.0f;
 
 		/*Object Position*/
-		float posX;
-		float posY;
-		float posZ;
+		float posX = 0.0f;
+		float posY = 0.0f;
+		float posZ = 0.0f;
 
 		virtual size_t size(void){ return sizeof(ObjectPacket); };
 		virtual GLNetwork::PacketType PacketType(void){ return OBJECT_INFO; };

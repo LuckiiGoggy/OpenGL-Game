@@ -7,6 +7,7 @@
 class Projectile:public MeshObject {
 public:
 	Projectile(glm::mat4 &dir, glm::vec3 pos, MeshObject* proj);
+	Projectile(glm::mat4 &dir, glm::vec3 pos);
 	void Update(float timeDelta);
 
 	bool IsActive(void);

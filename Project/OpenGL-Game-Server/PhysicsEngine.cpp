@@ -586,6 +586,7 @@ void PhysicsEngine::bruteCollision()
 #ifdef DEBUG_SCRIPT
 			cout << "\n object:" << cur->id_c;
 #endif
+			cur->updateBoundingBox();
 
 			if (cur->id != rigidObjects[i]->id)
 			{

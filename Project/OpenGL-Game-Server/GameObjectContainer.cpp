@@ -15,7 +15,7 @@ GameObjectContainer::GameObjectContainer()
 
 GameObjectContainer::~GameObjectContainer()
 {
-	std::map<std::string, IGameObject *>::iterator iter;
+	std::map<int, IGameObject *>::iterator iter;
 
 	for (iter = members.begin(); iter != members.end(); ++iter) {
 		delete iter->second;
@@ -23,19 +23,19 @@ GameObjectContainer::~GameObjectContainer()
 	members.empty();
 }
 
-void GameObjectContainer::AddMember(std::string name, IGameObject *game){
-	this->members[name] = game;
+void GameObjectContainer::AddMember(int key, IGameObject *game){
+	this->members[key] = game;
 	
 }
 
-void GameObjectContainer::RemoveMember(std::string name){
-	delete members[name];
-	members.erase(name);
+void GameObjectContainer::RemoveMember(int key){
+	delete members[key];
+	members.erase(key);
 	
 }
 
 void GameObjectContainer::EmptyMembers(void){
-	std::map<std::string, IGameObject *>::iterator iter;
+	std::map<int, IGameObject *>::iterator iter;
 
 	for (iter = members.begin(); iter != members.end(); ++iter) {
 		delete iter->second;
@@ -45,7 +45,7 @@ void GameObjectContainer::EmptyMembers(void){
 }
 
 void GameObjectContainer::MoveMembers(glm::vec3 moveDelta){
-	std::map<std::string, IGameObject *>::iterator iter;
+	std::map<int, IGameObject *>::iterator iter;
 	Transform *moveable;
 	
 	for (iter = this->members.begin(); iter != this->members.end(); ++iter) {
@@ -57,7 +57,7 @@ void GameObjectContainer::MoveMembers(glm::vec3 moveDelta){
 
 }
 void GameObjectContainer::MoveMembers(float x, float y, float z){
-	std::map<std::string, IGameObject *>::iterator iter;
+	std::map<int, IGameObject *>::iterator iter;
 	Transform *moveable;
 
 	for (iter = this->members.begin(); iter != this->members.end(); ++iter) {
@@ -72,7 +72,7 @@ void GameObjectContainer::MoveMembers(float x, float y, float z){
 
 
 void GameObjectContainer::RotateMembers(float axisX, float axisY, float axisZ, float angle, glm::vec3 rotPoint, Transform::Space transformSpace){
-	std::map<std::string, IGameObject *>::iterator iter;
+	std::map<int, IGameObject *>::iterator iter;
 	Transform *transformable;
 
 	for (iter = this->members.begin(); iter != this->members.end(); ++iter) {
@@ -84,7 +84,7 @@ void GameObjectContainer::RotateMembers(float axisX, float axisY, float axisZ, f
 }
 
 
-void GameObjectContainer::UpdateMember(std::string key, float timeDelta)
+void GameObjectContainer::UpdateMember(int key, float timeDelta)
 {
 	IUpdateable *updateable = dynamic_cast<IUpdateable *>(members[key]);
 
@@ -95,7 +95,7 @@ void GameObjectContainer::UpdateMember(std::string key, float timeDelta)
 
 void GameObjectContainer::UpdateMembers(float timeDelta)
 {
-	std::map<std::string, IGameObject *>::iterator iter;
+	std::map<int, IGameObject *>::iterator iter;
 	IUpdateable *updateable = 0;
 
 	for (iter = this->members.begin(); iter != this->members.end(); ++iter) {
@@ -108,6 +108,6 @@ void GameObjectContainer::UpdateMembers(float timeDelta)
 
 }
 
-IGameObject * GameObjectContainer::GetMember(std::string name){
-	return members[name];
+IGameObject * GameObjectContainer::GetMember(int key){
+	return members[key];
 }

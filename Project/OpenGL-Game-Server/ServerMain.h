@@ -8,16 +8,20 @@
 #include <string>
 #include <map>
 #include "Transform.h"
+#include "GameObjectContainer.h"
 
 class ServerMain
 {
+
+
 public:
+	enum MemberList { Players, Walls, Floors, Projectiles };
 	static void Init(void);
 	static PhysicsEngine *GetPhysEngi(void);
 	static void SetPhysEngi(PhysicsEngine *);
 
-	static void AddMember(int objectId, Transform *object);
-	static Transform *GetMember(int objectId);
+	static void AddMember(MemberList listType, int objectId, IGameObject *object);
+	static IGameObject *GetMember(MemberList listType, int objectId);
 
 	static int GetNewObjectId(void);
 
@@ -26,7 +30,12 @@ public:
 
 protected:
 	/*Members*/
-	static std::map<int, Transform*> members;
+	static GameObjectContainer players;
+	static GameObjectContainer walls;
+	static GameObjectContainer floors;
+	static GameObjectContainer projectiles;
+
+
 	static PhysicsEngine *physEngi;
 	static ServerGame *server;
 	static bool isRunning;
