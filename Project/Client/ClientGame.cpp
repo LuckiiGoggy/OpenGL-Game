@@ -32,7 +32,7 @@ void ClientGame::sendActionPackets(int i)
 	PlayerPacket packet;
 	
 	//packet.forward = true;
-	/packet.isShooting = true;
+	packet.isShooting = true;
 
 	const unsigned int packet_size = PacketBuilder::SerializePacket(PLAYER_PACKET, &packet, packet_data);
 
@@ -74,9 +74,25 @@ void ClientGame::update(int j)
 
 			break;
 
+		case PLAYER_OBJECT:{
+			ObjectPacket *objPacket = (ObjectPacket *)packet;
+			printf("\nPlayerObjectPacket, objID: %d, pos: x: %f, y: %f, z: %f", objPacket->objectId, objPacket->posX, objPacket->posY, objPacket->posZ);
+
+			break;
+
+		}
+			
+
+		case PROJECTILE_OBJECT:{
+			ObjectPacket *objPacket = (ObjectPacket *)packet;
+			printf("\nProjectileObjectPacket, objID: %d, pos: x: %f, y: %f, z: %f", objPacket->objectId, objPacket->posX, objPacket->posY, objPacket->posZ);
+
+			break;
+
+		}
 		default:
 
-			printf("error in packet types\n");
+			printf("\nerror in packet types. PacketType: %d", network_data[i]);
 
 			break;
 		}

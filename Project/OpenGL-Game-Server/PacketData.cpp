@@ -11,6 +11,8 @@ GLNetwork::ObjectPacket PacketData::transformToPacket(Transform* pTrans)
 	glm::mat4 rot = pTrans->NetRotation();
 	glm::vec3 pos = pTrans->Position();
 
+	packet.objectId = pTrans->ObjectId();
+
 	packet.netRot00 = rot[0][0];
 	packet.netRot01 = rot[0][1];
 	packet.netRot02 = rot[0][2];

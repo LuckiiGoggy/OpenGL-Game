@@ -6,6 +6,7 @@
 #include "Dependencies/glm/glm/gtc/matrix_transform.hpp"
 #include "Dependencies/glm/glm/gtc/type_ptr.hpp"
 #include "Dependencies/glm/glm/gtx/rotate_vector.hpp"
+#include "GLNetwork.h"
 
 
 class Transform
@@ -33,9 +34,14 @@ public:
 	virtual glm::mat4& NetScale(void);
 	void NetRotation(glm::mat4 &rot);
 
+	virtual GLNetwork::ObjectPacket GetPacket(void);
+	virtual void UpdatePacket(void);
+	virtual void SetObjectId(int objId);
+
 	glm::vec3 Position(void);
 	void* operator new(size_t);
 	void  operator delete(void*);
+	int ObjectId();
 protected:
 	glm::vec3 position;
 
@@ -43,6 +49,9 @@ protected:
 	glm::mat4 netTranslation;
 	glm::mat4 netRotation;
 	glm::mat4 netScale;
+
+	GLNetwork::ObjectPacket packet;
+	int objectId;
 };
 
 #endif

@@ -15,16 +15,22 @@ GameObjectContainer::GameObjectContainer()
 
 GameObjectContainer::~GameObjectContainer()
 {
-	std::map<int, IGameObject *>::iterator iter;
-
-	for (iter = members.begin(); iter != members.end(); ++iter) {
-		delete iter->second;
-	}
-	members.empty();
+// 	std::map<int, IGameObject *>::iterator iter;
+// 
+// 	for (iter = members.begin(); iter != members.end(); ++iter) {
+// 		delete iter->second;
+// 	}
+// 	members.empty();
 }
 
 void GameObjectContainer::AddMember(int key, IGameObject *game){
 	this->members[key] = game;
+
+	Transform *transformable = dynamic_cast<Transform *>(game);
+
+	if (transformable != 0){
+		transformable->SetObjectId(key);
+	}
 	
 }
 
@@ -97,12 +103,17 @@ void GameObjectContainer::UpdateMembers(float timeDelta)
 {
 	std::map<int, IGameObject *>::iterator iter;
 	IUpdateable *updateable = 0;
+	Transform *transformable;
 
 	for (iter = this->members.begin(); iter != this->members.end(); ++iter) {
 		updateable = dynamic_cast<IUpdateable *>(iter->second);
+		transformable = dynamic_cast<Transform*>(iter->second);
 
 		if (updateable != 0){
 			updateable->Update(timeDelta);
+		}
+		if (transformable != 0){
+			transformable->UpdatePacket();
 		}
 	}
 

@@ -28,6 +28,8 @@ public:
 	static void StartLoop();
 	static void EndLoop();
 
+	static void SendMemberPackets(GLNetwork::PacketType packet_t, GameObjectContainer members);
+
 protected:
 	/*Members*/
 	static GameObjectContainer players;

@@ -64,7 +64,10 @@ void ServerMain::StartLoop()
 		//Loop
 			//go through members and get pos and rotation
 			//stuff into packets
-
+		SendMemberPackets(GLNetwork::PLAYER_OBJECT, players);
+		SendMemberPackets(GLNetwork::FLOOR_OBJECT, floors);
+		SendMemberPackets(GLNetwork::WALL_OBJECT, walls);
+		SendMemberPackets(GLNetwork::PROJECTILE_OBJECT, projectiles);
 		//Send Packets
 
 
@@ -121,5 +124,18 @@ IGameObject *ServerMain::GetMember(MemberList listType, int objectId)
 int ServerMain::GetNewObjectId(void)
 {
 	return lastObjectId++;
+}
+
+void ServerMain::SendMemberPackets(GLNetwork::PacketType packet_t, GameObjectContainer members)
+{
+	std::map<int, IGameObject *>::iterator iter;
+	Transform *transformable;
+
+	for (iter = members.members.begin(); iter != members.members.end(); ++iter) {
+		transformable = dynamic_cast<Transform*>(iter->second);
+		if (transformable != 0){
+			ServerGame::SendToAll(packet_t, &(transformable->GetPacket()));
+		}
+	}
 }
 
