@@ -77,6 +77,8 @@
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="CharacterController.cpp" />
     <ClCompile Include="CharacterStat.cpp" />
+    <ClCompile Include="ClientGame.cpp" />
+    <ClCompile Include="ClientNetwork.cpp" />
     <ClCompile Include="GameObjectContainer.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="GlutManager.cpp" />
@@ -103,6 +105,8 @@
     <ClInclude Include="Character.h" />
     <ClInclude Include="CharacterController.h" />
     <ClInclude Include="CharacterStat.h" />
+    <ClInclude Include="ClientGame.h" />
+    <ClInclude Include="ClientNetwork.h" />
     <ClInclude Include="Exception.h" />
     <ClInclude Include="GameObjectContainer.h" />
     <ClInclude Include="GameScene.h" />

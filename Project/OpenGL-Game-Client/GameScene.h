@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 #include "Player.h"
+#include "ClientGame.h"
 
 class GameScene : public Scene
 {
@@ -23,6 +24,7 @@ public:
 
 
 protected:
+	ClientGame *client;
 };
 
 #endif 

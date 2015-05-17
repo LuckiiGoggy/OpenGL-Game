@@ -25,6 +25,8 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="shader_utils.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="ClientGame.cpp" />
+    <ClCompile Include="ClientNetwork.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedObject.h" />
@@ -55,5 +57,7 @@
     <ClInclude Include="shader_utils.h" />
     <ClInclude Include="SOIL.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="ClientGame.h" />
+    <ClInclude Include="ClientNetwork.h" />
   </ItemGroup>
 </Project>

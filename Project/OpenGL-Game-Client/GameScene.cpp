@@ -48,6 +48,7 @@ void GameScene::Init(void){
 
 	AddMember("Controller", pC);
 
+	client = new ClientGame();
 }
 
 void GameScene::Render() {
@@ -60,8 +61,21 @@ void GameScene::Render() {
 }
 
 void GameScene::Update(float timedelta) {
+	client->update(10);
+
+	GLNetwork::PlayerPacket playerPacket;
+
+	if (InputManager::isKeyDown(KeyCodes::w)) playerPacket.forward = true;
+	if (InputManager::isKeyDown(KeyCodes::s)) playerPacket.backward = true;
+	if (InputManager::isKeyDown(KeyCodes::a)) playerPacket.left = true;
+	if (InputManager::isKeyDown(KeyCodes::d)) playerPacket.right = true;
+
+	if (InputManager::IsMouseClicked(timedelta)) playerPacket.isShooting = true;
+
+	client->SendPacket(GLNetwork::PLAYER_PACKET, &playerPacket);
 
 
+	
 // 	for (size_t counter = 0; counter < projectileIds.size(); counter++){
 // 
 // 		for (size_t counter2 = 0; counter2 < collidedWith.size(); counter2++){
