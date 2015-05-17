@@ -9,6 +9,8 @@
 #include <map>
 #include "Transform.h"
 #include "GameObjectContainer.h"
+#include "Spawner.h"
+#include "WorldEngine.h"
 
 class ServerMain
 {
@@ -46,6 +48,9 @@ protected:
 	static float currDelta;
 
 	static int lastObjectId;
+
+	static Spawner *spawner;
+	static WorldEngine *engine;
 
 
 

@@ -122,3 +122,13 @@ void GameObjectContainer::UpdateMembers(float timeDelta)
 IGameObject * GameObjectContainer::GetMember(int key){
 	return members[key];
 }
+
+std::vector<IGameObject*> GameObjectContainer::GetMembers(){
+	std::vector<IGameObject*> v;
+
+	for (std::map<int, IGameObject *>::iterator it = members.begin(); it != members.end(); ++it) {
+		v.push_back(it->second);
+	}
+
+	return v;
+}

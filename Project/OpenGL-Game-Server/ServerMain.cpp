@@ -10,6 +10,8 @@ GameObjectContainer ServerMain::walls;
 GameObjectContainer ServerMain::projectiles;
 PhysicsEngine * ServerMain::physEngi;
 ServerGame * ServerMain::server;
+WorldEngine * ServerMain::engine;
+Spawner * ServerMain::spawner;
 
 bool ServerMain::isRunning = false;
 float ServerMain::currDelta;
@@ -37,7 +39,11 @@ void ServerMain::Init(void)
 	lastObjectId = 0;
 	
 	BoundingBoxLibrary::InitBoxes();
-	//ServerInit::init();
+	
+	engine = new WorldEngine();
+	engine->readWorld("level");
+
+	spawner = new Spawner(engine->squares);
 }
 
 void ServerMain::StartLoop()
@@ -86,6 +92,7 @@ void ServerMain::AddMember(MemberList listType, int objectId, IGameObject *objec
 	{
 	case Players:
 		players.AddMember(objectId, object);
+		spawner->SpawnPlayer((Player *)object, players.GetMembers());
 		break;
 	case Walls:
 		walls.AddMember(objectId, object);
@@ -138,4 +145,5 @@ void ServerMain::SendMemberPackets(GLNetwork::PacketType packet_t, GameObjectCon
 		}
 	}
 }
+
 

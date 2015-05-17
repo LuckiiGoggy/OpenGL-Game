@@ -7,6 +7,7 @@
 #include "IGameObject.h"
 #include "Transform.h"
 #include "Dependencies\glm\glm\glm.hpp"
+#include <vector>
 
 class GameObjectContainer
 {
@@ -38,7 +39,7 @@ public:
 	virtual void UpdateMembers(float timeDelta);
 	virtual void RotateMembers(float axisX, float axisY, float axisZ, float angle, glm::vec3 rotPoint = glm::vec3(0.0f), Transform::Space transformSpace = Transform::Space::Local);
 	void UpdateMember(int, float timeDelta);
-
+	std::vector<IGameObject *> GetMembers();
 
 protected:
 

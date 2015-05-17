@@ -14,7 +14,7 @@
 
 
 /** A Group Object is a group of Game Objects that move as one entity **/
-class GroupObject : public GameObjectContainer, public Transform, public IGameObject
+class GroupObject : public GameObjectContainer, public Transform
 {
 public:
 	GroupObject();

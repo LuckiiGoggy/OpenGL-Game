@@ -7,9 +7,10 @@
 #include "Dependencies/glm/glm/gtc/type_ptr.hpp"
 #include "Dependencies/glm/glm/gtx/rotate_vector.hpp"
 #include "GLNetwork.h"
+#include "IGameObject.h"
 
 
-class Transform
+class Transform : public IGameObject
 {
 
 public:
@@ -17,6 +18,7 @@ public:
 	enum Space{ Local, Global };
 	
 	Transform(void);
+	Transform(int objID);
 
 	void UpdateNetTransformations(void);
 
@@ -37,6 +39,8 @@ public:
 	virtual GLNetwork::ObjectPacket GetPacket(void);
 	virtual void UpdatePacket(void);
 	virtual void SetObjectId(int objId);
+
+	virtual void Update(float timeDelta);
 
 	glm::vec3 Position(void);
 	void* operator new(size_t);

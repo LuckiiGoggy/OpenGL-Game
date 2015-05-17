@@ -90,6 +90,22 @@ void ClientGame::update(int j)
 			break;
 
 		}
+			
+		case WALL_OBJECT:{
+			ObjectPacket *objPacket = (ObjectPacket *)packet;
+			printf("\nWallObjectPacket, objID: %d, pos: x: %f, y: %f, z: %f", objPacket->objectId, objPacket->posX, objPacket->posY, objPacket->posZ);
+
+			break;
+
+		}
+			
+		case FLOOR_OBJECT:{
+			ObjectPacket *objPacket = (ObjectPacket *)packet;
+			printf("\nFloorObjectPacket, objID: %d, pos: x: %f, y: %f, z: %f", objPacket->objectId, objPacket->posX, objPacket->posY, objPacket->posZ);
+
+			break;
+
+		}
 		default:
 
 			printf("\nerror in packet types. PacketType: %d", network_data[i]);

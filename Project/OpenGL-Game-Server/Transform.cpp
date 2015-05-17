@@ -14,6 +14,18 @@ Transform::Transform(void)
 	objectId = -1;
 }
 
+Transform::Transform(int objID)
+{
+	position = glm::vec3(0.0f);
+
+	netTransformations = glm::mat4(1.0f);
+	netTranslation = glm::mat4(1.0f);
+	netRotation = glm::mat4(1.0f);
+	netScale = glm::mat4(1.0f);
+
+	objectId = objID;
+}
+
 void Transform::UpdateNetTransformations(void){
 	netTransformations = netTranslation * netRotation * netScale;
 }
@@ -126,4 +138,9 @@ void Transform::SetObjectId(int objId)
 int Transform::ObjectId()
 {
 	return objectId;
+}
+
+void Transform::Update(float timeDelta)
+{
+	UpdateNetTransformations();
 }

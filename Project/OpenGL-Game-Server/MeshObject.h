@@ -19,7 +19,7 @@
 
 
 #pragma once
-class MeshObject: public Transform, public IGameObject
+class MeshObject: public Transform
 {
 public:
 	MeshObject();

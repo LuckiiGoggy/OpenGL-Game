@@ -1,10 +1,8 @@
 #include "WorldEngine.h"
 #include "MeshObject.h"
+#include "ServerMain.h"
+#include "BoundingBoxLibrary.h"
 
-char* floor_filename = (char*) "../Assets/Models/floorPlane.obj";
-char* wall_filename = (char*) "../Assets/Models/wallCube.obj";
-char* v_shader_filename = (char*) "../Assets/Shaders/gouraud-shading.v.glsl";
-char* f_shader_filename = (char*) "../Assets/Shaders/gouraud-shading.f.glsl";
 float tileLength = 8;
 int tileNo = 0;
 
@@ -12,8 +10,6 @@ WorldEngine::WorldEngine() {
 	loaded = false;
 	filetype = ".lvl";
 	path = "../Assets/Levels/";
-	wall = new MeshObject();
-	floor = new MeshObject();
 }
 
 void WorldEngine::loadDirectory() {
@@ -42,15 +38,12 @@ void WorldEngine::loadDirectory() {
 void WorldEngine::readWorld(std::string filename) {
 	std::ifstream file;
 	file.open(path + filename + filetype);
-	wall->Init(wall_filename, v_shader_filename, f_shader_filename);
-	floor->Init(floor_filename, v_shader_filename, f_shader_filename);
 
 	if (file.is_open()) {
 		int index;
 		int block;
 		std::string s;
 		squares.clear();
-		meshes.clear();
 		tileNo = 0;
 
 		std::getline(file, s);
@@ -68,76 +61,72 @@ void WorldEngine::readWorld(std::string filename) {
 			for (float j = 0; j < w; j++) {
 				block = (int)(s.at(index) - '0');
 				squares.push_back(WorldSquare((int)i, (int)j, block));
-				MeshObject* p;
+				Transform* p;
 				switch (block) {
 				case WALL:
 				{
-					p = new MeshObject(*wall);
+					int objId = ServerMain::GetNewObjectId();
+					p = new Transform(objId);
 					p->Move(glm::vec3(j * tileLength, 1.0f, i * tileLength));
 					tileNo++;
 					std::string name = "tile" + std::to_string(tileNo);
-					//GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);
+					ServerMain::GetPhysEngi()->registerRigidBody(BoundingBoxLibrary::NewWall(), p, name, 4);
+					ServerMain::AddMember(ServerMain::Walls, objId, p);
 					break;
 				}
 				case FLOOR:
 				{
-					p = new MeshObject(*floor);
+					int objId = ServerMain::GetNewObjectId();
+					p = new Transform(objId);
 					p->Move(glm::vec3(j * tileLength, 0.0f, i * tileLength));
 					tileNo++;
-					std::string name = "tile" + std::to_string(tileNo);
-					//GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);
+					ServerMain::AddMember(ServerMain::Floors, objId, p);
 					break;
 				}
 				case MOVEWALL:
 				{
-					p = new MeshObject(*wall);
+					int objId = ServerMain::GetNewObjectId();
+					p = new Transform(objId);
 					p->Move(glm::vec3(j * tileLength, 1.0f, i * tileLength));
 					tileNo++;
 					std::string name = "tile" + std::to_string(tileNo);
+					ServerMain::GetPhysEngi()->registerRigidBody(BoundingBoxLibrary::NewWall(), p, name, 3);
+					ServerMain::AddMember(ServerMain::Walls, objId, p);
 					//GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 3, tileNo);
-					p = new MeshObject(*floor);
+					objId = ServerMain::GetNewObjectId();
+					p = new Transform(objId);
 					p->Move(glm::vec3(j * tileLength, 0.0f, i * tileLength));
-					name = "extrafloor" + std::to_string(tileNo);
+					tileNo++;
+					ServerMain::AddMember(ServerMain::Floors, objId, p);
 					//GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);
 					break;
 				}
 				case SPAWN:
 				{
-					p = new MeshObject(*floor);
-					p->Move(glm::vec3(j * tileLength, 0.0f, i * tileLength));
-					tileNo++;
-					std::string name = "tile" + std::to_string(tileNo);
+// 					p = new MeshObject(*floor);
+// 					p->Move(glm::vec3(j * tileLength, 0.0f, i * tileLength));
+// 					tileNo++;
+// 					std::string name = "tile" + std::to_string(tileNo);
 					//GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);
 					break;
 				}
 				default:
 				{
-					p = new MeshObject(*wall);
+					int objId = ServerMain::GetNewObjectId();
+					p = new Transform(objId);
 					p->Move(glm::vec3(j * tileLength, 1.0f, i * tileLength));
 					tileNo++;
 					std::string name = "tile" + std::to_string(tileNo);
+					ServerMain::GetPhysEngi()->registerRigidBody(BoundingBoxLibrary::NewWall(), p, name, 3);
+					ServerMain::AddMember(ServerMain::Walls, objId, p);
 					//GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);
 					break;
 				}
 				}
-				meshes.push_back(p);
 				index++;
 			}
 		}
 		loaded = true;
 		file.close();
-	}
-}
-
-void WorldEngine::renderWorld() {
-	int index = 0;
-	int block;
-
-	for (float i = 0; i < h; i++) {
-		for (float j = 0; j < w; j++) {
-			block = squares.at(index).type;
-			meshes[index]->Update(0.0);
-			index++;			
-		}
 	}
 }
