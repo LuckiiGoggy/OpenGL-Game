@@ -94,7 +94,11 @@ void ClientGame::update(int j)
 			
 
 		case PLAYER_OBJECT:{
-			ObjectPacket *objPacket = (ObjectPacket *)packet;
+			std::pair<glm::mat4, glm::vec3> packet_data = PacketData::packetToTransformValues((ObjectPacket *)packet);
+
+			game->UpdateTransformObj(((ObjectPacket *)(packet))->objectId, GameScene::BoxMan, packet_data.first, packet_data.second);
+
+
 			//printf("\nPlayerObjectPacket, objID: %d, pos: x: %f, y: %f, z: %f", objPacket->objectId, objPacket->posX, objPacket->posY, objPacket->posZ);
 
 			break;
@@ -103,25 +107,26 @@ void ClientGame::update(int j)
 			
 
 		case PROJECTILE_OBJECT:{
-			ObjectPacket *objPacket = (ObjectPacket *)packet;
-			//printf("\nProjectileObjectPacket, objID: %d, pos: x: %f, y: %f, z: %f", objPacket->objectId, objPacket->posX, objPacket->posY, objPacket->posZ);
+			std::pair<glm::mat4, glm::vec3> packet_data = PacketData::packetToTransformValues((ObjectPacket *)packet);
+
+			game->UpdateTransformObj(((ObjectPacket *)(packet))->objectId, GameScene::Spear, packet_data.first, packet_data.second);
 
 			break;
 
 		}
 			
 		case WALL_OBJECT:{
-			ObjectPacket *objPacket = (ObjectPacket *)packet;
-			//printf("\nWallObjectPacket, objID: %d, pos: x: %f, y: %f, z: %f", objPacket->objectId, objPacket->posX, objPacket->posY, objPacket->posZ);
+			std::pair<glm::mat4, glm::vec3> packet_data = PacketData::packetToTransformValues((ObjectPacket *)packet);
 
+			game->UpdateTransformObj(((ObjectPacket *)(packet))->objectId, GameScene::Wall, packet_data.first, packet_data.second);
 			break;
 
 		}
 			
 		case FLOOR_OBJECT:{
-			ObjectPacket *objPacket = (ObjectPacket *)packet;
-			//printf("\nFloorObjectPacket, objID: %d, pos: x: %f, y: %f, z: %f", objPacket->objectId, objPacket->posX, objPacket->posY, objPacket->posZ);
+			std::pair<glm::mat4, glm::vec3> packet_data = PacketData::packetToTransformValues((ObjectPacket *)packet);
 
+			game->UpdateTransformObj(((ObjectPacket *)(packet))->objectId, GameScene::Floor, packet_data.first, packet_data.second);
 			break;
 
 		}

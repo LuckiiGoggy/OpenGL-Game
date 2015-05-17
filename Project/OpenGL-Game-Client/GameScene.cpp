@@ -35,28 +35,28 @@ void GameScene::Update(float timedelta) {
 	ClientGame::update(2);
 
 	if (members.find("Player") != members.end()){
-// 		GLNetwork::PlayerPacket playerPacket;
-// 
-// 		if (InputManager::isKeyDown(KeyCodes::w)) playerPacket.forward = true;
-// 		if (InputManager::isKeyDown(KeyCodes::s)) playerPacket.backward = true;
-// 		if (InputManager::isKeyDown(KeyCodes::a)) playerPacket.left = true;
-// 		if (InputManager::isKeyDown(KeyCodes::d)) playerPacket.right = true;
-// 
-// 		if (InputManager::IsMouseClicked(timedelta)) playerPacket.isShooting = true;
-// 		Transform *transformable = dynamic_cast<Transform *>(GetMember("Player"));
-// 		if (transformable != 0){
-// 			playerPacket.netRot00 = (transformable->NetRotation())[0][0];
-// 			playerPacket.netRot01 = (transformable->NetRotation())[0][1];
-// 			playerPacket.netRot02 = (transformable->NetRotation())[0][2];
-// 			playerPacket.netRot10 = (transformable->NetRotation())[1][0];
-// 			playerPacket.netRot11 = (transformable->NetRotation())[1][1];
-// 			playerPacket.netRot12 = (transformable->NetRotation())[1][2];
-// 			playerPacket.netRot20 = (transformable->NetRotation())[2][0];
-// 			playerPacket.netRot21 = (transformable->NetRotation())[2][1];
-// 			playerPacket.netRot22 = (transformable->NetRotation())[2][2];
-// 		}
-// 		
-// 		ClientGame::SendPacket(GLNetwork::PLAYER_PACKET, &playerPacket);
+		GLNetwork::PlayerPacket playerPacket;
+
+		if (InputManager::isKeyDown(KeyCodes::w)) playerPacket.forward = true;
+		if (InputManager::isKeyDown(KeyCodes::s)) playerPacket.backward = true;
+		if (InputManager::isKeyDown(KeyCodes::a)) playerPacket.left = true;
+		if (InputManager::isKeyDown(KeyCodes::d)) playerPacket.right = true;
+
+		if (InputManager::IsMouseClicked(timedelta)) playerPacket.isShooting = true;
+		Transform *transformable = dynamic_cast<Transform *>(GetMember("Player"));
+		if (transformable != 0){
+			playerPacket.netRot00 = (transformable->NetRotation())[0][0];
+			playerPacket.netRot01 = (transformable->NetRotation())[0][1];
+			playerPacket.netRot02 = (transformable->NetRotation())[0][2];
+			playerPacket.netRot10 = (transformable->NetRotation())[1][0];
+			playerPacket.netRot11 = (transformable->NetRotation())[1][1];
+			playerPacket.netRot12 = (transformable->NetRotation())[1][2];
+			playerPacket.netRot20 = (transformable->NetRotation())[2][0];
+			playerPacket.netRot21 = (transformable->NetRotation())[2][1];
+			playerPacket.netRot22 = (transformable->NetRotation())[2][2];
+		}
+		
+		ClientGame::SendPacket(GLNetwork::PLAYER_PACKET, &playerPacket);
 	}
 
 	Scene::Update(timedelta);
