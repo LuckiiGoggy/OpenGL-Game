@@ -67,6 +67,30 @@ void ServerMain::StartLoop()
 		floors.UpdateMembers(currDelta);
  		projectiles.UpdateMembers(currDelta);
 
+		std::map<int, IGameObject *>::iterator iter = projectiles.members.begin();;
+		Projectile *projectile;
+
+		while (iter != projectiles.members.end()) 
+		{
+			projectile = dynamic_cast<Projectile*>(iter->second);
+			
+			if (projectile != 0){
+				if (!projectile->IsActive()){
+					iter = ServerMain::RemoveMember(ServerMain::Projectiles, projectile->ObjectId(), iter);
+				}
+				else{
+					++iter;
+				}
+			}
+			else{
+				++iter;
+			}
+
+		}
+
+
+
+
 		//Loop
 			//go through members and get pos and rotation
 			//stuff into packets
@@ -144,6 +168,60 @@ void ServerMain::SendMemberPackets(GLNetwork::PacketType packet_t, GameObjectCon
 			ServerGame::SendToAll(packet_t, &(transformable->GetPacket()));
 		}
 	}
+}
+
+void ServerMain::RemoveMember(MemberList listType, int objectId)
+{
+	GLNetwork::KillObjectPacket killPacket;
+	killPacket.objectId = objectId;
+
+	switch (listType)
+	{
+	case Players:
+		players.RemoveMember(objectId);
+		physEngi->unregisterRigidBody("Player" + std::to_string(objectId));
+		break;
+	case Walls:
+		walls.RemoveMember(objectId);
+		physEngi->unregisterRigidBody("Wall" + std::to_string(objectId));
+		break;
+	case Floors:
+		floors.RemoveMember(objectId);
+		break;
+	case Projectiles:
+		projectiles.RemoveMember(objectId);
+		physEngi->unregisterRigidBody("Projectile" + std::to_string(objectId));
+		break;
+	}
+	ServerGame::SendToAll(GLNetwork::KILL_OBJECT, &killPacket);
+}
+
+std::map<int, IGameObject*>::iterator ServerMain::RemoveMember(MemberList listType, int objectId, std::map<int, IGameObject*>::iterator it)
+{
+	GLNetwork::KillObjectPacket killPacket;
+	killPacket.objectId = objectId;
+	ServerGame::SendToAll(GLNetwork::KILL_OBJECT, &killPacket);
+
+	switch (listType)
+	{
+	case Players:
+		physEngi->unregisterRigidBody("Player" + std::to_string(objectId));
+		return players.RemoveMember(it);
+		break;
+	case Walls:
+		physEngi->unregisterRigidBody("Wall" + std::to_string(objectId));
+		return walls.RemoveMember(it);
+		break;
+	case Floors:
+		return floors.RemoveMember(it);
+		break;
+	case Projectiles:
+		physEngi->unregisterRigidBody("Projectile" + std::to_string(objectId));
+		return projectiles.RemoveMember(it);
+		break;
+	}
+
+	return it;
 }
 
 

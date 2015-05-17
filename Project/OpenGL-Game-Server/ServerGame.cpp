@@ -149,6 +149,13 @@ void ServerGame::threadedClient(int clientId)
 
 			i += packetSize;
 		}
+
+
+		player = (Player*)ServerMain::GetMember(ServerMain::Players, objectId);
+		SendPacketToClient(GLNetwork::PLAYER_INFO_PACKET, player->GetPInfoPacket(), clientId);
+
+
+
 	}
 
 }

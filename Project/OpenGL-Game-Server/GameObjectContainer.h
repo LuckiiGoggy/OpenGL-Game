@@ -25,6 +25,7 @@ public:
 	@param name - name key index of the member to be removed
 	**/
 	virtual void RemoveMember(int name);
+	virtual std::map<int, IGameObject*>::iterator RemoveMember(std::map<int, IGameObject*>::iterator it);
 
 	/**Removes all GameObjects from members**/
 	virtual void EmptyMembers(void);

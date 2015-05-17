@@ -35,9 +35,14 @@ void GameObjectContainer::AddMember(int key, IGameObject *game){
 }
 
 void GameObjectContainer::RemoveMember(int key){
-	delete members[key];
+/*	delete members[key];*/
 	members.erase(key);
 	
+}
+
+std::map<int, IGameObject*>::iterator GameObjectContainer::RemoveMember(std::map<int, IGameObject*>::iterator it)
+{
+	return members.erase(it);
 }
 
 void GameObjectContainer::EmptyMembers(void){
@@ -105,7 +110,7 @@ void GameObjectContainer::UpdateMembers(float timeDelta)
 	IUpdateable *updateable = 0;
 	Transform *transformable;
 
-	for (iter = this->members.begin(); iter != this->members.end(); ++iter) {
+	for (iter = members.begin(); iter != members.end(); ++iter) {
 		updateable = dynamic_cast<IUpdateable *>(iter->second);
 		transformable = dynamic_cast<Transform*>(iter->second);
 

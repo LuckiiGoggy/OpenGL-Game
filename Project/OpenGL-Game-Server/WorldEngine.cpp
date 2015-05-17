@@ -69,7 +69,7 @@ void WorldEngine::readWorld(std::string filename) {
 					p = new Transform(objId);
 					p->Move(glm::vec3(j * tileLength, 1.0f, i * tileLength));
 					tileNo++;
-					std::string name = "tile" + std::to_string(tileNo);
+					std::string name = "Wall" + std::to_string(objId);
 					ServerMain::GetPhysEngi()->registerRigidBody(BoundingBoxLibrary::NewWall(), p, name, 4);
 					ServerMain::AddMember(ServerMain::Walls, objId, p);
 					break;
@@ -89,7 +89,7 @@ void WorldEngine::readWorld(std::string filename) {
 					p = new Transform(objId);
 					p->Move(glm::vec3(j * tileLength, 1.0f, i * tileLength));
 					tileNo++;
-					std::string name = "tile" + std::to_string(tileNo);
+					std::string name = "Wall" + std::to_string(objId);
 					ServerMain::GetPhysEngi()->registerRigidBody(BoundingBoxLibrary::NewWall(), p, name, 3);
 					ServerMain::AddMember(ServerMain::Walls, objId, p);
 					//GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 3, tileNo);
@@ -116,7 +116,7 @@ void WorldEngine::readWorld(std::string filename) {
 					p = new Transform(objId);
 					p->Move(glm::vec3(j * tileLength, 1.0f, i * tileLength));
 					tileNo++;
-					std::string name = "tile" + std::to_string(tileNo);
+					std::string name = "Wall" + std::to_string(objId);
 					ServerMain::GetPhysEngi()->registerRigidBody(BoundingBoxLibrary::NewWall(), p, name, 3);
 					ServerMain::AddMember(ServerMain::Walls, objId, p);
 					//GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);

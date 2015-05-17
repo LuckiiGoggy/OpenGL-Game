@@ -24,6 +24,8 @@ public:
 
 	static void AddMember(MemberList listType, int objectId, IGameObject *object);
 	static IGameObject *GetMember(MemberList listType, int objectId);
+	static void RemoveMember(MemberList listType, int objectId);
+	static std::map<int, IGameObject*>::iterator RemoveMember(MemberList listType, int objectId, std::map<int, IGameObject*>::iterator it);
 
 	static int GetNewObjectId(void);
 
