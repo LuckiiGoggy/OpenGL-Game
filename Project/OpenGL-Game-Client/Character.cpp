@@ -79,6 +79,12 @@ int  Character::GetStatValue(std::string statName){
 
 	return -1;
 }
+void Character::SetStatValue(std::string statName, int val)
+{
+	std::map<std::string, CharacterStat>::iterator it = charaStats.find(statName);
+	if (it != charaStats.end()) (it->second).SetValue(val);
+}
+
 void Character::IncStat(std::string statName){
 	std::map<std::string, CharacterStat>::iterator it = charaStats.find(statName);
 	if (it != charaStats.end()) (it->second)+= 1;

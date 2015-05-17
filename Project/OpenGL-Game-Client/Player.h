@@ -16,7 +16,7 @@ public:
 	~Player(void);
 
 	MeshObject *GetCollisionMesh(void);
-	
+
 
 
 protected:

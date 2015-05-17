@@ -91,12 +91,23 @@ void  Transform::operator delete(void* storage){
 }
 
 
-glm::mat4& Transform::NetTranslation(void){
+glm::mat4& Transform::NetRotation(void){
 	return netTranslation;
 }
+
+void Transform::NetRotation(glm::mat4 &rot)
+{
+	netRotation = rot;
+}
+
 glm::mat4& Transform::NetRotation(void){
 	return netRotation;
 }
 glm::mat4& Transform::NetScale(void){
 	return netScale;
+}
+
+void Transform::MoveTo(glm::vec3 pos)
+{
+	netTranslation = glm::translate(pos);
 }

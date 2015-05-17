@@ -13,12 +13,6 @@ PlayerController::PlayerController(Player *playa) : CharacterController(playa)
 }
 
 
-
-
-PlayerController::~PlayerController()
-{
-}
-
 void PlayerController::Update(float timeDelta){
 	CharacterController::Update(timeDelta);
 

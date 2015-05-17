@@ -38,6 +38,8 @@ public:
 	virtual void AddStat(CharacterStat newStat);
 	virtual void RemoveStat(std::string statName);
 	virtual int  GetStatValue(std::string statName);
+	virtual void SetStatValue(std::string statName, int val);
+
 	virtual void IncStat(std::string statName);
 	virtual void DecStat(std::string statName);
 	virtual void ResetStats(void);

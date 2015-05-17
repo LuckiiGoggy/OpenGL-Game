@@ -16,6 +16,7 @@ Player::Player(void)
 
 	AddStat(CharacterStat("Health", 3, 0, 3));
 	AddStat(CharacterStat("Ammo", 3, 0, 3));
+	AddStat(CharacterStat("Score", 0, 0));
 
 }
 

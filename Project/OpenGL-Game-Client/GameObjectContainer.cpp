@@ -16,12 +16,12 @@ GameObjectContainer::GameObjectContainer()
 
 GameObjectContainer::~GameObjectContainer()
 {
-	std::map<std::string, IGameObject *>::iterator iter;
-
-	for (iter = members.begin(); iter != members.end(); ++iter) {
-		delete iter->second;
-	}
-	members.empty();
+// 	std::map<std::string, IGameObject *>::iterator iter;
+// 
+// 	for (iter = members.begin(); iter != members.end(); ++iter) {
+// 		delete iter->second;
+// 	}
+// 	members.empty();
 }
 
 void GameObjectContainer::AddMember(std::string name, IGameObject *game){

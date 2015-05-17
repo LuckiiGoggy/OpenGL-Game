@@ -8,21 +8,32 @@
 
 #include <winsock2.h>
 #include <Windows.h>
+#include "GameScene.h"
 
 class ClientGame
 {
 public:
-	ClientGame(void);
-	~ClientGame(void);
+	
+	
+	
+	static void Init(void);
 
-	ClientNetwork* network;
+	static ClientNetwork* network;
 
-	void sendActionPackets(int);
+	static void sendActionPackets(int);
 	
 
-	char network_data[MAX_PACKET_SIZE];
+	static char network_data[MAX_PACKET_SIZE];
 
-	void update(int);
-	void SendPacket(GLNetwork::PacketType packet_t, GLNetwork::Packet *packet);
+	static void update(int);
+	static void SendPacket(GLNetwork::PacketType packet_t, GLNetwork::Packet *packet);
+
+
+	static void Game(GameScene *newGame);
+	static GameScene *Game(void);
+
+
+protected:
+	static GameScene *game;
 };
 

@@ -3,9 +3,14 @@
 
 #include "ClientGame.h"
 
+ClientNetwork* ClientGame::network;
+char ClientGame::network_data[];
+GameScene * ClientGame::game;
+
+
 using namespace GLNetwork;
 
-ClientGame::ClientGame()
+void ClientGame::Init()
 {
 	network = new ClientNetwork();
 
@@ -17,11 +22,6 @@ ClientGame::ClientGame()
 	//packet.serialize(packet_data);
 
 	NetworkServices::sendMessage(network->ConnectSocket, packet_data, packet_size);
-}
-
-
-ClientGame::~ClientGame(void)
-{
 }
 
 void ClientGame::sendActionPackets(int i)
@@ -79,7 +79,7 @@ void ClientGame::update(int j)
 
 			printf("\nPlayer Info, objID: %d, ammo: %d, health: %d, score: %d", ((PlayerInfoPacket *)packet)->objectId,((PlayerInfoPacket *)packet)->ammo, ((PlayerInfoPacket *)packet)->health, ((PlayerInfoPacket *)packet)->score);
 
-
+			
 
 			//sendActionPackets(j);
 
@@ -125,3 +125,14 @@ void ClientGame::update(int j)
 		}
 	}
 }
+
+void ClientGame::Game(GameScene *newGame)
+{
+	game = newGame;
+}
+
+GameScene * ClientGame::Game(void)
+{
+	return game;
+}
+
