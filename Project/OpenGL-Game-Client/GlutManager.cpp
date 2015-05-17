@@ -3,13 +3,11 @@
 #include "GlutManager.h"
 #include "IRenderable.h"
 #include "InputManager.h"
-#include "Overlay2D.h"
 
 std::map<std::string, IObject *> GlutManager::members;
 Camera *GlutManager::mainCamera = NULL;
 GLint GlutManager::mainWindow;
 float GlutManager::lastTime;
-Overlay2D HUD;
 
 void GlutManager::Init(bool editor)
 {
@@ -84,12 +82,7 @@ void GlutManager::RenderScene(void){
 			renderable->Render();
 		}
 	}
-
-	GLint m_viewport[4];
-	glGetIntegerv(GL_VIEWPORT, m_viewport);
-	//HUD.prepare2D(m_viewport[0], m_viewport[1], m_viewport[2], m_viewport[3]);
-	//HUD.Render();
-
+	
 	glutSwapBuffers();
 }
 
