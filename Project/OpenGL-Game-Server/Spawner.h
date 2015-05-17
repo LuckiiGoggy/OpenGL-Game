@@ -16,7 +16,7 @@ class Spawner {
 public:
 	Spawner();
 	Spawner(std::vector<WorldSquare> squares, std::vector<MeshObject *> players);
-	void InitialSpawn();
+	void InitialSpawn(std::vector<Player *> players);
 	void SpawnPlayer(MeshObject &player, std::vector<MeshObject *> players);
 	void SpawnProjectile(Player* player, IGameObject *scene);
 
