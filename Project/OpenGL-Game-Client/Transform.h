@@ -26,7 +26,7 @@ public:
 	static glm::vec3 Inverse(glm::vec3 vec);
 
 
-	virtual glm::mat4& NetRotation(void);
+	virtual glm::mat4& NetTranslation(void);
 	virtual void NetRotation(glm::mat4 &rot);
 	virtual glm::mat4& NetRotation(void);
 	virtual glm::mat4& NetScale(void);

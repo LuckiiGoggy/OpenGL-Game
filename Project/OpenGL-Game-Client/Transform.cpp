@@ -91,7 +91,7 @@ void  Transform::operator delete(void* storage){
 }
 
 
-glm::mat4& Transform::NetRotation(void){
+glm::mat4& Transform::NetTranslation(void){
 	return netTranslation;
 }
 

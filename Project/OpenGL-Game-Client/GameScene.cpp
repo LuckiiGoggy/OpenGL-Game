@@ -93,7 +93,7 @@ void GameScene::Update(float timedelta) {
 
 }
 
-void GameScene::UpdateTransformObj(int objId, MeshTypes m_type, glm::mat4 rot, glm::vec3 pos)
+void GameScene::UpdateTransformObj(int objId, MeshTypes m_type, glm::mat4 &rot, glm::vec3 pos)
 {
 	std::map<int, std::string>::iterator iter = objIdStrId.find(objId);
 
@@ -109,10 +109,10 @@ void GameScene::UpdateTransformObj(int objId, MeshTypes m_type, glm::mat4 rot, g
 	}
 }
 
-void GameScene::CreateNewObj(int objId, MeshTypes m_type, glm::mat4 rot, glm::vec3 pos)
+void GameScene::CreateNewObj(int objId, MeshTypes m_type, glm::mat4 &rot, glm::vec3 pos)
 {
 	std::string name = std::to_string(objId);
-	IGameObject *newObj/*GameObjectLibrary::NewWall*/;
+	IGameObject *newObj = new Player();/*GameObjectLibrary::NewWall*/;
 
 	objIdStrId[objId] = name;
 
