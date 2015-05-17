@@ -19,7 +19,7 @@ namespace GLNetwork{
 	// Enumeration of packet types
 	enum PacketType {
 
-		INIT_CONNECTION = 0,
+		INIT_CONNECTION = 10,
 
 		ACTION_EVENT = 1,
 

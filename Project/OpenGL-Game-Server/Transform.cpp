@@ -1,4 +1,5 @@
 #include "Transform.h"
+#include "PacketData.h"
 
 
 Transform::Transform(void)
@@ -9,6 +10,20 @@ Transform::Transform(void)
 	netTranslation = glm::mat4(1.0f);
 	netRotation = glm::mat4(1.0f);
 	netScale = glm::mat4(1.0f);
+
+	objectId = -1;
+}
+
+Transform::Transform(int objID)
+{
+	position = glm::vec3(0.0f);
+
+	netTransformations = glm::mat4(1.0f);
+	netTranslation = glm::mat4(1.0f);
+	netRotation = glm::mat4(1.0f);
+	netScale = glm::mat4(1.0f);
+
+	objectId = objID;
 }
 
 void Transform::UpdateNetTransformations(void){
@@ -103,4 +118,29 @@ glm::mat4& Transform::NetScale(void){
 
 void Transform::NetRotation(glm::mat4 &rot){
 	netRotation = rot;
+}
+
+void Transform::UpdatePacket(void)
+{
+	packet = PacketData::transformToPacket(this);
+}
+
+GLNetwork::ObjectPacket Transform::GetPacket(void)
+{
+	return packet;
+}
+
+void Transform::SetObjectId(int objId)
+{
+	objectId = objId;
+}
+
+int Transform::ObjectId()
+{
+	return objectId;
+}
+
+void Transform::Update(float timeDelta)
+{
+	UpdateNetTransformations();
 }

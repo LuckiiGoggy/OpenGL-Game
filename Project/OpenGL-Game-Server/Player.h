@@ -14,9 +14,14 @@ public:
 	Player(std::string _name);
 	~Player(void);
 
+	void Update(float timeDelta);
+
 	void Shoot(void);
+	GLNetwork::Packet *GetPInfoPacket(void);
 protected:
-	
+	float ammoCD;
+	float ammoCDTimer;
+	GLNetwork::PlayerInfoPacket pInfoPacket;
 };
 
 #endif

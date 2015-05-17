@@ -14,7 +14,7 @@
 /**Character Class is a container for the GroupObject that makes up
 	a character.
 	It provides the interface for interacting with a character.**/
-class Character: public GroupObject, public GameObjectContainer
+class Character: public GroupObject
 {
 public:
 	Character();

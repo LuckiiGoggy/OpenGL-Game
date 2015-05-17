@@ -22,9 +22,14 @@ public:
 
 
 	static void sendPackets(GLNetwork::Packet *packet);
-	void sendActionPackets();
+	static void sendActionPackets();
 	static void RemoveClient(unsigned int clientId);
-	void SendPacketToClient(GLNetwork::Packet *packet, unsigned int clientId);
+	static void SendPacketToClient(GLNetwork::Packet *packet, unsigned int clientId);
+	static void SendPacketToClient(GLNetwork::PacketType packet_t, GLNetwork::Packet *packet, unsigned int clientId);
+	static void SendToAll(GLNetwork::PacketType packet_t, GLNetwork::Packet *packet);
+
+
+
 private:
 
 	// IDs for the clients connecting for table in ServerNetwork 
@@ -37,10 +42,10 @@ private:
 	static ServerNetwork* network;
 
 	// data buffer
-	char network_data[MAX_PACKET_SIZE];
+	static char network_data[MAX_PACKET_SIZE];
 
 	//threads
-	std::vector<std::thread *> myThreads;
+	static std::vector<std::thread *> myThreads;
 };
 
 #endif

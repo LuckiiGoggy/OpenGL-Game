@@ -1,4 +1,5 @@
 #include "Projectile.h"
+#include "ServerMain.h"
 
 
 Projectile::Projectile(glm::mat4 &dir, glm::vec3 pos) {
@@ -20,6 +21,7 @@ Projectile::Projectile(glm::mat4 &dir, glm::vec3 pos, MeshObject* proj) : MeshOb
 void Projectile::Update(float timeDelta)
 {
 	duration -= timeDelta;
+
 	MeshObject::Update(timeDelta);
 }
 

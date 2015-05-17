@@ -9,6 +9,8 @@
 #include <map>
 #include "Transform.h"
 #include "GameObjectContainer.h"
+#include "Spawner.h"
+#include "WorldEngine.h"
 
 class ServerMain
 {
@@ -22,11 +24,15 @@ public:
 
 	static void AddMember(MemberList listType, int objectId, IGameObject *object);
 	static IGameObject *GetMember(MemberList listType, int objectId);
+	static void RemoveMember(MemberList listType, int objectId);
+	static std::map<int, IGameObject*>::iterator RemoveMember(MemberList listType, int objectId, std::map<int, IGameObject*>::iterator it);
 
 	static int GetNewObjectId(void);
 
 	static void StartLoop();
 	static void EndLoop();
+
+	static void SendMemberPackets(GLNetwork::PacketType packet_t, GameObjectContainer members);
 
 protected:
 	/*Members*/
@@ -44,6 +50,9 @@ protected:
 	static float currDelta;
 
 	static int lastObjectId;
+
+	static Spawner *spawner;
+	static WorldEngine *engine;
 
 
 

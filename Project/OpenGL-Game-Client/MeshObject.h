@@ -15,8 +15,6 @@
 #include "openGL.h"
 #include "Dependencies/glm/glm/gtc/matrix_transform.hpp"
 #include "Dependencies/glm/glm/gtc/type_ptr.hpp"
-#include "LocationRect.h"
-#include "BoundingBox.h"
 
 
 #pragma once
@@ -27,22 +25,14 @@ public:
 	~MeshObject();
 
 	virtual void Update(float timeDelta);
-	virtual void UpdateBoundingBox(float timeDelta);
 
 	virtual bool Init(char* model_filename, char* vshader_filename, char* fshader_filename);
 
 	void Render(void);
 	virtual void RenderBoundingBox(void);
-	
-	void returnBB(glm::vec3, glm::vec3);
 
-	void updateBoundingBox();
-	void calculateBottomFace();
 
 	GLuint program;
-
-	BoundingBox boundingBox;
-	LocationRect bottomFace;
 
 private:
 	virtual void SetUpCamera(void);

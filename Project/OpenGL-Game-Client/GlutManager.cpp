@@ -3,13 +3,11 @@
 #include "GlutManager.h"
 #include "IRenderable.h"
 #include "InputManager.h"
-#include "Overlay2D.h"
 
 std::map<std::string, IObject *> GlutManager::members;
 Camera *GlutManager::mainCamera = NULL;
 GLint GlutManager::mainWindow;
 float GlutManager::lastTime;
-Overlay2D HUD;
 
 void GlutManager::Init(bool editor)
 {
@@ -42,7 +40,7 @@ void GlutManager::Init(bool editor)
 	lastTime = glutGet(GLUT_ELAPSED_TIME) / 1000.0f;
 
 	mainCamera = new Camera();
-	glutFullScreen();
+	//glutFullScreen();
 	//if (editor)	GLUIManager::initGLUI(GlutManager::mainWindow, GlutManager::IdleFunc);
 	//else glutFullScreen();
 
@@ -84,12 +82,7 @@ void GlutManager::RenderScene(void){
 			renderable->Render();
 		}
 	}
-
-	GLint m_viewport[4];
-	glGetIntegerv(GL_VIEWPORT, m_viewport);
-	//HUD.prepare2D(m_viewport[0], m_viewport[1], m_viewport[2], m_viewport[3]);
-	//HUD.Render();
-
+	
 	glutSwapBuffers();
 }
 
@@ -100,42 +93,12 @@ void GlutManager::IdleFunc(void){
 	currDelta = currTime - lastTime;
 	lastTime = currTime;
 	if (InputManager::isKeyDown(KeyCodes::ESC)) glutLeaveMainLoop();
-	
-	float moveSpd = currDelta * 1.0f;
-
-	//std::cout << "\n" << currDelta;
-
-
-	//if (InputManager::isKeyDown(KeyCodes::w)) mainCamera->Move(glm::vec3(0.0f, 0.0f, currDelta * 5.0f));
-	//if (InputManager::isKeyDown(KeyCodes::a)) mainCamera->Move(glm::vec3(currDelta * 5.0f, 0.0f, 0.0f));
-	//if (InputManager::isKeyDown(KeyCodes::s)) mainCamera->Move(glm::vec3(0.0f, 0.0f, -currDelta * 5.0f));
-	//if (InputManager::isKeyDown(KeyCodes::d)) mainCamera->Move(glm::vec3(-currDelta * 5.0f, 0.0f, 0.0f));
-	//if (InputManager::isSpecialKeyDown(GLUT_KEY_SHIFT_L)) mainCamera->Move(glm::vec3(0.0f, -currDelta * 10.0f, 0.0f));
-
-	if (InputManager::isKeyDown(KeyCodes::m)) mainCamera->ClearRotation();
-
-	//std::cout << "\n In IdleFunc";
-
-	//mainCamera->Update(currDelta);
-
 
 	UpdateMembers(currDelta);
-
-	
-	/*
-	if (InputManager::isKeyDown(KeyCodes::w)) myMesh.Move(glm::vec3(0.0f, 0.0f, 0.01f));
-	if (InputManager::isKeyDown(KeyCodes::a)) myMesh.Move(glm::vec3(-0.01f, 0.0f, 0.0f));
-	if (InputManager::isKeyDown(KeyCodes::s)) myMesh.Move(glm::vec3(0.0f, 0.0f, -0.01f));
-	if (InputManager::isKeyDown(KeyCodes::d)) myMesh.Move(glm::vec3(0.01f, 0.0f, 0.0f));
-	if (InputManager::isSpecialKeyDown(GLUT_KEY_SHIFT_L)) myMesh.Move(glm::vec3(0.0f, -0.01f, 0.0f));
-	if (InputManager::isKeyDown(KeyCodes::Space)) myMesh.Move(glm::vec3(0.0f, 0.01f, 0.0f));
-	*/
-	
 
 	InputManager::Update();
 
 	glutSetWindow(mainWindow);
-
 	glutPostRedisplay();
 }
 
@@ -176,16 +139,4 @@ void GlutManager::UpdateMembers(float timeDelta){
 
 }
 
-void GlutManager::SetPhysEngi(PhysicsEngine *phys)
-{
-	physEngi = phys;
-}
-
-PhysicsEngine * GlutManager::GetPhysEngi(void)
-{
-	return physEngi;
-}
-
 float GlutManager::currDelta = 0.0f;
-
-PhysicsEngine * GlutManager::physEngi;

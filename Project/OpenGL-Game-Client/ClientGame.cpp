@@ -39,6 +39,17 @@ void ClientGame::sendActionPackets(int i)
 	NetworkServices::sendMessage(network->ConnectSocket, packet_data, packet_size);
 }
 
+
+void ClientGame::SendPacket(GLNetwork::PacketType packet_t, GLNetwork::Packet *packet)
+{
+	// send action packet
+	char *packet_data;
+
+	const unsigned int packet_size = PacketBuilder::SerializePacket(packet_t, packet, packet_data);
+
+	NetworkServices::sendMessage(network->ConnectSocket, packet_data, packet_size);
+}
+
 void ClientGame::update(int j)
 {
 	Packet *packet;
@@ -70,7 +81,7 @@ void ClientGame::update(int j)
 
 
 
-			sendActionPackets(j);
+			//sendActionPackets(j);
 
 			break;
 
@@ -85,7 +96,7 @@ void ClientGame::update(int j)
 
 		case PROJECTILE_OBJECT:{
 			ObjectPacket *objPacket = (ObjectPacket *)packet;
-			printf("\nProjectileObjectPacket, objID: %d, pos: x: %f, y: %f, z: %f", objPacket->objectId, objPacket->posX, objPacket->posY, objPacket->posZ);
+			//printf("\nProjectileObjectPacket, objID: %d, pos: x: %f, y: %f, z: %f", objPacket->objectId, objPacket->posX, objPacket->posY, objPacket->posZ);
 
 			break;
 
@@ -93,7 +104,7 @@ void ClientGame::update(int j)
 			
 		case WALL_OBJECT:{
 			ObjectPacket *objPacket = (ObjectPacket *)packet;
-			printf("\nWallObjectPacket, objID: %d, pos: x: %f, y: %f, z: %f", objPacket->objectId, objPacket->posX, objPacket->posY, objPacket->posZ);
+			//printf("\nWallObjectPacket, objID: %d, pos: x: %f, y: %f, z: %f", objPacket->objectId, objPacket->posX, objPacket->posY, objPacket->posZ);
 
 			break;
 
@@ -101,7 +112,7 @@ void ClientGame::update(int j)
 			
 		case FLOOR_OBJECT:{
 			ObjectPacket *objPacket = (ObjectPacket *)packet;
-			printf("\nFloorObjectPacket, objID: %d, pos: x: %f, y: %f, z: %f", objPacket->objectId, objPacket->posX, objPacket->posY, objPacket->posZ);
+			//printf("\nFloorObjectPacket, objID: %d, pos: x: %f, y: %f, z: %f", objPacket->objectId, objPacket->posX, objPacket->posY, objPacket->posZ);
 
 			break;
 

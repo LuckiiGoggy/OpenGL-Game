@@ -9,6 +9,8 @@
 unsigned int ServerGame::client_id = 0;
 ServerNetwork* ServerGame::network = new ServerNetwork();
 std::map<unsigned int, int> ServerGame::clients;
+std::vector<std::thread *> ServerGame::myThreads;
+char ServerGame::network_data[];
 
 
 using namespace GLNetwork;
@@ -114,9 +116,13 @@ void ServerGame::threadedClient(int clientId)
 
 			case PLAYER_PACKET:{
 				std::pair<glm::mat4, bool*> packetData = PacketData::extractPlayerInfo((PlayerPacket *)packet);
+				player = (Player*)ServerMain::GetMember(ServerMain::Players, objectId);
+				std::cout << "\nReceived Player Packet";
 
-				if (player == NULL) break;
-
+				if (player == NULL) {
+					std::cout << "\n Player is NULL";
+					break;
+				}
 				if (((PlayerPacket *)packet)->forward)
 					player->MoveForward();
 				if (((PlayerPacket *)packet)->backward)
@@ -143,6 +149,13 @@ void ServerGame::threadedClient(int clientId)
 
 			i += packetSize;
 		}
+
+
+		player = (Player*)ServerMain::GetMember(ServerMain::Players, objectId);
+		SendPacketToClient(GLNetwork::PLAYER_INFO_PACKET, player->GetPInfoPacket(), clientId);
+
+
+
 	}
 
 }
@@ -174,3 +187,25 @@ void ServerGame::SendPacketToClient(GLNetwork::Packet *packet, unsigned int clie
 
 	network->SendToOne(clientId, packet_data, packet_size);
 }
+
+
+void ServerGame::SendPacketToClient(GLNetwork::PacketType packet_t, GLNetwork::Packet *packet, unsigned int clientId)
+{
+	unsigned int packet_size;
+	char *packet_data;
+
+	packet_size = PacketBuilder::SerializePacket(packet_t, packet, packet_data);
+
+	network->SendToOne(clientId, packet_data, packet_size);
+}
+
+void ServerGame::SendToAll(GLNetwork::PacketType packet_t, GLNetwork::Packet *packet)
+{
+	unsigned int packet_size;
+	char *packet_data;
+
+	packet_size = PacketBuilder::SerializePacket(packet_t, packet, packet_data);
+
+	network->sendToAll(packet_data, packet_size);
+}
+

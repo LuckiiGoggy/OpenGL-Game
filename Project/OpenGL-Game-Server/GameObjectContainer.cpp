@@ -15,23 +15,34 @@ GameObjectContainer::GameObjectContainer()
 
 GameObjectContainer::~GameObjectContainer()
 {
-	std::map<int, IGameObject *>::iterator iter;
-
-	for (iter = members.begin(); iter != members.end(); ++iter) {
-		delete iter->second;
-	}
-	members.empty();
+// 	std::map<int, IGameObject *>::iterator iter;
+// 
+// 	for (iter = members.begin(); iter != members.end(); ++iter) {
+// 		delete iter->second;
+// 	}
+// 	members.empty();
 }
 
 void GameObjectContainer::AddMember(int key, IGameObject *game){
 	this->members[key] = game;
+
+	Transform *transformable = dynamic_cast<Transform *>(game);
+
+	if (transformable != 0){
+		transformable->SetObjectId(key);
+	}
 	
 }
 
 void GameObjectContainer::RemoveMember(int key){
-	delete members[key];
+/*	delete members[key];*/
 	members.erase(key);
 	
+}
+
+std::map<int, IGameObject*>::iterator GameObjectContainer::RemoveMember(std::map<int, IGameObject*>::iterator it)
+{
+	return members.erase(it);
 }
 
 void GameObjectContainer::EmptyMembers(void){
@@ -97,12 +108,17 @@ void GameObjectContainer::UpdateMembers(float timeDelta)
 {
 	std::map<int, IGameObject *>::iterator iter;
 	IUpdateable *updateable = 0;
+	Transform *transformable;
 
-	for (iter = this->members.begin(); iter != this->members.end(); ++iter) {
+	for (iter = members.begin(); iter != members.end(); ++iter) {
 		updateable = dynamic_cast<IUpdateable *>(iter->second);
+		transformable = dynamic_cast<Transform*>(iter->second);
 
 		if (updateable != 0){
 			updateable->Update(timeDelta);
+		}
+		if (transformable != 0){
+			transformable->UpdatePacket();
 		}
 	}
 
@@ -110,4 +126,14 @@ void GameObjectContainer::UpdateMembers(float timeDelta)
 
 IGameObject * GameObjectContainer::GetMember(int key){
 	return members[key];
+}
+
+std::vector<IGameObject*> GameObjectContainer::GetMembers(){
+	std::vector<IGameObject*> v;
+
+	for (std::map<int, IGameObject *>::iterator it = members.begin(); it != members.end(); ++it) {
+		v.push_back(it->second);
+	}
+
+	return v;
 }
