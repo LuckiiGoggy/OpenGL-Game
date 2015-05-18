@@ -57,6 +57,21 @@ void GameObjectContainer::MoveMembers(glm::vec3 moveDelta){
 	}
 
 }
+
+
+void GameObjectContainer::MoveToMembers(glm::vec3 moveDelta){
+	std::map<std::string, IGameObject *>::iterator iter;
+	Transform *moveable;
+
+	for (iter = this->members.begin(); iter != this->members.end(); ++iter) {
+		moveable = dynamic_cast<Transform*>(iter->second);
+		if (moveable != 0){
+			moveable->MoveTo(moveDelta);
+		}
+	}
+
+}
+
 void GameObjectContainer::MoveMembers(float x, float y, float z){
 	std::map<std::string, IGameObject *>::iterator iter;
 	Transform *moveable;

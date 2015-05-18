@@ -41,6 +41,10 @@ void GroupObject::Move(glm::vec3 moveDelta, Space transformSpace)
 	MoveMembers(moveDelta);
 }
 
+void GroupObject::MoveTo(glm::vec3 pos){
+	Transform::MoveTo(pos);
+	MoveToMembers(pos);
+}
 
 void GroupObject::Rotate(float axisX, float axisY, float axisZ, float angle, glm::vec3 rotPoint, Space transformSpace){
 	switch (transformSpace)

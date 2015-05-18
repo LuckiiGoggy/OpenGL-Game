@@ -9,6 +9,7 @@
 #include <winsock2.h>
 #include <Windows.h>
 #include "GameScene.h"
+#include <thread>
 
 class ClientGame
 {
@@ -31,9 +32,10 @@ public:
 
 	static void Game(GameScene *newGame);
 	static GameScene *Game(void);
-
+	static void Update(float timedelta);
 
 protected:
 	static GameScene *game;
+	static std::thread *myThread;
 };
 

@@ -24,6 +24,7 @@ public:
 
 	static glm::vec3 ApplyTransVec3(glm::vec3 point, glm::mat4 &transMat);
 	static glm::vec3 Inverse(glm::vec3 vec);
+	void UpdateNetTransformations(void);
 
 
 	virtual glm::mat4& NetTranslation(void);
@@ -44,7 +45,6 @@ protected:
 	glm::mat4 netRotation;
 	glm::mat4 netScale;
 
-	void UpdateNetTransformations(void);
 
 };
 

@@ -94,3 +94,10 @@ void Camera::Rotate(float axisX, float axisY, float axisZ, float angle, glm::vec
 
 
 }
+
+void Camera::MoveTo(glm::vec3 pos)
+{
+	position -= origLookAtPos - glm::vec3(0.0f, 3.0f, 0.0f);
+	position += pos;
+	origLookAtPos = pos + glm::vec3(0.0f, 3.0f, 0.0f);
+}

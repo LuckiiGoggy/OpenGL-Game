@@ -86,8 +86,8 @@ void ServerGame::threadedClient(int clientId)
 	while (network->sessions.find(clientId) != network->sessions.end()){
 		int data_length = network->receiveData(clientId, network_data);
 
-		player = (Player*)ServerMain::GetMember(ServerMain::Players, objectId);
-		SendPacketToClient(GLNetwork::PLAYER_INFO_PACKET, player->GetPInfoPacket(), clientId);
+// 		player = (Player*)ServerMain::GetMember(ServerMain::Players, objectId);
+// 		SendPacketToClient(GLNetwork::PLAYER_INFO_PACKET, player->GetPInfoPacket(), clientId);
 		if (data_length <= 0)
 		{
 			//no data received
@@ -123,7 +123,6 @@ void ServerGame::threadedClient(int clientId)
 			case PLAYER_PACKET:{
 				std::pair<glm::mat4, bool*> packetData = PacketData::extractPlayerInfo((PlayerPacket *)packet);
 				player = (Player*)ServerMain::GetMember(ServerMain::Players, objectId);
-				std::cout << "\nReceived Player Packet";
 
 				if (player == NULL) {
 					std::cout << "\n Player is NULL";

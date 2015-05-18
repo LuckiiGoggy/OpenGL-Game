@@ -4,6 +4,7 @@
 #include "MeshObject.h"
 #include "GlutManager.h"
 #include "AnimatedObject.h"
+#include "GameObjectLibrary.h"
 
 Player::Player(void)
 {
@@ -11,7 +12,9 @@ Player::Player(void)
 	Camera *camera = new Camera();
 
 	
-	SetBody(new AnimatedObject());
+
+	SetBody(GameObjectLibrary::NewPlayer());
+
 
 
 	AddStat(CharacterStat("Health", 3, 0, 3));
@@ -29,4 +32,9 @@ Player::~Player(void)
 MeshObject * Player::GetCollisionMesh(void)
 {
 	return (MeshObject *)(dynamic_cast<GameObjectContainer *>(body)->GetMember("Idle"));
+}
+
+void Player::NetRotation(glm::mat4 &rot)
+{
+
 }

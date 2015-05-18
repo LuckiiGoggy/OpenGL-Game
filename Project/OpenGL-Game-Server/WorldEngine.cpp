@@ -103,11 +103,11 @@ void WorldEngine::readWorld(std::string filename) {
 				}
 				case SPAWN:
 				{
-// 					p = new MeshObject(*floor);
-// 					p->Move(glm::vec3(j * tileLength, 0.0f, i * tileLength));
-// 					tileNo++;
-// 					std::string name = "tile" + std::to_string(tileNo);
-					//GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);
+					int objId = ServerMain::GetNewObjectId();
+					p = new Transform(objId);
+					p->Move(glm::vec3(j * tileLength, 0.0f, i * tileLength));
+					tileNo++;
+					ServerMain::AddMember(ServerMain::Floors, objId, p);
 					break;
 				}
 				default:

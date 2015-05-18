@@ -29,6 +29,7 @@ public:
 	virtual void Rotate(float axisX, float axisY, float axisZ, float angle, glm::vec3 rotPoint = glm::vec3(0.0f), Space transformSpace = Space::Local);
 
 	void Update(float timeDelta);
+	void MoveTo(glm::vec3 pos);
 };
 
 #endif

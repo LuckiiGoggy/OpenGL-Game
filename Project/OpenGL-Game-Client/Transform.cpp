@@ -110,4 +110,5 @@ glm::mat4& Transform::NetScale(void){
 void Transform::MoveTo(glm::vec3 pos)
 {
 	netTranslation = glm::translate(pos);
+	position = pos;
 }

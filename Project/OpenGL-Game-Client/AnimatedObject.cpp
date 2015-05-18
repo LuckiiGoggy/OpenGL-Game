@@ -11,8 +11,8 @@ AnimatedObject::AnimatedObject()
 	char* obj_filename = (char*) "../Assets/Models/boxMan.obj";
 	char* obj_filename1 = (char*) "../Assets/Models/boxManWalk1.obj";
 	char* obj_filename2 = (char*) "../Assets/Models/boxManWalk2.obj";
-	char* v_shader_filename = (char*) "../Assets/Shaders/boxman-shading.v.glsl";
-	char* f_shader_filename = (char*) "../Assets/Shaders/boxman-shading.f.glsl";
+	char* v_shader_filename = (char*) "../Assets/Shaders/new-shading.v.glsl";
+	char* f_shader_filename = (char*) "../Assets/Shaders/new-shading.f.glsl";
 
 	mesh1->Init(obj_filename, v_shader_filename, f_shader_filename);
 	mesh2->Init(obj_filename1, v_shader_filename, f_shader_filename);
@@ -63,4 +63,10 @@ void AnimatedObject::Move(glm::vec3 moveDelta, Space transformSpace){
 
 void AnimatedObject::Rotate(float axisX, float axisY, float axisZ, float angle, glm::vec3 rotPoint, Space transformSpace){
 	RotateMembers(axisX, axisY, axisZ, angle, rotPoint, transformSpace);
+}
+
+void AnimatedObject::MoveTo(glm::vec3 pos)
+{
+	Transform::MoveTo(pos);
+	MoveToMembers(pos);
 }

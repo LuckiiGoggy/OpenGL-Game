@@ -3,6 +3,8 @@
 MeshObject *GameObjectLibrary::spearObject;
 MeshObject *GameObjectLibrary::wallObject;
 MeshObject* GameObjectLibrary::floorObject;
+AnimatedObject* GameObjectLibrary::playerObject;
+
 
 
 void GameObjectLibrary::InitGameObjects()
@@ -22,6 +24,7 @@ void GameObjectLibrary::InitGameObjects()
 	spearObject = new MeshObject();
 	wallObject = new MeshObject();
 	floorObject = new MeshObject();
+	playerObject = new AnimatedObject();
 
 	spearObject->Init(spear_obj_filename, v_shader_filename, f_shader_filename);
 	wallObject->Init(wall_filename, v_wall_filename, f_wall_filename);
@@ -41,4 +44,9 @@ IGameObject * GameObjectLibrary::NewWall(void)
 IGameObject * GameObjectLibrary::NewFloor(void)
 {
 	return new MeshObject(*floorObject);
+}
+
+IGameObject * GameObjectLibrary::NewPlayer(void)
+{
+	return new AnimatedObject(*playerObject);
 }

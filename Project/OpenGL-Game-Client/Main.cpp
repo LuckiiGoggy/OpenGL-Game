@@ -14,8 +14,8 @@ int main(int argc, char **argv) {
 	GameObjectLibrary::InitGameObjects();
 	GameScene *gS = new GameScene();
 	gS->Init();
-	ClientGame::Init();
 	ClientGame::Game(gS);
+	ClientGame::Init();
 	GlutManager::AddMember("Derp", gS);
 
 	GlutManager::StartLoop();

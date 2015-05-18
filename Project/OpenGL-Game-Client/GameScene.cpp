@@ -32,7 +32,6 @@ void GameScene::Render() {
 }
 
 void GameScene::Update(float timedelta) {
-	ClientGame::update(2);
 
 	if (members.find("Player") != members.end()){
 		GLNetwork::PlayerPacket playerPacket;
@@ -58,7 +57,7 @@ void GameScene::Update(float timedelta) {
 		
 		ClientGame::SendPacket(GLNetwork::PLAYER_PACKET, &playerPacket);
 	}
-
+	ClientGame::Update(timedelta);
 	Scene::Update(timedelta);
 
 }
@@ -95,7 +94,7 @@ void GameScene::CreateNewObj(int objId, MeshTypes m_type, glm::mat4 &rot, glm::v
 		newObj = GameObjectLibrary::NewFloor(); 
 		break;
 	case BoxMan:
-		newObj = new Player();
+		newObj = GameObjectLibrary::NewPlayer();
 		break;
 	case Spear:
 		newObj = GameObjectLibrary::NewProjectile();
@@ -137,6 +136,7 @@ void GameScene::CreateNewActivePlayer(int objId, int health, int ammo, int score
 {
 	Player *player = new Player();
 	PlayerController *pC = new PlayerController(player);
+
 
 	player->SetStatValue("Health", health);
 	player->SetStatValue("Ammo", ammo);

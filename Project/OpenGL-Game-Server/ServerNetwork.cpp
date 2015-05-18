@@ -152,7 +152,8 @@ void ServerNetwork::sendToAll(char * packets, int totalSize)
 
 		if (iSendResult == SOCKET_ERROR)
 		{
-			printf("send failed with error: %d\n", WSAGetLastError());
+			if (WSAGetLastError() != WSAEWOULDBLOCK)
+				printf("send failed with error: %d\n", WSAGetLastError());
 
 			if (WSAGetLastError() == WSAECONNRESET){
 				ServerGame::RemoveClient(iter->first);
