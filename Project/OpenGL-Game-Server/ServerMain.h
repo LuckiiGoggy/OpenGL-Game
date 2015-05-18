@@ -33,13 +33,15 @@ public:
 	static void EndLoop();
 
 	static void SendMemberPackets(GLNetwork::PacketType packet_t, GameObjectContainer members);
+	static void SendMemberPackets(GLNetwork::PacketType packet_t, GameObjectContainer members, unsigned int clientId);
 
-protected:
-	/*Members*/
+
 	static GameObjectContainer players;
 	static GameObjectContainer walls;
 	static GameObjectContainer floors;
 	static GameObjectContainer projectiles;
+protected:
+	/*Members*/
 
 
 	static PhysicsEngine *physEngi;

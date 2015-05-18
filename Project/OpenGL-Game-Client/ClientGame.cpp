@@ -26,7 +26,7 @@ void ClientGame::Init()
 
 	NetworkServices::sendMessage(network->ConnectSocket, packet_data, packet_size);
 
-	//myThread = new std::thread(update, 2);
+	myThread = new std::thread(update, 2);
 }
 
 void ClientGame::sendActionPackets(int i)

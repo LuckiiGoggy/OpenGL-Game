@@ -57,7 +57,7 @@ void GameScene::Update(float timedelta) {
 		
 		ClientGame::SendPacket(GLNetwork::PLAYER_PACKET, &playerPacket);
 	}
-	ClientGame::Update(timedelta);
+	//ClientGame::Update(timedelta);
 	Scene::Update(timedelta);
 
 }

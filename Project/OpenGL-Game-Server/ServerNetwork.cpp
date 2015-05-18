@@ -125,11 +125,6 @@ int ServerNetwork::receiveData(unsigned int client_id, char * recvbuf)
 		SOCKET currentSocket = sessions[client_id];
 		iResult = NetworkServices::receiveMessage(currentSocket, recvbuf, MAX_PACKET_SIZE);
 
-		if (iResult == 0)
-		{
-			printf("Connection closed\n");
-			closesocket(currentSocket);
-		}
 
 		return iResult;
 	}

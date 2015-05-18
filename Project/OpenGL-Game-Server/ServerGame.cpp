@@ -86,8 +86,7 @@ void ServerGame::threadedClient(int clientId)
 	while (network->sessions.find(clientId) != network->sessions.end()){
 		int data_length = network->receiveData(clientId, network_data);
 
-// 		player = (Player*)ServerMain::GetMember(ServerMain::Players, objectId);
-// 		SendPacketToClient(GLNetwork::PLAYER_INFO_PACKET, player->GetPInfoPacket(), clientId);
+
 		if (data_length <= 0)
 		{
 			//no data received
@@ -151,6 +150,8 @@ void ServerGame::threadedClient(int clientId)
 
 				break;
 			}
+// 			player = (Player*)ServerMain::GetMember(ServerMain::Players, objectId);
+// 			SendPacketToClient(GLNetwork::PLAYER_INFO_PACKET, player->GetPInfoPacket(), clientId);
 
 			i += packetSize;
 		}
