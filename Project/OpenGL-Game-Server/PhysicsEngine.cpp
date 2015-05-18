@@ -172,12 +172,6 @@ void PhysicsEngine::ApplyVelocities(float timeDelta){
 						((curVelocity)* (rigidObjects[i]->velocities[j]->z))
 						);
 				}
-				else{
-					rigidObjects[i]->move(
-						((curVelocity)* (rigidObjects[i]->velocities[j]->x)),
-						((curVelocity)* (rigidObjects[i]->velocities[j]->y)),
-						((curVelocity)* (rigidObjects[i]->velocities[j]->z)));
-				}
 			}
 		}
 	}

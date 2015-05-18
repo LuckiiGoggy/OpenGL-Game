@@ -89,7 +89,8 @@ void ServerGame::threadedClient(int clientId)
 
 		if (data_length <= 0)
 		{
-			//no data received
+// 			player = (Player*)ServerMain::GetMember(ServerMain::Players, objectId);
+// 			SendPacketToClient(GLNetwork::PLAYER_INFO_PACKET, player->GetPInfoPacket(), clientId);
 			continue;
 		}
 
@@ -150,8 +151,6 @@ void ServerGame::threadedClient(int clientId)
 
 				break;
 			}
-// 			player = (Player*)ServerMain::GetMember(ServerMain::Players, objectId);
-// 			SendPacketToClient(GLNetwork::PLAYER_INFO_PACKET, player->GetPInfoPacket(), clientId);
 
 			i += packetSize;
 		}
