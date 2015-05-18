@@ -35,7 +35,7 @@ ClientNetwork::ClientNetwork(void)
 
 
 	//resolve server address and port 
-	iResult = getaddrinfo(IP_TO_CONNECT, DEFAULT_PORT, &hints, &result);
+	iResult = getaddrinfo(SERVER_IP, DEFAULT_PORT, &hints, &result);
 
 	if (iResult != 0)
 	{
