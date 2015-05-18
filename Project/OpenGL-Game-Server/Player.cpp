@@ -12,7 +12,7 @@ Player::Player(void)
 	AddStat(CharacterStat("Ammo", 3, 0, 3));
 
 	name = "BoxMan";
-	ServerMain::GetPhysEngi()->registerRigidBody(BoundingBoxLibrary::NewPlayer(), this, name);
+	ServerMain::GetPhysEngi()->registerRigidBody(BoundingBoxLibrary::NewPlayer(), this, name, 2, 1.0f);
 
 	ammoCD = 2.0f;
 	ammoCDTimer = 0.0f;
@@ -25,7 +25,7 @@ Player::Player(std::string _name)
 	AddStat(CharacterStat("Ammo", 3, 0, 3));
 	name = _name;
 
-	ServerMain::GetPhysEngi()->registerRigidBody(BoundingBoxLibrary::NewPlayer(), this, name);
+	ServerMain::GetPhysEngi()->registerRigidBody(BoundingBoxLibrary::NewPlayer(), this, name, 2, 1.0f);
 
 	ammoCD = 2.0f;
 	ammoCDTimer = 0.0f;

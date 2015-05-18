@@ -69,8 +69,7 @@ public:
 	void bruteCollision();
 
 	void registerRigidBody(BoundingBox* box, Transform* trans, std::string nameId, float mass = 1);
-	void registerRigidBody(BoundingBox* box, Transform* trans, std::string nameId, int id, float mass = 1);
-	void registerRigidBody(BoundingBox* box, Transform* trans, std::string nameId, int type, int id, float mass = 1);
+	void registerRigidBody(BoundingBox* box, Transform* trans, std::string nameId, int type, float mass = 1);
 
 	void unregisterRigidBody(std::string nameId);
 	void swapRigidBodyTrans(std::string nameId, Transform* pTrans_);
@@ -84,6 +83,7 @@ public:
 	int screenWidth;
 	int screenHeight;
 	int screenDepth;
+	int idCounter;
 };
 
 

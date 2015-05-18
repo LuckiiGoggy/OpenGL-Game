@@ -13,6 +13,8 @@ PhysicsEngine::PhysicsEngine()
 
 	collisions = Collisions();
 	rigidObjects = vector<RigidBody*>();
+
+	idCounter = 0;
 }
 PhysicsEngine::PhysicsEngine(int screenWidth_, int screenHeight_)
 {
@@ -22,6 +24,7 @@ PhysicsEngine::PhysicsEngine(int screenWidth_, int screenHeight_)
 
 	collisions = Collisions();
 	rigidObjects = vector<RigidBody*>();
+	idCounter = 0;
 }
 PhysicsEngine::PhysicsEngine(int screenWidth_, int screenHeight_, int screenDepth_)
 {
@@ -31,6 +34,7 @@ PhysicsEngine::PhysicsEngine(int screenWidth_, int screenHeight_, int screenDept
 
 	collisions = Collisions();
 	rigidObjects = vector<RigidBody*>();
+	idCounter = 0;
 }
 
 void PhysicsEngine::triggerImpact(RigidBody *A, RigidBody *B)
@@ -168,6 +172,12 @@ void PhysicsEngine::ApplyVelocities(float timeDelta){
 						((curVelocity)* (rigidObjects[i]->velocities[j]->z))
 						);
 				}
+				else{
+					rigidObjects[i]->move(
+						((curVelocity)* (rigidObjects[i]->velocities[j]->x)),
+						((curVelocity)* (rigidObjects[i]->velocities[j]->y)),
+						((curVelocity)* (rigidObjects[i]->velocities[j]->z)));
+				}
 			}
 		}
 	}
@@ -176,23 +186,18 @@ void PhysicsEngine::ApplyVelocities(float timeDelta){
 
 
 ///MESH
-void PhysicsEngine::registerRigidBody(BoundingBox* box, Transform* trans, std::string nameId, int type, int id, float mass)
+void PhysicsEngine::registerRigidBody(BoundingBox* box, Transform* trans, std::string nameId, int type, float mass)
 {
+	int id = idCounter++;
 	//RigidBody(MeshObject* mesh, float mass_, std::string nameID_, int id_);
 	//rigidObjects.insert(std::pair<std::string, RigidBody*>(nameId, new RigidBody(object, mass, nameId, id)));
 	RigidBody* temp = new RigidBody(box, trans, mass, nameId, id);
 	temp->setType(type);
 	rigidObjects.push_back(temp);
 }
-void PhysicsEngine::registerRigidBody(BoundingBox* box, Transform* trans, std::string nameId, int id, float mass)
-{
-	//RigidBody(MeshObject* mesh, float mass_, std::string nameID_, int id_);
-	//rigidObjects.insert(std::pair<std::string, RigidBody*>(nameId, new RigidBody(object, mass, nameId, id)));
-	rigidObjects.push_back(new RigidBody(box, trans, mass, nameId, id));
-}
 void PhysicsEngine::registerRigidBody(BoundingBox* box, Transform* trans, std::string nameId, float mass)
 {
-	int id = rigidObjects.size();
+	int id = idCounter++;
 	//RigidBody(MeshObject* mesh, float mass_, std::string nameID_, int id_);
 	//rigidObjects.insert(std::pair<std::string, RigidBody*>(nameId, new RigidBody(object, mass, nameId, id)));
 	rigidObjects.push_back(new RigidBody(box, trans, mass, nameId, id));
