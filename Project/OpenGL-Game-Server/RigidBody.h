@@ -70,6 +70,7 @@ public:
 	const unsigned char * id_c;
 
 	//BoundingBox
+	BoundingBox* baseBoundingBox;
 	BoundingBox* boundingBox;
 	Transform* pTrans;
 

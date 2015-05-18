@@ -144,3 +144,8 @@ void Transform::Update(float timeDelta)
 {
 	UpdateNetTransformations();
 }
+
+glm::mat4 &Transform::NetTransformation()
+{
+	return netTransformations;
+}

@@ -18,7 +18,9 @@ protected:
 	static MeshObject* spearObject;
 	static MeshObject* wallObject;
 	static MeshObject* floorObject;
-	static AnimatedObject* playerObject;
+	static MeshObject* idleObject;
+	static MeshObject* walk1Object;
+	static MeshObject* walk2Object;
 };
 
 #endif

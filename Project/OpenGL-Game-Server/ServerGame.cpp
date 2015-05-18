@@ -211,3 +211,13 @@ void ServerGame::SendToAll(GLNetwork::PacketType packet_t, GLNetwork::Packet *pa
 	network->sendToAll(packet_data, packet_size);
 }
 
+void ServerGame::SendToOne(GLNetwork::PacketType packet_t, GLNetwork::Packet *packet, unsigned int clientId)
+{
+	unsigned int packet_size;
+	char *packet_data;
+
+	packet_size = PacketBuilder::SerializePacket(packet_t, packet, packet_data);
+
+	network->SendToOne(clientId, packet_data, packet_size);
+}
+

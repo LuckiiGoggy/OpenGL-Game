@@ -46,6 +46,7 @@ public:
 	void* operator new(size_t);
 	void  operator delete(void*);
 	int ObjectId();
+	glm::mat4 &NetTransformation();
 protected:
 	glm::vec3 position;
 

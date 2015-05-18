@@ -170,6 +170,20 @@ void ServerMain::SendMemberPackets(GLNetwork::PacketType packet_t, GameObjectCon
 	}
 }
 
+
+void ServerMain::SendMemberPackets(GLNetwork::PacketType packet_t, GameObjectContainer members, unsigned int clientId)
+{
+	std::map<int, IGameObject *>::iterator iter;
+	Transform *transformable;
+
+	for (iter = members.members.begin(); iter != members.members.end(); ++iter) {
+		transformable = dynamic_cast<Transform*>(iter->second);
+		if (transformable != 0){
+			ServerGame::SendToOne(packet_t, &(transformable->GetPacket()), clientId);
+		}
+	}
+}
+
 void ServerMain::RemoveMember(MemberList listType, int objectId)
 {
 	GLNetwork::KillObjectPacket killPacket;

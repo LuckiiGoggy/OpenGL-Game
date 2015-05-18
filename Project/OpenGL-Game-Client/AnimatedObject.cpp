@@ -31,6 +31,21 @@ AnimatedObject::AnimatedObject()
 	timeSinceLastFrame = 0.0f;
 }
 
+AnimatedObject::AnimatedObject(MeshObject *idle, MeshObject *walk1, MeshObject *walk2)
+{
+	AddMember("Idle", idle);
+	AddMember("Walk1", walk1);
+	AddMember("Walk2", walk2);
+
+	frameNames.push_back("Idle");
+	frameNames.push_back("Walk1");
+	frameNames.push_back("Walk2");
+
+	currentFrame = 0;
+	timeBetweenFrames = 0.09f;
+	timeSinceLastFrame = 0.0f;
+}
+
 
 AnimatedObject::~AnimatedObject()
 {

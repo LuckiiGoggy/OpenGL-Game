@@ -91,7 +91,7 @@ void PhysicsEngine::triggerImpact(RigidBody *A, RigidBody *B)
 	Velocity* impact_From_B = new Velocity(-xImpact_B, -yImpact_B, -zImpact_B, 3, 2);
 
 
-	A->addVelocity(new Velocity(*impact_From_B));
+	//A->addVelocity(new Velocity(*impact_From_B));
 	B->addVelocity(new Velocity(*impact_From_A));
 }
 /*
@@ -574,6 +574,7 @@ void PhysicsEngine::bruteCollision()
 
 	for (int i = 0; i < numOfObjects; i++)
 	{
+		rigidObjects[i]->updateBoundingBox();
 		returnObjects.push_back(rigidObjects[i]);
 	}
 	for (int i = 0; i < numOfObjects; i++)
@@ -591,7 +592,6 @@ void PhysicsEngine::bruteCollision()
 #ifdef DEBUG_SCRIPT
 			cout << "\n object:" << cur->id_c;
 #endif
-			cur->updateBoundingBox();
 
 			if (cur->id != rigidObjects[i]->id)
 			{

@@ -27,7 +27,7 @@ public:
 	static void SendPacketToClient(GLNetwork::Packet *packet, unsigned int clientId);
 	static void SendPacketToClient(GLNetwork::PacketType packet_t, GLNetwork::Packet *packet, unsigned int clientId);
 	static void SendToAll(GLNetwork::PacketType packet_t, GLNetwork::Packet *packet);
-
+	static void SendToOne(GLNetwork::PacketType packet_t, GLNetwork::Packet *packet, unsigned int clientId);
 
 
 private:

@@ -5,11 +5,13 @@
 #include "GameObjectContainer.h"
 #include <vector>
 #include <string>
+#include "MeshObject.h"
 
 class AnimatedObject : public IGameObject, public Transform, public IRenderable, public GameObjectContainer
 {
 public:
 	AnimatedObject();
+	AnimatedObject(MeshObject *idle, MeshObject *walk1, MeshObject *walk2);
 	~AnimatedObject();
 	void Update(float timeDelta);
 	void Render(void);

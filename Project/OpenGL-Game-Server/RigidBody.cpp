@@ -9,6 +9,7 @@ RigidBody::RigidBody()
 	type = 1;
 	pTrans = new Transform();
 	boundingBox = new BoundingBox();
+	baseBoundingBox = new BoundingBox();
 }
 RigidBody::RigidBody(BoundingBox* box, Transform* trans, float mass_, std::string nameID_)
 {
@@ -17,8 +18,8 @@ RigidBody::RigidBody(BoundingBox* box, Transform* trans, float mass_, std::strin
 	nameId = nameID_;
 	type = 1;
 
+	baseBoundingBox = box;
 	boundingBox = new BoundingBox();
-	boundingBox = box;
 
 	pTrans = new Transform();
 	pTrans = trans;
@@ -34,8 +35,8 @@ RigidBody::RigidBody(BoundingBox* box, Transform* trans, float mass_, std::strin
 	nameId = nameID_;
 	type = 1;
 
+	baseBoundingBox = box;
 	boundingBox = new BoundingBox();
-	boundingBox = box;
 
 	pTrans = new Transform();
 	pTrans = trans;
@@ -52,8 +53,8 @@ RigidBody::RigidBody(BoundingBox* box, Transform* trans, float mass_, int type_,
 
 	type = type_;
 
+	baseBoundingBox = box;
 	boundingBox = new BoundingBox();
-	boundingBox = box;
 
 	pTrans = new Transform();
 	pTrans = trans;
@@ -70,8 +71,8 @@ RigidBody::RigidBody(BoundingBox* box, Transform* trans, float mass_, int type_,
 
 	type = type_;
 
+	baseBoundingBox = box;
 	boundingBox = new BoundingBox();
-	boundingBox = box;
 
 	pTrans = new Transform();
 	pTrans = trans;
@@ -193,14 +194,14 @@ void RigidBody::updateBoundingBox()
 	pTrans->UpdateNetTransformations();
 	//Apply world transformation to bounding box
 	//*
-	glm::vec4 v1_world = (this->pTrans->NetTranslation() * glm::vec4(boundingBox->v1.x, boundingBox->v1.y, boundingBox->v1.z, 1));
-	glm::vec4 v2_world = (this->pTrans->NetTranslation() * glm::vec4(boundingBox->v2.x, boundingBox->v2.y, boundingBox->v2.z, 1));
-	glm::vec4 v3_world = (this->pTrans->NetTranslation() * glm::vec4(boundingBox->v3.x, boundingBox->v3.y, boundingBox->v3.z, 1));
-	glm::vec4 v4_world = (this->pTrans->NetTranslation() * glm::vec4(boundingBox->v4.x, boundingBox->v4.y, boundingBox->v4.z, 1));
-	glm::vec4 v5_world = (this->pTrans->NetTranslation() * glm::vec4(boundingBox->v5.x, boundingBox->v5.y, boundingBox->v5.z, 1));
-	glm::vec4 v6_world = (this->pTrans->NetTranslation() * glm::vec4(boundingBox->v6.x, boundingBox->v6.y, boundingBox->v6.z, 1));
-	glm::vec4 v7_world = (this->pTrans->NetTranslation() * glm::vec4(boundingBox->v7.x, boundingBox->v7.y, boundingBox->v7.z, 1));
-	glm::vec4 v8_world = (this->pTrans->NetTranslation() * glm::vec4(boundingBox->v8.x, boundingBox->v8.y, boundingBox->v8.z, 1));
+	glm::vec4 v1_world = (this->pTrans->NetTransformation() * glm::vec4(baseBoundingBox->v1.x, baseBoundingBox->v1.y, baseBoundingBox->v1.z, 1));
+	glm::vec4 v2_world = (this->pTrans->NetTransformation() * glm::vec4(baseBoundingBox->v2.x, baseBoundingBox->v2.y, baseBoundingBox->v2.z, 1));
+	glm::vec4 v3_world = (this->pTrans->NetTransformation() * glm::vec4(baseBoundingBox->v3.x, baseBoundingBox->v3.y, baseBoundingBox->v3.z, 1));
+	glm::vec4 v4_world = (this->pTrans->NetTransformation() * glm::vec4(baseBoundingBox->v4.x, baseBoundingBox->v4.y, baseBoundingBox->v4.z, 1));
+	glm::vec4 v5_world = (this->pTrans->NetTransformation() * glm::vec4(baseBoundingBox->v5.x, baseBoundingBox->v5.y, baseBoundingBox->v5.z, 1));
+	glm::vec4 v6_world = (this->pTrans->NetTransformation() * glm::vec4(baseBoundingBox->v6.x, baseBoundingBox->v6.y, baseBoundingBox->v6.z, 1));
+	glm::vec4 v7_world = (this->pTrans->NetTransformation() * glm::vec4(baseBoundingBox->v7.x, baseBoundingBox->v7.y, baseBoundingBox->v7.z, 1));
+	glm::vec4 v8_world = (this->pTrans->NetTransformation() * glm::vec4(baseBoundingBox->v8.x, baseBoundingBox->v8.y, baseBoundingBox->v8.z, 1));
 	//*/
 
 	//*
@@ -220,7 +221,7 @@ void RigidBody::updateBoundingBox()
 	boundingBox->refresh();
 }
 void RigidBody::SetBoundingBox(BoundingBox* box){
-	boundingBox = box;
+	baseBoundingBox = box;
 	/*
 	EVERYTHING IS COUNTER CLOCKWISE
 
@@ -241,6 +242,7 @@ void RigidBody::SetBoundingBox(BoundingBox* box){
 }
 
 BoundingBox* RigidBody::GetBoundingBox(void){
+	updateBoundingBox();
 	return boundingBox;
 }
 

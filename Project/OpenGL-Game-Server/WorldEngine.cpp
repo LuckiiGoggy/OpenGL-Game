@@ -78,7 +78,7 @@ void WorldEngine::readWorld(std::string filename) {
 				{
 					int objId = ServerMain::GetNewObjectId();
 					p = new Transform(objId);
-					p->Move(glm::vec3(j * tileLength, 0.0f, i * tileLength));
+					p->Move(glm::vec3(j * tileLength, -1.0f, i * tileLength));
 					tileNo++;
 					ServerMain::AddMember(ServerMain::Floors, objId, p);
 					break;
@@ -95,7 +95,7 @@ void WorldEngine::readWorld(std::string filename) {
 					//GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 3, tileNo);
 					objId = ServerMain::GetNewObjectId();
 					p = new Transform(objId);
-					p->Move(glm::vec3(j * tileLength, 0.0f, i * tileLength));
+					p->Move(glm::vec3(j * tileLength, -1.0f, i * tileLength));
 					tileNo++;
 					ServerMain::AddMember(ServerMain::Floors, objId, p);
 					//GlutManager::GetPhysEngi()->registerRigidBody(p, p, name, 4, tileNo);
@@ -105,7 +105,7 @@ void WorldEngine::readWorld(std::string filename) {
 				{
 					int objId = ServerMain::GetNewObjectId();
 					p = new Transform(objId);
-					p->Move(glm::vec3(j * tileLength, 0.0f, i * tileLength));
+					p->Move(glm::vec3(j * tileLength, -1.0f, i * tileLength));
 					tileNo++;
 					ServerMain::AddMember(ServerMain::Floors, objId, p);
 					break;

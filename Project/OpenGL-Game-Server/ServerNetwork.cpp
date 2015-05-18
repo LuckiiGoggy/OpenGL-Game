@@ -179,7 +179,17 @@ void ServerNetwork::SendToOne(unsigned int clientId, char * packets, int totalSi
 	currSocket = sessions[clientId];
 
 
-	NetworkServices::sendMessage(currSocket, packets, totalSize);
+	int iSendResult = NetworkServices::sendMessage(currSocket, packets, totalSize);
+	if (iSendResult == SOCKET_ERROR)
+	{
+		if (WSAGetLastError() != WSAEWOULDBLOCK)
+			printf("send failed with error: %d\n", WSAGetLastError());
+
+		if (WSAGetLastError() == WSAECONNRESET){
+			ServerGame::RemoveClient(clientId);
+			closesocket(currSocket);
+			sessions.erase(clientId);
+		}
+	}
 
 }
-
