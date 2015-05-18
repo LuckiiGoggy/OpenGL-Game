@@ -137,6 +137,10 @@ void ClientGame::update(int j)
 				break;
 
 			}
+
+			case KILL_OBJECT:{
+				game->RemoveMember((game->objIdStrId)[((ObjectPacket *)(packet))->objectId]);
+			}
 			default:
 
 				printf("\nerror in packet types. PacketType: %d", network_data[i]);

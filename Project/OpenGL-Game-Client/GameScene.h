@@ -31,10 +31,10 @@ public:
 	void UpdatePlayerInfo(int objId, int health, int ammo, int score);
 	void CreateNewActivePlayer(int objId, int health, int ammo, int score);
 
+	std::map<int, std::string> objIdStrId;
 
 
 protected:
-	std::map<int, std::string> objIdStrId;
 
 
 

@@ -30,7 +30,7 @@ void GameObjectContainer::AddMember(std::string name, IGameObject *game){
 }
 
 void GameObjectContainer::RemoveMember(std::string name){
-	delete members[name];
+/*	delete members[name];*/
 	members.erase(name);
 	
 }

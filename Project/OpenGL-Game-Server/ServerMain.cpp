@@ -50,22 +50,18 @@ void ServerMain::StartLoop()
 {
 	while (isRunning){
 		server->update();
-		float currTime = glutGet(GLUT_ELAPSED_TIME) / 1000.0f;
-
-		currDelta = currTime - lastTime;
-		lastTime = currTime;
 
 		//Loop
-		physEngi->ApplyVelocities(currDelta);
+		physEngi->ApplyVelocities(0.01f);
 		physEngi->bruteCollision();
 		physEngi->updateVelocities();
-		physEngi->ApplyVelocities(currDelta);
+		physEngi->ApplyVelocities(0.01f);
 		physEngi->updateVelocities();
 
-		players.UpdateMembers(currDelta);
-		walls.UpdateMembers(currDelta);
-		floors.UpdateMembers(currDelta);
- 		projectiles.UpdateMembers(currDelta);
+		players.UpdateMembers(0.01f);
+		walls.UpdateMembers(0.01f);
+		floors.UpdateMembers(0.01f);
+		projectiles.UpdateMembers(0.01f);
 
 		std::map<int, IGameObject *>::iterator iter = projectiles.members.begin();;
 		Projectile *projectile;

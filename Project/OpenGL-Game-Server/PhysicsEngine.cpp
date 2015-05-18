@@ -91,7 +91,7 @@ void PhysicsEngine::triggerImpact(RigidBody *A, RigidBody *B)
 	Velocity* impact_From_B = new Velocity(-xImpact_B, -yImpact_B, -zImpact_B, 3, 2);
 
 
-	//A->addVelocity(new Velocity(*impact_From_B));
+	A->addVelocity(new Velocity(*impact_From_B));
 	B->addVelocity(new Velocity(*impact_From_A));
 }
 /*

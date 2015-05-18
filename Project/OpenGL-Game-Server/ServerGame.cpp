@@ -165,6 +165,7 @@ void ServerGame::threadedClient(int clientId)
 
 void ServerGame::RemoveClient(unsigned int clientId)
 {
+	ServerMain::RemoveMember(ServerMain::Players, clients[clientId]);
 	if (clients.find(clientId) != clients.end()){
 		clients.erase(clientId);
 	}
