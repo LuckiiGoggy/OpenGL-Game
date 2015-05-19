@@ -68,6 +68,8 @@ void Player::Update(float timeDelta)
 		ammoCDTimer = 0.0f;
 	}
 
+	if (ServerMain::GetPhysEngi()->hasHitProjectile(name)) DecStat("Health");
+
 
 }
 

@@ -49,19 +49,24 @@ void ServerMain::Init(void)
 void ServerMain::StartLoop()
 {
 	while (isRunning){
+		float currTime = glutGet(GLUT_ELAPSED_TIME) / 1000.0f;
+
+		currDelta = currTime - lastTime;
+		lastTime = currTime;
+
 		server->update();
 
 		//Loop
-		physEngi->ApplyVelocities(0.01f);
+		physEngi->ApplyVelocities(currDelta);
 		physEngi->bruteCollision();
 		physEngi->updateVelocities();
-		physEngi->ApplyVelocities(0.01f);
+		physEngi->ApplyVelocities(currDelta);
 		physEngi->updateVelocities();
 
-		players.UpdateMembers(0.01f);
-		walls.UpdateMembers(0.01f);
-		floors.UpdateMembers(0.01f);
-		projectiles.UpdateMembers(0.01f);
+		players.UpdateMembers(currDelta);
+		walls.UpdateMembers(currDelta);
+		floors.UpdateMembers(currDelta);
+		projectiles.UpdateMembers(currDelta);
 
 		std::map<int, IGameObject *>::iterator iter = projectiles.members.begin();;
 		Projectile *projectile;
