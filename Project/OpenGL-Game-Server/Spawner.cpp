@@ -43,4 +43,5 @@ void Spawner::SpawnPlayer(Player *player, std::vector<IGameObject *> players) {
 	}
 	player->Move(Transform::Inverse(player->Position()));
 	player->Move(spawnPoints[pos].x * 8, 0.0f, spawnPoints[pos].y * 8);
+	player->ResetStats();
 }

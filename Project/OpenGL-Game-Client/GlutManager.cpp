@@ -40,7 +40,7 @@ void GlutManager::Init(bool editor)
 	lastTime = glutGet(GLUT_ELAPSED_TIME) / 1000.0f;
 
 	mainCamera = new Camera();
-	glutFullScreen();
+	//glutFullScreen();
 	//if (editor)	GLUIManager::initGLUI(GlutManager::mainWindow, GlutManager::IdleFunc);
 	//else glutFullScreen();
 

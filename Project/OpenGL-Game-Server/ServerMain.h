@@ -34,7 +34,7 @@ public:
 
 	static void SendMemberPackets(GLNetwork::PacketType packet_t, GameObjectContainer members);
 	static void SendMemberPackets(GLNetwork::PacketType packet_t, GameObjectContainer members, unsigned int clientId);
-
+	static void Respawn(Player* player);
 
 	static GameObjectContainer players;
 	static GameObjectContainer walls;

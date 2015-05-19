@@ -27,6 +27,8 @@ Player::Player(std::string _name)
 
 	ServerMain::GetPhysEngi()->registerRigidBody(BoundingBoxLibrary::NewPlayer(), this, name, 2, 1.0f);
 
+	movementSpeed = 15;
+
 	ammoCD = 2.0f;
 	ammoCDTimer = 0.0f;
 }
@@ -67,6 +69,11 @@ void Player::Update(float timeDelta)
 		IncStat("Ammo");
 		ammoCDTimer = 0.0f;
 	}
+
+	if (GetStatValue("Health") == 0)
+	{
+		ServerMain::Respawn(this);
+	}
 	
 }
 
@@ -86,7 +93,11 @@ void Player::DecStat(std::string statName){
 	UpdatePInfoPacket();
 }
 void Player::ResetStats(void){
-	Character::ResetStats();
+	
+	charaStats["Ammo"].Reset();
+	charaStats["Health"].Reset();
+	ammoCDTimer = 0.0f;
+
 	UpdatePInfoPacket();
 }
 

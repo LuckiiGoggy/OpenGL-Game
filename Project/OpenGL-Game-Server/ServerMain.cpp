@@ -254,4 +254,9 @@ std::map<int, IGameObject*>::iterator ServerMain::RemoveMember(MemberList listTy
 	return it;
 }
 
+void ServerMain::Respawn(Player* player)
+{
+	spawner->SpawnPlayer(player, players.GetMembers());
+}
+
 
