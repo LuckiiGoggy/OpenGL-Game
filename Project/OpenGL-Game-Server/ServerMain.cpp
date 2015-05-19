@@ -83,6 +83,8 @@ void ServerMain::StartLoop()
 
 					if (player != 0){
 						player->DecStat("Health");
+
+						((Player*)players.GetMember(projectile->GetShooter()))->IncStat("Score");
 					}
 				}
 			}

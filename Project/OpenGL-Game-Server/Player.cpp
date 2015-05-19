@@ -44,7 +44,7 @@ void Player::Shoot(void)
 	if (GetStatValue("Ammo") > 0){
 		Projectile *newProj;
 		int objId = ServerMain::GetNewObjectId();
-		newProj = new Projectile(NetRotation(), Position());
+		newProj = new Projectile(NetRotation(), Position(), objectId);
 		glm::vec3 vdir = Transform::ApplyTransVec3(glm::vec3(0.0f, 0.0f, -1.0f), netRotation);
 		Velocity* vel = new Velocity(vdir.x * 10, vdir.y * 10, vdir.z * 10, 1, 10);
 		std::string projName = "Projectile" + std::to_string(objId);
