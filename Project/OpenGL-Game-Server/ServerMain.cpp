@@ -132,7 +132,6 @@ void ServerMain::AddMember(MemberList listType, int objectId, IGameObject *objec
 	{
 	case Players:
 		players.AddMember(objectId, object);
-		spawner->SpawnPlayer((Player *)object, players.GetMembers());
 		break;
 	case Walls:
 		walls.AddMember(objectId, object);
