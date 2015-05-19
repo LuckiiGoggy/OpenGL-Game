@@ -72,6 +72,11 @@ void WorldEngine::readWorld(std::string filename) {
 					std::string name = "Wall" + std::to_string(objId);
 					ServerMain::GetPhysEngi()->registerRigidBody(BoundingBoxLibrary::NewWall(), p, name, 4);
 					ServerMain::AddMember(ServerMain::Walls, objId, p);
+					objId = ServerMain::GetNewObjectId();
+					p = new Transform(objId);
+					p->Move(glm::vec3(j * tileLength, -1.0f, i * tileLength));
+					tileNo++;
+					ServerMain::AddMember(ServerMain::Floors, objId, p);
 					break;
 				}
 				case FLOOR:

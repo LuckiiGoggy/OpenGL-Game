@@ -89,9 +89,9 @@ void PhysicsEngine::triggerImpact(RigidBody *A, RigidBody *B)
 	//resulting velocities from collision
 	Velocity* impact_From_A = new Velocity(xImpact_A, yImpact_A, zImpact_A, 3, 3);
 	Velocity* impact_From_B = new Velocity(-xImpact_B, -yImpact_B, -zImpact_B, 3, 2);
+	
 
-
-	A->addVelocity(new Velocity(*impact_From_B));
+	if (B->isEnvironment()) A->addVelocity(new Velocity(*impact_From_B));
 	B->addVelocity(new Velocity(*impact_From_A));
 }
 /*
@@ -592,7 +592,9 @@ void PhysicsEngine::bruteCollision()
 			cout << "\n object:" << cur->id_c;
 #endif
 
-			if (cur->id != rigidObjects[i]->id && !((cur->getType() == 3 && rigidObjects[i]->getType() == 4) || (cur->getType() == 4 && rigidObjects[i]->getType() == 3)))
+			if (cur->id != rigidObjects[i]->id && 
+				!((cur->getType() == 3 && rigidObjects[i]->getType() == 4) || (cur->getType() == 4 && rigidObjects[i]->getType() == 3)) &&
+				!((cur->getType() == 3 && rigidObjects[i]->getType() == 3)))
 			{
 				bool hit = collisions.checkCollisionAAB(
 					cur->boundingBox->center.x, cur->boundingBox->center.y, cur->boundingBox->center.z,

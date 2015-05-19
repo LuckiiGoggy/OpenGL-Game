@@ -43,6 +43,8 @@ void ServerMain::Init(void)
 	engine = new WorldEngine();
 	engine->readWorld("level");
 
+	floors.UpdateMembers(currDelta);
+
 	spawner = new Spawner(engine->squares);
 }
 
@@ -102,7 +104,6 @@ void ServerMain::StartLoop()
 
 		players.UpdateMembers(currDelta);
 		walls.UpdateMembers(currDelta);
-		floors.UpdateMembers(currDelta);
 		projectiles.UpdateMembers(currDelta);
 
 

@@ -12,6 +12,10 @@ int main(int argc, char **argv) {
 	//glutInitWindowPosition(200, 200);//optional
 	//glutInitWindowSize(566, 400); //optional
 
+
+	/* initialize random seed: */
+	srand(time(NULL));
+
 	GLint mainWindow = glutCreateWindow("OpenGL First Window");
 	glewInit();
 	ServerMain::Init();

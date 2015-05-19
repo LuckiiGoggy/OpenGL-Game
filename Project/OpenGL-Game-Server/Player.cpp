@@ -16,6 +16,7 @@ Player::Player(void)
 
 	ammoCD = 2.0f;
 	ammoCDTimer = 0.0f;
+	movementSpeed = 15;
 }
 
 Player::Player(std::string _name)
@@ -43,7 +44,7 @@ void Player::Shoot(void)
 {
 	if (GetStatValue("Ammo") > 0){
 		Projectile *newProj;
-		int objId = ServerMain::GetNewObjectId();
+		int objId = 500000 + objectId * 100000 + ServerMain::GetNewObjectId();
 		newProj = new Projectile(NetRotation(), Position(), objectId);
 		glm::vec3 vdir = Transform::ApplyTransVec3(glm::vec3(0.0f, 0.0f, -1.0f), netRotation);
 		Velocity* vel = new Velocity(vdir.x * 10, vdir.y * 10, vdir.z * 10, 1, 10);
@@ -98,7 +99,7 @@ void Player::ResetStats(void){
 	charaStats["Health"].Reset();
 	ammoCDTimer = 0.0f;
 
-	//UpdatePInfoPacket();
+	UpdatePInfoPacket();
 }
 
 void Player::UpdatePInfoPacket(void)
