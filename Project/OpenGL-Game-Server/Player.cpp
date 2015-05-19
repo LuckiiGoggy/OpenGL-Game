@@ -108,5 +108,10 @@ void Player::UpdatePInfoPacket(void)
 	pInfoPacket.health = GetStatValue("Health");
 	pInfoPacket.score = GetStatValue("Score");
 
-	ServerGame::SendPacketToClient(GLNetwork::PLAYER_INFO_PACKET, &pInfoPacket, ServerGame::clients[objectId]);
+	ServerGame::SendPacketToClient(GLNetwork::PLAYER_INFO_PACKET, &pInfoPacket, clientId);
+}
+
+
+void Player::SetClientId(int id){
+	clientId = id;
 }

@@ -19,6 +19,7 @@ public:
 	void Shoot(void);
 	GLNetwork::Packet *GetPInfoPacket(void);
 
+	void SetClientId(int id);
 
 	virtual void IncStat(std::string statName);
 	virtual void DecStat(std::string statName);
@@ -29,6 +30,7 @@ public:
 protected:
 	float ammoCD;
 	float ammoCDTimer;
+	int clientId;
 	GLNetwork::PlayerInfoPacket pInfoPacket;
 };
 

@@ -36,6 +36,7 @@ void ServerGame::update()
 		Player *player = new Player("Player" + std::to_string(newObjId));
 
 		player->SetObjectId(newObjId);
+		player->SetClientId(client_id);
 
 		ServerMain::AddMember(ServerMain::Players, newObjId, player);
 		ServerMain::Respawn(player);
