@@ -70,7 +70,7 @@ void ServerMain::StartLoop()
 			if (projectile != 0){
 				int objId = projectile->ObjectId();
 				std::vector<Transform *> collidedWith = physEngi->listCollisionsTransform("Projectile" + std::to_string(objId));
-				if (collidedWith.size() > 1 || !projectile->IsActive()){
+				if ((collidedWith.size() > 0 && (collidedWith[0])->ObjectId() != 0) || !projectile->IsActive()){
 					iter = ServerMain::RemoveMember(ServerMain::Projectiles, projectile->ObjectId(), iter);
 				}
 				else{

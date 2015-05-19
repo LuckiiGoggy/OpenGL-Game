@@ -48,10 +48,10 @@ void Player::Shoot(void)
 		glm::vec3 vdir = Transform::ApplyTransVec3(glm::vec3(0.0f, 0.0f, -1.0f), netRotation);
 		Velocity* vel = new Velocity(vdir.x * 10, vdir.y * 10, vdir.z * 10, 1, 10);
 		std::string projName = "Projectile" + std::to_string(objId);
-		ServerMain::GetPhysEngi()->registerRigidBody(BoundingBoxLibrary::NewProjectile(), newProj, projName);
-		ServerMain::GetPhysEngi()->addVelocityTo(projName, vel);
 		ServerMain::AddMember(ServerMain::Projectiles, objId, newProj);
 
+		ServerMain::GetPhysEngi()->registerRigidBody(BoundingBoxLibrary::NewProjectile(), newProj, projName);
+		ServerMain::GetPhysEngi()->addVelocityTo(projName, vel);
 
 		if (GetStatValue("Ammo") == 3) ammoCDTimer = 0.0f;
 
