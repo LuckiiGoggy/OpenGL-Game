@@ -26,7 +26,7 @@ void ClientGame::Init()
 
 	NetworkServices::sendMessage(network->ConnectSocket, packet_data, packet_size);
 
-	myThread = new std::thread(update, 2);
+	//myThread = new std::thread(update, 2);
 }
 
 void ClientGame::sendActionPackets(int i)
@@ -106,7 +106,7 @@ void ClientGame::update(int j)
 
 				ObjectPacket *objPacket = (ObjectPacket *)packet;
 
-				printf("\nPlayerObjectPacket, objID: %d, pos: x: %f, y: %f, z: %f", objPacket->objectId, objPacket->posX, objPacket->posY, objPacket->posZ);
+				//printf("\nPlayerObjectPacket, objID: %d, pos: x: %f, y: %f, z: %f", objPacket->objectId, objPacket->posX, objPacket->posY, objPacket->posZ);
 
 				break;
 
@@ -140,6 +140,7 @@ void ClientGame::update(int j)
 
 			case KILL_OBJECT:{
 				game->RemoveMember((game->objIdStrId)[((ObjectPacket *)(packet))->objectId]);
+				break;
 			}
 			default:
 
@@ -201,7 +202,7 @@ void ClientGame::Update(float timedelta){
 
 			ObjectPacket *objPacket = (ObjectPacket *)packet;
 
-			printf("\nPlayerObjectPacket, objID: %d, pos: x: %f, y: %f, z: %f", objPacket->objectId, objPacket->posX, objPacket->posY, objPacket->posZ);
+			//printf("\nPlayerObjectPacket, objID: %d, pos: x: %f, y: %f, z: %f", objPacket->objectId, objPacket->posX, objPacket->posY, objPacket->posZ);
 
 			break;
 
@@ -231,6 +232,10 @@ void ClientGame::Update(float timedelta){
 			game->UpdateTransformObj(((ObjectPacket *)(packet))->objectId, GameScene::Floor, packet_data.first, packet_data.second);
 			break;
 
+		}
+		case KILL_OBJECT:{
+			game->RemoveMember((game->objIdStrId)[((ObjectPacket *)(packet))->objectId]);
+			break;
 		}
 		default:
 

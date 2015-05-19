@@ -28,7 +28,7 @@ public:
 
 	virtual bool Init(char* model_filename, char* vshader_filename, char* fshader_filename);
 
-	void Render(void);
+	virtual void Render(void);
 	virtual void RenderBoundingBox(void);
 
 

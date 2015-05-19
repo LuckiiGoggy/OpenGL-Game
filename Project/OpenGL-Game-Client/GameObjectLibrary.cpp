@@ -6,6 +6,7 @@ MeshObject* GameObjectLibrary::floorObject;
 MeshObject* GameObjectLibrary::idleObject;
 MeshObject* GameObjectLibrary::walk1Object;
 MeshObject* GameObjectLibrary::walk2Object;
+WallObject *GameObjectLibrary::actualWallObject;
 
 
 
@@ -63,4 +64,9 @@ IGameObject * GameObjectLibrary::NewFloor(void)
 IGameObject * GameObjectLibrary::NewPlayer(void)
 {
 	return new AnimatedObject(new MeshObject(*idleObject), new MeshObject(*walk1Object), new MeshObject(*walk2Object));
+}
+
+IGameObject * GameObjectLibrary::NewWallObject(void)
+{
+	return new WallObject(*wallObject);
 }

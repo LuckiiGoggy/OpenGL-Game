@@ -57,7 +57,7 @@ void GameScene::Update(float timedelta) {
 		
 		ClientGame::SendPacket(GLNetwork::PLAYER_PACKET, &playerPacket);
 	}
-	//ClientGame::Update(timedelta);
+	ClientGame::Update(timedelta);
 	Scene::Update(timedelta);
 
 }
@@ -88,7 +88,7 @@ void GameScene::CreateNewObj(int objId, MeshTypes m_type, glm::mat4 &rot, glm::v
 	switch (m_type)
 	{
 	case Wall:
-		newObj = GameObjectLibrary::NewWall();
+		newObj = GameObjectLibrary::NewWallObject();
 		break;
 	case Floor:
 		newObj = GameObjectLibrary::NewFloor(); 

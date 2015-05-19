@@ -29,6 +29,7 @@
     <ClCompile Include="ClientNetwork.cpp" />
     <ClCompile Include="GameObjectLibrary.cpp" />
     <ClCompile Include="PacketData.cpp" />
+    <ClCompile Include="WallObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedObject.h" />
@@ -63,5 +64,6 @@
     <ClInclude Include="ClientNetwork.h" />
     <ClInclude Include="GameObjectLibrary.h" />
     <ClInclude Include="PacketData.h" />
+    <ClInclude Include="WallObject.h" />
   </ItemGroup>
 </Project>
