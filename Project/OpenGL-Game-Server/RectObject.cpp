@@ -52,7 +52,9 @@ RectObject::RectObject(Rect* rect)
 	//const unsigned char temp = *rect.id_c;
 	//id_c = &temp;
 
-	delete(rect);
+	
+	
+	(rect);
 
 	velocities = std::vector<Velocity*>();
 	mass = 1;

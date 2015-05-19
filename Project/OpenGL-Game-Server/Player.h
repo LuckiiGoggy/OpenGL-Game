@@ -18,6 +18,14 @@ public:
 
 	void Shoot(void);
 	GLNetwork::Packet *GetPInfoPacket(void);
+
+
+	virtual void IncStat(std::string statName);
+	virtual void DecStat(std::string statName);
+	virtual void ResetStats(void);
+
+	void UpdatePInfoPacket(void);
+
 protected:
 	float ammoCD;
 	float ammoCDTimer;

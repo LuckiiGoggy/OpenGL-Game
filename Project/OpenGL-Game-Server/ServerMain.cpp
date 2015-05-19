@@ -91,7 +91,6 @@ void ServerMain::StartLoop()
 			//go through members and get pos and rotation
 			//stuff into packets
 		SendMemberPackets(GLNetwork::PLAYER_OBJECT, players);
-		SendMemberPackets(GLNetwork::FLOOR_OBJECT, floors);
 		SendMemberPackets(GLNetwork::WALL_OBJECT, walls);
 		SendMemberPackets(GLNetwork::PROJECTILE_OBJECT, projectiles);
 		//Send Packets
@@ -199,8 +198,8 @@ void ServerMain::RemoveMember(MemberList listType, int objectId)
 		floors.RemoveMember(objectId);
 		break;
 	case Projectiles:
-		projectiles.RemoveMember(objectId);
 		physEngi->unregisterRigidBody("Projectile" + std::to_string(objectId));
+		projectiles.RemoveMember(objectId);
 		break;
 	}
 	ServerGame::SendToAll(GLNetwork::KILL_OBJECT, &killPacket);

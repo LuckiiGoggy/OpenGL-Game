@@ -69,10 +69,6 @@ void Player::Update(float timeDelta)
 	}
 
 
-	pInfoPacket.objectId = objectId;
-	pInfoPacket.ammo	 = GetStatValue("Ammo");
-	pInfoPacket.health	 = GetStatValue("Health");
-	pInfoPacket.score    = GetStatValue("Score");
 }
 
 GLNetwork::Packet *Player::GetPInfoPacket(void)
@@ -80,3 +76,27 @@ GLNetwork::Packet *Player::GetPInfoPacket(void)
 	return &pInfoPacket;
 }
 
+
+
+void Player::IncStat(std::string statName){
+	Character::IncStat(statName);
+	UpdatePInfoPacket();
+}
+void Player::DecStat(std::string statName){
+	Character::DecStat(statName);
+	UpdatePInfoPacket();
+}
+void Player::ResetStats(void){
+	Character::ResetStats();
+	UpdatePInfoPacket();
+}
+
+void Player::UpdatePInfoPacket(void)
+{
+	pInfoPacket.objectId = objectId;
+	pInfoPacket.ammo = GetStatValue("Ammo");
+	pInfoPacket.health = GetStatValue("Health");
+	pInfoPacket.score = GetStatValue("Score");
+
+	ServerGame::SendPacketToClient(GLNetwork::PLAYER_INFO_PACKET, &pInfoPacket, ServerGame::clients[objectId]);
+}

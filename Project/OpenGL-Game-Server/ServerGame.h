@@ -29,14 +29,14 @@ public:
 	static void SendToAll(GLNetwork::PacketType packet_t, GLNetwork::Packet *packet);
 	static void SendToOne(GLNetwork::PacketType packet_t, GLNetwork::Packet *packet, unsigned int clientId);
 
+	/*map of client_ids and Player ObjectID*/
+	static std::map<unsigned int, int> clients;
 
 private:
 
 	// IDs for the clients connecting for table in ServerNetwork 
 	static unsigned int client_id;
 
-	/*map of client_ids and Player ObjectID*/
-	static std::map<unsigned int, int> clients;
 
 	// The ServerNetwork object 
 	static ServerNetwork* network;

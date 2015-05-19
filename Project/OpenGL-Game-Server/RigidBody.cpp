@@ -255,7 +255,7 @@ void RigidBody::move(glm::vec3 v)
 void RigidBody::move(float x, float y, float z)
 {
 	pTrans->Move(x, y, z, Transform::Local);
-
+	
 	updateBoundingBox();
 }
 void RigidBody::move(float x, float y, float z, bool noChange)

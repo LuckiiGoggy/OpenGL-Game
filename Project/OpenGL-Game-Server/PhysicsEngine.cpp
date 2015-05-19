@@ -499,6 +499,7 @@ RigidBody* PhysicsEngine::hasHitProjectile(std::string nameId, bool returnRigidB
 		}
 	}
 }
+
 vector<RigidBody*> PhysicsEngine::hasHitProjectile(vector<RigidBody*> list)
 {
 	vector<RigidBody*> objectsThatHitProjectile = vector<RigidBody*>();
@@ -519,6 +520,8 @@ vector<RigidBody*> PhysicsEngine::hasHitProjectile(vector<RigidBody*> list)
 
 	return objectsThatHitProjectile;
 }
+
+
 vector<std::pair<RigidBody*, RigidBody*>> PhysicsEngine::hasHitProjectile(vector<RigidBody*> list, bool returnPairs)
 {
 	vector<std::pair<RigidBody*, RigidBody*>> objectsThatHitProjectile = vector<std::pair<RigidBody*, RigidBody*>>();
@@ -587,7 +590,7 @@ void PhysicsEngine::bruteCollision()
 			cout << "\n object:" << cur->id_c;
 #endif
 
-			if (cur->id != rigidObjects[i]->id)
+			if (cur->id != rigidObjects[i]->id && !((cur->getType() == 3 && rigidObjects[i]->getType() == 4) || (cur->getType() == 4 && rigidObjects[i]->getType() == 3)))
 			{
 				bool hit = collisions.checkCollisionAAB(
 					cur->boundingBox->center.x, cur->boundingBox->center.y, cur->boundingBox->center.z,

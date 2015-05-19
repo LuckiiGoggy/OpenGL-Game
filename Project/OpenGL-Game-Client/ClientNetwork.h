@@ -15,7 +15,7 @@
 // port to connect sockets through 
 #define DEFAULT_PORT "6881"
 // Hard-coded serverIP
-#define IP_TO_CONNECT "142.232.237.137"
+#define IP_TO_CONNECT "127.0.0.1"
 
 using namespace std;
 
