@@ -47,6 +47,7 @@ void ServerGame::update()
 
 		SendPacketToClient(&playerInfo, client_id);
 
+		ServerMain::SendMemberPackets(GLNetwork::FLOOR_OBJECT, ServerMain::floors, client_id);
 		player->Update(0.0f);
 
 		myThreads.push_back(new std::thread(threadedClient, client_id));
@@ -89,6 +90,10 @@ void ServerGame::threadedClient(int clientId)
 
 		if (data_length <= 0)
 		{
+// 			ServerMain::SendMemberPackets(GLNetwork::PLAYER_OBJECT, ServerMain::players, clientId);
+// 			ServerMain::SendMemberPackets(GLNetwork::WALL_OBJECT, ServerMain::walls, clientId);
+// 			ServerMain::SendMemberPackets(GLNetwork::PROJECTILE_OBJECT, ServerMain::projectiles, clientId);
+
 // 			player = (Player*)ServerMain::GetMember(ServerMain::Players, objectId);
 // 			SendPacketToClient(GLNetwork::PLAYER_INFO_PACKET, player->GetPInfoPacket(), clientId);
 			continue;
@@ -102,23 +107,6 @@ void ServerGame::threadedClient(int clientId)
 			//packet.deserialize(&(network_data[i]));
 
 			switch (network_data[i]) {
-
-			case INIT_CONNECTION:
-
-				printf("server received init packet from client\n");
-
-				//sendActionPackets();
-
-				break;
-
-			case ACTION_EVENT:
-
-				// "Process" information: display the test value
-				std::cout << "server received action packet from client: " << clientId << " value: " << std::endl;
-
-				//sendActionPackets();
-
-				break;
 
 			case PLAYER_PACKET:{
 				std::pair<glm::mat4, bool*> packetData = PacketData::extractPlayerInfo((PlayerPacket *)packet);
@@ -164,7 +152,7 @@ void ServerGame::threadedClient(int clientId)
 
 void ServerGame::RemoveClient(unsigned int clientId)
 {
-	ServerMain::RemoveMember(ServerMain::Players, clients[clientId]);
+/*	ServerMain::RemoveMember(ServerMain::Players, clients[clientId]);*/
 	if (clients.find(clientId) != clients.end()){
 		clients.erase(clientId);
 	}
