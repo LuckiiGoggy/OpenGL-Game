@@ -70,7 +70,7 @@ void ServerMain::StartLoop()
 			if (projectile != 0){
 				int objId = projectile->ObjectId();
 				std::vector<Transform *> collidedWith = physEngi->listCollisionsTransform("Projectile" + std::to_string(objId));
-				if (collidedWith.size() > 1 || !projectile->IsActive()){
+				if ((collidedWith.size() > 0 && (collidedWith[0])->ObjectId() != 0) || !projectile->IsActive()){
 					iter = ServerMain::RemoveMember(ServerMain::Projectiles, projectile->ObjectId(), iter);
 				}
 				else{
@@ -209,12 +209,12 @@ void ServerMain::RemoveMember(MemberList listType, int objectId)
 	switch (listType)
 	{
 	case Players:
-		players.RemoveMember(objectId);
 		physEngi->unregisterRigidBody("Player" + std::to_string(objectId));
+		players.RemoveMember(objectId);
 		break;
 	case Walls:
-		walls.RemoveMember(objectId);
 		physEngi->unregisterRigidBody("Wall" + std::to_string(objectId));
+		walls.RemoveMember(objectId);
 		break;
 	case Floors:
 		floors.RemoveMember(objectId);

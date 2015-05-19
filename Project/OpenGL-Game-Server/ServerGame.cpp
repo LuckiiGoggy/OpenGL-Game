@@ -36,6 +36,7 @@ void ServerGame::update()
 		Player *player = new Player("Player" + std::to_string(newObjId));
 
 		player->SetObjectId(newObjId);
+		player->SetClientId(client_id);
 
 		ServerMain::AddMember(ServerMain::Players, newObjId, player);
 		ServerMain::Respawn(player);
@@ -153,7 +154,7 @@ void ServerGame::threadedClient(int clientId)
 
 void ServerGame::RemoveClient(unsigned int clientId)
 {
-/*	ServerMain::RemoveMember(ServerMain::Players, clients[clientId]);*/
+	ServerMain::RemoveMember(ServerMain::Players, clients[clientId]);
 	if (clients.find(clientId) != clients.end()){
 		clients.erase(clientId);
 	}
