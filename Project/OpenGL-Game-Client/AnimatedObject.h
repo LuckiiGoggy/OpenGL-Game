@@ -21,6 +21,8 @@ public:
 	virtual void Move(glm::vec3 moveDelta, Space transformSpace = Space::Global);
 	virtual void MoveTo(glm::vec3 pos);
 	virtual void Rotate(float axisX, float axisY, float axisZ, float angle, glm::vec3 rotPoint = glm::vec3(0.0f), Space transformSpace = Space::Local);
+	virtual void NetRotation(glm::mat4 &rot);
+
 
 private:
 	int currentFrame;

@@ -18,7 +18,7 @@ public:
 	MeshObject *GetCollisionMesh(void);
 
 
-	void NetRotation(glm::mat4 &rot);
+	virtual void NetRotation(glm::mat4 &rot);
 protected:
 	
 };

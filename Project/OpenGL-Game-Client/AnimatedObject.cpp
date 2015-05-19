@@ -85,3 +85,9 @@ void AnimatedObject::MoveTo(glm::vec3 pos)
 	Transform::MoveTo(pos);
 	MoveToMembers(pos);
 }
+
+void AnimatedObject::NetRotation(glm::mat4 &rot){
+	//Transform::NetRotation(rot);
+
+	RotateMembersTo(rot);
+}

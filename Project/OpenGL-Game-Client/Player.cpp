@@ -9,7 +9,6 @@
 Player::Player(void)
 {
 	GroupObject *group = new GroupObject();
-	Camera *camera = new Camera();
 
 	
 
@@ -34,7 +33,9 @@ MeshObject * Player::GetCollisionMesh(void)
 	return (MeshObject *)(dynamic_cast<GameObjectContainer *>(body)->GetMember("Idle"));
 }
 
-void Player::NetRotation(glm::mat4 &rot)
-{
 
+void Player::NetRotation(glm::mat4 &rot){
+	//Transform::NetRotation(rot);
+
+	if (members.find("Camera") != members.end()) RotateMembersTo(rot);
 }
