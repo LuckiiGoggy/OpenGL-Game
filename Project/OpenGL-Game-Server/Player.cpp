@@ -98,7 +98,7 @@ void Player::ResetStats(void){
 	charaStats["Health"].Reset();
 	ammoCDTimer = 0.0f;
 
-	UpdatePInfoPacket();
+	//UpdatePInfoPacket();
 }
 
 void Player::UpdatePInfoPacket(void)
