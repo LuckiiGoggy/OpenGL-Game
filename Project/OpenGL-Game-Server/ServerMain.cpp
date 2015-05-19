@@ -209,12 +209,12 @@ void ServerMain::RemoveMember(MemberList listType, int objectId)
 	switch (listType)
 	{
 	case Players:
-		players.RemoveMember(objectId);
 		physEngi->unregisterRigidBody("Player" + std::to_string(objectId));
+		players.RemoveMember(objectId);
 		break;
 	case Walls:
-		walls.RemoveMember(objectId);
 		physEngi->unregisterRigidBody("Wall" + std::to_string(objectId));
+		walls.RemoveMember(objectId);
 		break;
 	case Floors:
 		floors.RemoveMember(objectId);

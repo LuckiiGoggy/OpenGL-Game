@@ -151,9 +151,11 @@ void ServerNetwork::sendToAll(char * packets, int totalSize)
 				printf("send failed with error: %d\n", WSAGetLastError());
 
 			if (WSAGetLastError() == WSAECONNRESET){
-				ServerGame::RemoveClient(iter->first);
 				closesocket(currentSocket);
+				int clientId = iter->first;
 				sessions.erase(iter++);
+				ServerGame::RemoveClient(clientId);
+				
 			}
 			else{
 				++iter;
