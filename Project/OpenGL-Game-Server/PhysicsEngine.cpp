@@ -485,6 +485,8 @@ bool PhysicsEngine::hasHitProjectile(std::string nameId)
 			return true;
 		}
 	}
+
+	return false;
 }
 RigidBody* PhysicsEngine::hasHitProjectile(std::string nameId, bool returnRigidBody)
 {

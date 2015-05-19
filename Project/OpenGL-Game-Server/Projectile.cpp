@@ -16,6 +16,7 @@ Projectile::Projectile(glm::mat4 &dir, glm::vec3 pos, MeshObject* proj) : MeshOb
 	glm::vec3 offset(0.0f, 0.1f, -2.5f);
 	Move(offset, Transform::Space::Local);
 	duration = 1;
+	UpdateNetTransformations();
 }
 
 void Projectile::Update(float timeDelta)
@@ -29,3 +30,4 @@ bool Projectile::IsActive(void)
 {
 	return (duration > 0);
 }
+

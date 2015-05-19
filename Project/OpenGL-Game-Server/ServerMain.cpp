@@ -18,7 +18,7 @@ float ServerMain::currDelta;
 float ServerMain::lastTime;
 int ServerMain::lastObjectId;
 
-
+#include <map>
 
 void ServerMain::SetPhysEngi(PhysicsEngine * newPhysEngi)
 {
@@ -59,6 +59,41 @@ void ServerMain::StartLoop()
 		//Loop
 		physEngi->ApplyVelocities(currDelta);
 		physEngi->bruteCollision();
+		
+		std::map<int, IGameObject *>::iterator iter = projectiles.members.begin();;
+		Projectile *projectile;
+
+		while (iter != projectiles.members.end())
+		{
+			projectile = dynamic_cast<Projectile*>(iter->second);
+
+			if (projectile != 0){
+				int objId = projectile->ObjectId();
+				std::vector<Transform *> collidedWith = physEngi->listCollisionsTransform("Projectile" + std::to_string(objId));
+				if (collidedWith.size() > 1 || !projectile->IsActive()){
+					iter = ServerMain::RemoveMember(ServerMain::Projectiles, projectile->ObjectId(), iter);
+				}
+				else{
+					++iter;
+				}
+
+
+				for (size_t counter2 = 0; counter2 < collidedWith.size(); counter2++){
+					Player *player = dynamic_cast<Player *> (collidedWith[counter2]);
+
+					if (player != 0){
+						player->DecStat("Health");
+					}
+				}
+			}
+			else{
+				++iter;
+			}
+
+		}
+		
+
+
 		physEngi->updateVelocities();
 		physEngi->ApplyVelocities(currDelta);
 		physEngi->updateVelocities();
@@ -68,26 +103,7 @@ void ServerMain::StartLoop()
 		floors.UpdateMembers(currDelta);
 		projectiles.UpdateMembers(currDelta);
 
-		std::map<int, IGameObject *>::iterator iter = projectiles.members.begin();;
-		Projectile *projectile;
 
-		while (iter != projectiles.members.end()) 
-		{
-			projectile = dynamic_cast<Projectile*>(iter->second);
-			
-			if (projectile != 0){
-				if (!projectile->IsActive()){
-					iter = ServerMain::RemoveMember(ServerMain::Projectiles, projectile->ObjectId(), iter);
-				}
-				else{
-					++iter;
-				}
-			}
-			else{
-				++iter;
-			}
-
-		}
 
 
 

@@ -67,10 +67,7 @@ void Player::Update(float timeDelta)
 		IncStat("Ammo");
 		ammoCDTimer = 0.0f;
 	}
-
-	if (ServerMain::GetPhysEngi()->hasHitProjectile(name)) DecStat("Health");
-
-
+	
 }
 
 GLNetwork::Packet *Player::GetPInfoPacket(void)
