@@ -23,6 +23,8 @@ public:
 	virtual glm::mat4 GetPerspective();
 	virtual glm::mat4 GetCameraMat();
 
+	virtual bool InView(glm::vec3);
+
 	virtual void Move(float dX, float dY, float dZ, Space transformSpace = Space::Global);
 	virtual void Move(glm::vec3 moveDelta, Space transformSpace = Space::Global);
 	virtual void Rotate(float axisX, float axisY, float axisZ, float angle, glm::vec3 rotPoint = glm::vec3(0.0f), Space transformSpace = Space::Local);

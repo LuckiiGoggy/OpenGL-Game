@@ -38,6 +38,15 @@ void Camera::Update(float timeDelta){
 
 }
 
+bool Camera::InView(glm::vec3 pos){
+
+	if (glm::length(pos - position) < glm::length(origLookAtPos - position)){
+		return true;
+	}
+
+	return false;
+}
+
 glm::mat4 Camera::GetPerspective(){
 	return perspMat;
 }

@@ -3,6 +3,7 @@
 
 #include "MeshObject.h"
 #include "AnimatedObject.h"
+#include "WallObject.h"
 
 class GameObjectLibrary
 {
@@ -13,6 +14,7 @@ public:
 	static IGameObject *NewProjectile(void);
 	static IGameObject *NewFloor(void);
 	static IGameObject *NewPlayer(void);
+	static IGameObject *NewWallObject(void);
 
 protected:
 	static MeshObject* spearObject;
@@ -21,6 +23,7 @@ protected:
 	static MeshObject* idleObject;
 	static MeshObject* walk1Object;
 	static MeshObject* walk2Object;
+	static WallObject* actualWallObject;
 };
 
 #endif
