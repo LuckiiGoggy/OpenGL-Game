@@ -60,7 +60,7 @@ void WorldEngine::readWorld(std::string filename) {
 			index = 0;
 			for (float j = 0; j < w; j++) {
 				block = (int)(s.at(index) - '0');
-				squares.push_back(WorldSquare((int)i, (int)j, block));
+				squares.push_back(WorldSquare((int)j, (int)i, block));
 				Transform* p;
 				switch (block) {
 				case WALL:
