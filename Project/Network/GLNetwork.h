@@ -12,7 +12,7 @@
 #define MAX_PACKET_SIZE 1000000
 
 // Hard-coded serverIP
-#define SERVER_IP "142.232.237.146" // for local machine: 127.0.0.1
+#define SERVER_IP "127.0.0.1" // for local machine: 127.0.0.1
 
 // Packet structure, contains necessary values
 namespace GLNetwork{
